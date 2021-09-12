@@ -1,0 +1,11 @@
+#File in Main Folder
+config.py
+db.sqlite3
+database/
+
+
+#Files in backend folder
+backend/__pycache__
+
+#Files in SOCE folder
+SOCE/__pycache__
