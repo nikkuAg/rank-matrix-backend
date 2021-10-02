@@ -10,6 +10,11 @@ class Branches(models.Model):
     branch_name = models.CharField(max_length=255)
     duration = models.CharField(max_length=255, null=True)
     degree = models.CharField(max_length=255, null=True)
+    branch_code = models.CharField(max_length=255, null=True)
+    IIT = models.CharField(max_length=5, null=True)
+    IIIT = models.CharField(max_length=5, null=True)
+    NIT = models.CharField(max_length=5, null=True)
+    GFTI = models.CharField(max_length=5, null=True)
 
     def __str__(self) -> str:
         return self.code
@@ -20,6 +25,17 @@ class Institutes(models.Model):
     code = models.CharField(max_length=10)
     name = models.CharField(max_length=255)
     category = models.CharField(max_length=10)
+    display_code = models.CharField(max_length=255, null=True)
+    state = models.CharField(max_length=255, null=True)
+    city = models.CharField(max_length=255, null=True)
+    website = models.CharField(max_length=255, null=True)
+    nirf_19 = models.CharField(null=True, max_length=255)
+    nirf_20 = models.CharField(null=True, max_length=255)
+    nirf_21 = models.CharField(null=True, max_length=255)
+    address = models.CharField(null=True, max_length=255)
+    phone = models.CharField(null=True, max_length=255)
+    fax = models.CharField(null=True, max_length=255)
+    email = models.CharField(null=True, max_length=255)
 
     def __str__(self) -> str:
         return self.code

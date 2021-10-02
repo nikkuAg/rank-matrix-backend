@@ -155,6 +155,11 @@ def create_tables(request):
             branch_name=str(data['branch']['Branch Name'][row-1]),
             duration=str(data['branch']['Duration'][row-1]),
             degree=str(data['branch']['Degree'][row-1]),
+            branch_code=str(data['branch']['Branch Display Code'][row-1]),
+            IIT=str(data['branch']['IIT'][row-1]),
+            IIIT=str(data['branch']['IIIT'][row-1]),
+            NIT=str(data['branch']['NIT'][row-1]),
+            GFTI=str(data['branch']['GFTI'][row-1]),
         )
         for row in data['branch']['Id']
     ]
@@ -164,6 +169,17 @@ def create_tables(request):
             code=str(data['institute']['Code'][row-1]),
             name=str(data['institute']['Name'][row-1]),
             category=str(data['institute']['Category'][row-1]),
+            display_code=str(data['institute']['Display Code'][row-1]),
+            state=str(data['institute']['State'][row-1]),
+            city=str(data['institute']['City'][row-1]),
+            website=str(data['institute']['Website'][row-1]),
+            nirf_19=str(data['institute']['NIRF_2019'][row-1]),
+            nirf_20=str(data['institute']['NIRF_2020'][row-1]),
+            nirf_21=str(data['institute']['NIRF_2021'][row-1]),
+            address=str(data['institute']['Address'][row-1]),
+            phone=str(data['institute']['Phone'][row-1]),
+            fax=str(data['institute']['Fax'][row-1]),
+            email=str(data['institute']['Email'][row-1]),
         )
         for row in data['institute']['Id']
     ]
