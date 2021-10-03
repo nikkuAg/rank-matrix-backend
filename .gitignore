@@ -2,6 +2,7 @@
 config.py
 db.sqlite3
 database/
+extra
 
 
 #Files in backend folder

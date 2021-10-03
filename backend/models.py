@@ -238,6 +238,272 @@ class Round5_2020(models.Model):
         return f"{self.institute_code} - {self.branch_code}"
 
 
+class Round2_2016(models.Model):
+    id = models.BigAutoField(auto_created=False, primary_key=True)
+    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
+    branch_code = models.ForeignKey(to=Branches, on_delete=CASCADE)
+    quota = models.CharField(max_length=100, null=True)
+    category = models.CharField(max_length=100)
+    seat_pool = models.CharField(max_length=100, null=True)
+    opening_rank = models.IntegerField(null=True)
+    closing_rank = models.IntegerField(null=True)
+
+    def __str__(self) -> str:
+        return f"{self.institute_code} - {self.branch_code}"
+
+
+class Round2_2017(models.Model):
+    id = models.BigAutoField(auto_created=False, primary_key=True)
+    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
+    branch_code = models.ForeignKey(to=Branches, on_delete=CASCADE)
+    quota = models.CharField(max_length=100, null=True)
+    category = models.CharField(max_length=100)
+    seat_pool = models.CharField(max_length=100, null=True)
+    opening_rank = models.IntegerField(null=True)
+    closing_rank = models.IntegerField(null=True)
+
+    def __str__(self) -> str:
+        return f"{self.institute_code} - {self.branch_code}"
+
+
+class Round2_2018(models.Model):
+    id = models.BigAutoField(auto_created=False, primary_key=True)
+    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
+    branch_code = models.ForeignKey(to=Branches, on_delete=CASCADE)
+    quota = models.CharField(max_length=100, null=True)
+    category = models.CharField(max_length=100)
+    seat_pool = models.CharField(max_length=100, null=True)
+    opening_rank = models.IntegerField(null=True)
+    closing_rank = models.IntegerField(null=True)
+
+    def __str__(self) -> str:
+        return f"{self.institute_code} - {self.branch_code}"
+
+
+class Round2_2019(models.Model):
+    id = models.BigAutoField(auto_created=False, primary_key=True)
+    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
+    branch_code = models.ForeignKey(to=Branches, on_delete=CASCADE)
+    quota = models.CharField(max_length=100, null=True)
+    category = models.CharField(max_length=100)
+    seat_pool = models.CharField(max_length=100, null=True)
+    opening_rank = models.IntegerField(null=True)
+    closing_rank = models.IntegerField(null=True)
+
+    def __str__(self) -> str:
+        return f"{self.institute_code} - {self.branch_code}"
+
+
+class Round3_2016(models.Model):
+    id = models.BigAutoField(auto_created=False, primary_key=True)
+    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
+    branch_code = models.ForeignKey(to=Branches, on_delete=CASCADE)
+    quota = models.CharField(max_length=100, null=True)
+    category = models.CharField(max_length=100)
+    seat_pool = models.CharField(max_length=100, null=True)
+    opening_rank = models.IntegerField(null=True)
+    closing_rank = models.IntegerField(null=True)
+
+    def __str__(self) -> str:
+        return f"{self.institute_code} - {self.branch_code}"
+
+
+class Round3_2017(models.Model):
+    id = models.BigAutoField(auto_created=False, primary_key=True)
+    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
+    branch_code = models.ForeignKey(to=Branches, on_delete=CASCADE)
+    quota = models.CharField(max_length=100, null=True)
+    category = models.CharField(max_length=100)
+    seat_pool = models.CharField(max_length=100, null=True)
+    opening_rank = models.IntegerField(null=True)
+    closing_rank = models.IntegerField(null=True)
+
+    def __str__(self) -> str:
+        return f"{self.institute_code} - {self.branch_code}"
+
+
+class Round3_2018(models.Model):
+    id = models.BigAutoField(auto_created=False, primary_key=True)
+    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
+    branch_code = models.ForeignKey(to=Branches, on_delete=CASCADE)
+    quota = models.CharField(max_length=100, null=True)
+    category = models.CharField(max_length=100)
+    seat_pool = models.CharField(max_length=100, null=True)
+    opening_rank = models.IntegerField(null=True)
+    closing_rank = models.IntegerField(null=True)
+
+    def __str__(self) -> str:
+        return f"{self.institute_code} - {self.branch_code}"
+
+
+class Round3_2019(models.Model):
+    id = models.BigAutoField(auto_created=False, primary_key=True)
+    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
+    branch_code = models.ForeignKey(to=Branches, on_delete=CASCADE)
+    quota = models.CharField(max_length=100, null=True)
+    category = models.CharField(max_length=100)
+    seat_pool = models.CharField(max_length=100, null=True)
+    opening_rank = models.IntegerField(null=True)
+    closing_rank = models.IntegerField(null=True)
+
+    def __str__(self) -> str:
+        return f"{self.institute_code} - {self.branch_code}"
+
+
+class Round4_2016(models.Model):
+    id = models.BigAutoField(auto_created=False, primary_key=True)
+    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
+    branch_code = models.ForeignKey(to=Branches, on_delete=CASCADE)
+    quota = models.CharField(max_length=100, null=True)
+    category = models.CharField(max_length=100)
+    seat_pool = models.CharField(max_length=100, null=True)
+    opening_rank = models.IntegerField(null=True)
+    closing_rank = models.IntegerField(null=True)
+
+    def __str__(self) -> str:
+        return f"{self.institute_code} - {self.branch_code}"
+
+
+class Round4_2017(models.Model):
+    id = models.BigAutoField(auto_created=False, primary_key=True)
+    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
+    branch_code = models.ForeignKey(to=Branches, on_delete=CASCADE)
+    quota = models.CharField(max_length=100, null=True)
+    category = models.CharField(max_length=100)
+    seat_pool = models.CharField(max_length=100, null=True)
+    opening_rank = models.IntegerField(null=True)
+    closing_rank = models.IntegerField(null=True)
+
+    def __str__(self) -> str:
+        return f"{self.institute_code} - {self.branch_code}"
+
+
+class Round4_2018(models.Model):
+    id = models.BigAutoField(auto_created=False, primary_key=True)
+    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
+    branch_code = models.ForeignKey(to=Branches, on_delete=CASCADE)
+    quota = models.CharField(max_length=100, null=True)
+    category = models.CharField(max_length=100)
+    seat_pool = models.CharField(max_length=100, null=True)
+    opening_rank = models.IntegerField(null=True)
+    closing_rank = models.IntegerField(null=True)
+
+    def __str__(self) -> str:
+        return f"{self.institute_code} - {self.branch_code}"
+
+
+class Round4_2019(models.Model):
+    id = models.BigAutoField(auto_created=False, primary_key=True)
+    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
+    branch_code = models.ForeignKey(to=Branches, on_delete=CASCADE)
+    quota = models.CharField(max_length=100, null=True)
+    category = models.CharField(max_length=100)
+    seat_pool = models.CharField(max_length=100, null=True)
+    opening_rank = models.IntegerField(null=True)
+    closing_rank = models.IntegerField(null=True)
+
+    def __str__(self) -> str:
+        return f"{self.institute_code} - {self.branch_code}"
+
+
+class Round5_2016(models.Model):
+    id = models.BigAutoField(auto_created=False, primary_key=True)
+    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
+    branch_code = models.ForeignKey(to=Branches, on_delete=CASCADE)
+    quota = models.CharField(max_length=100, null=True)
+    category = models.CharField(max_length=100)
+    seat_pool = models.CharField(max_length=100, null=True)
+    opening_rank = models.IntegerField(null=True)
+    closing_rank = models.IntegerField(null=True)
+
+    def __str__(self) -> str:
+        return f"{self.institute_code} - {self.branch_code}"
+
+
+class Round5_2017(models.Model):
+    id = models.BigAutoField(auto_created=False, primary_key=True)
+    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
+    branch_code = models.ForeignKey(to=Branches, on_delete=CASCADE)
+    quota = models.CharField(max_length=100, null=True)
+    category = models.CharField(max_length=100)
+    seat_pool = models.CharField(max_length=100, null=True)
+    opening_rank = models.IntegerField(null=True)
+    closing_rank = models.IntegerField(null=True)
+
+    def __str__(self) -> str:
+        return f"{self.institute_code} - {self.branch_code}"
+
+
+class Round5_2018(models.Model):
+    id = models.BigAutoField(auto_created=False, primary_key=True)
+    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
+    branch_code = models.ForeignKey(to=Branches, on_delete=CASCADE)
+    quota = models.CharField(max_length=100, null=True)
+    category = models.CharField(max_length=100)
+    seat_pool = models.CharField(max_length=100, null=True)
+    opening_rank = models.IntegerField(null=True)
+    closing_rank = models.IntegerField(null=True)
+
+    def __str__(self) -> str:
+        return f"{self.institute_code} - {self.branch_code}"
+
+
+class Round5_2019(models.Model):
+    id = models.BigAutoField(auto_created=False, primary_key=True)
+    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
+    branch_code = models.ForeignKey(to=Branches, on_delete=CASCADE)
+    quota = models.CharField(max_length=100, null=True)
+    category = models.CharField(max_length=100)
+    seat_pool = models.CharField(max_length=100, null=True)
+    opening_rank = models.IntegerField(null=True)
+    closing_rank = models.IntegerField(null=True)
+
+    def __str__(self) -> str:
+        return f"{self.institute_code} - {self.branch_code}"
+
+
+class Round6_2017(models.Model):
+    id = models.BigAutoField(auto_created=False, primary_key=True)
+    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
+    branch_code = models.ForeignKey(to=Branches, on_delete=CASCADE)
+    quota = models.CharField(max_length=100, null=True)
+    category = models.CharField(max_length=100)
+    seat_pool = models.CharField(max_length=100, null=True)
+    opening_rank = models.IntegerField(null=True)
+    closing_rank = models.IntegerField(null=True)
+
+    def __str__(self) -> str:
+        return f"{self.institute_code} - {self.branch_code}"
+
+
+class Round6_2018(models.Model):
+    id = models.BigAutoField(auto_created=False, primary_key=True)
+    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
+    branch_code = models.ForeignKey(to=Branches, on_delete=CASCADE)
+    quota = models.CharField(max_length=100, null=True)
+    category = models.CharField(max_length=100)
+    seat_pool = models.CharField(max_length=100, null=True)
+    opening_rank = models.IntegerField(null=True)
+    closing_rank = models.IntegerField(null=True)
+
+    def __str__(self) -> str:
+        return f"{self.institute_code} - {self.branch_code}"
+
+
+class Round6_2019(models.Model):
+    id = models.BigAutoField(auto_created=False, primary_key=True)
+    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
+    branch_code = models.ForeignKey(to=Branches, on_delete=CASCADE)
+    quota = models.CharField(max_length=100, null=True)
+    category = models.CharField(max_length=100)
+    seat_pool = models.CharField(max_length=100, null=True)
+    opening_rank = models.IntegerField(null=True)
+    closing_rank = models.IntegerField(null=True)
+
+    def __str__(self) -> str:
+        return f"{self.institute_code} - {self.branch_code}"
+
+
 class Round6_2020(models.Model):
     id = models.BigAutoField(auto_created=False, primary_key=True)
     institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)

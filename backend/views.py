@@ -1,14 +1,14 @@
 from django.http.response import HttpResponse
 from django.shortcuts import redirect, render
 from rest_framework import viewsets
-from .models import Branches, Institutes, Round_2015, Round1_2016, Round6_2016, Round1_2017, Round1_2018, Round1_2019, Round1_2020, Round2_2020, Round3_2020, Round4_2020, Round5_2020, Round6_2020, Round7_2017, Round7_2018, Round7_2019, SeatMatrix_2019, SeatMatrix_2020, SeatMatrix_2020_CSAB, CSAB_2020_1, CSAB_2020_2, Provisional_2018, Provisional_2019, Provisional_2020
-from .serializers import BranchesSerializer, CSAB_Seat_2020Serializer, InstitutesSerializer, Round1_2016Serializer, Round1_2017Serializer, Round1_2018Serializer, Round1_2019Serializer, Round1_2020Serializer, Round2_2020Serializer, Round3_2020Serializer, Round4_2020Serializer, Round5_2020Serializer, Round6_2016Serializer, Round6_2020Serializer, Round7_2017Serializer, Round7_2018Serializer, Round7_2019Serializer, Round_2015Serializer, Provisional_2018Serializer, Provisional_2019Serializer, Provisional_2020Serializer, CSAB_2020_1Serializer, CSAB_2020_2Serializer, SeatMatrix_2020_CSAB, Seat_2019Serializer, Seat_2020Serializer
+from .models import Branches, Institutes, Round2_2016, Round_2015, Round1_2016, Round6_2016, Round1_2017, Round1_2018, Round1_2019, Round1_2020, Round2_2020, Round3_2020, Round4_2020, Round5_2020, Round6_2020, Round7_2017, Round7_2018, Round7_2019, SeatMatrix_2019, SeatMatrix_2020, SeatMatrix_2020_CSAB, CSAB_2020_1, CSAB_2020_2, Provisional_2018, Provisional_2019, Provisional_2020, Round3_2016, Round4_2016, Round5_2016, Round2_2017, Round2_2018, Round2_2019, Round3_2017, Round3_2018, Round3_2019, Round4_2017, Round4_2018, Round4_2019, Round5_2017, Round5_2018, Round5_2019, Round6_2017, Round6_2018, Round6_2019
+from .serializers import BranchesSerializer, CSAB_Seat_2020Serializer, InstitutesSerializer, Round1_2016Serializer, Round1_2017Serializer, Round1_2018Serializer, Round1_2019Serializer, Round1_2020Serializer, Round2_2020Serializer, Round3_2020Serializer, Round4_2020Serializer, Round5_2020Serializer, Round6_2016Serializer, Round6_2020Serializer, Round7_2017Serializer, Round7_2018Serializer, Round7_2019Serializer, Round_2015Serializer, Provisional_2018Serializer, Provisional_2019Serializer, Provisional_2020Serializer, CSAB_2020_1Serializer, CSAB_2020_2Serializer, SeatMatrix_2020_CSAB, Seat_2019Serializer, Seat_2020Serializer, Round2_2016Serializer, Round2_2017Serializer, Round2_2018Serializer, Round2_2019Serializer, Round3_2016Serializer, Round3_2017Serializer, Round3_2018Serializer, Round3_2019Serializer, Round4_2016Serializer, Round4_2017Serializer, Round4_2018Serializer, Round4_2019Serializer, Round5_2016Serializer, Round5_2017Serializer, Round5_2018Serializer, Round5_2019Serializer, Round6_2017Serializer, Round6_2018Serializer, Round6_2019Serializer
 from .data import data_list as data
 from .data import lists
 # Create your views here.
 
-databases = [Branches, Institutes, Round_2015, Round1_2016, Round6_2016, Round1_2017, Round1_2018, Round1_2019,
-             Round1_2020, Round2_2020, Round3_2020, Round4_2020, Round5_2020, Round6_2020, Round7_2017, Round7_2018, Round7_2019, SeatMatrix_2019, SeatMatrix_2020, SeatMatrix_2020_CSAB, CSAB_2020_1, CSAB_2020_2, Provisional_2018, Provisional_2019, Provisional_2020]
+databases = [Branches, Institutes, Round2_2016, Round_2015, Round1_2016, Round6_2016, Round1_2017, Round1_2018, Round1_2019, Round1_2020, Round2_2020, Round3_2020, Round4_2020, Round5_2020, Round6_2020, Round7_2017, Round7_2018, Round7_2019, CSAB_2020_1,
+             CSAB_2020_2, Provisional_2018, Provisional_2019, Provisional_2020, Round3_2016, Round4_2016, Round5_2016, Round2_2017, Round2_2018, Round2_2019, Round3_2017, Round3_2018, Round3_2019, Round4_2017, Round4_2018, Round4_2019, Round5_2017, Round5_2018, Round5_2019, Round6_2017, Round6_2018, Round6_2019,  SeatMatrix_2019, SeatMatrix_2020, SeatMatrix_2020_CSAB]
 
 
 class BranchesViewSet(viewsets.ModelViewSet):
@@ -136,6 +136,101 @@ class CSAB_2020_2ViewSet(viewsets.ModelViewSet):
     serializer_class = CSAB_2020_2Serializer
 
 
+class Round2_2016ViewSet(viewsets.ModelViewSet):
+    queryset = Round2_2016.objects.all()
+    serializer_class = Round2_2016Serializer
+
+
+class Round3_2016ViewSet(viewsets.ModelViewSet):
+    queryset = Round3_2016.objects.all()
+    serializer_class = Round3_2016Serializer
+
+
+class Round4_2016ViewSet(viewsets.ModelViewSet):
+    queryset = Round4_2016.objects.all()
+    serializer_class = Round4_2016Serializer
+
+
+class Round5_2016ViewSet(viewsets.ModelViewSet):
+    queryset = Round5_2016.objects.all()
+    serializer_class = Round5_2016Serializer
+
+
+class Round2_2017ViewSet(viewsets.ModelViewSet):
+    queryset = Round2_2017.objects.all()
+    serializer_class = Round2_2017Serializer
+
+
+class Round3_2017ViewSet(viewsets.ModelViewSet):
+    queryset = Round3_2017.objects.all()
+    serializer_class = Round3_2017Serializer
+
+
+class Round4_2017ViewSet(viewsets.ModelViewSet):
+    queryset = Round4_2017.objects.all()
+    serializer_class = Round4_2017Serializer
+
+
+class Round5_2017ViewSet(viewsets.ModelViewSet):
+    queryset = Round5_2017.objects.all()
+    serializer_class = Round5_2017Serializer
+
+
+class Round6_2017ViewSet(viewsets.ModelViewSet):
+    queryset = Round6_2017.objects.all()
+    serializer_class = Round6_2017Serializer
+
+
+class Round2_2018ViewSet(viewsets.ModelViewSet):
+    queryset = Round2_2018.objects.all()
+    serializer_class = Round2_2018Serializer
+
+
+class Round3_2018ViewSet(viewsets.ModelViewSet):
+    queryset = Round3_2018.objects.all()
+    serializer_class = Round3_2018Serializer
+
+
+class Round4_2018ViewSet(viewsets.ModelViewSet):
+    queryset = Round4_2018.objects.all()
+    serializer_class = Round4_2018Serializer
+
+
+class Round5_2018ViewSet(viewsets.ModelViewSet):
+    queryset = Round5_2018.objects.all()
+    serializer_class = Round5_2018Serializer
+
+
+class Round6_2018ViewSet(viewsets.ModelViewSet):
+    queryset = Round6_2018.objects.all()
+    serializer_class = Round6_2018Serializer
+
+
+class Round2_2019ViewSet(viewsets.ModelViewSet):
+    queryset = Round2_2019.objects.all()
+    serializer_class = Round2_2019Serializer
+
+
+class Round3_2019ViewSet(viewsets.ModelViewSet):
+    queryset = Round3_2019.objects.all()
+    serializer_class = Round3_2019Serializer
+
+
+class Round4_2019ViewSet(viewsets.ModelViewSet):
+    queryset = Round4_2019.objects.all()
+    serializer_class = Round4_2019Serializer
+
+
+class Round5_2019ViewSet(viewsets.ModelViewSet):
+    queryset = Round5_2019.objects.all()
+    serializer_class = Round5_2019Serializer
+
+
+class Round6_2019ViewSet(viewsets.ModelViewSet):
+    queryset = Round6_2019.objects.all()
+    serializer_class = Round6_2019Serializer
+
+
 def reset(request):
     for x in databases:
         x.objects.all().delete()
@@ -214,6 +309,7 @@ def create_tables(request):
             x.objects.bulk_create(lists[name[13:]])
         elif (x == SeatMatrix_2019) or (x == SeatMatrix_2020) or (x == SeatMatrix_2020_CSAB):
             for row in data[name[13:]]['Id']:
+                print(data[name[13:]]['Id'][row-1])
                 try:
                     seat = int(data[name[13:]]['Total Seats'][row-1])
                 except ValueError:
@@ -236,4 +332,4 @@ def create_tables(request):
 
 
 viewset_list = [BranchesViewSet, InstitutesViewSet, Round1_2016ViewSet, Round1_2017ViewSet, Round1_2018ViewSet, Round1_2019ViewSet, Round1_2020ViewSet, Round2_2020ViewSet,
-                Round3_2020ViewSet, Round4_2020ViewSet, Round5_2020ViewSet, Round6_2016ViewSet, Round6_2020ViewSet, Round7_2017ViewSet, Round7_2018ViewSet, Round7_2019ViewSet, Round_2015ViewSet, Provisional_2018ViewSet, Provisional_2019ViewSet, Provisional_2020ViewSet, CSAB_2020_1ViewSet, CSAB_2020_2ViewSet, Seat_2019ViewSet, Seat_2020ViewSet, CSAB_Seat_2020ViewSet]
+                Round3_2020ViewSet, Round4_2020ViewSet, Round5_2020ViewSet, Round6_2016ViewSet, Round6_2020ViewSet, Round7_2017ViewSet, Round7_2018ViewSet, Round7_2019ViewSet, Round_2015ViewSet, Provisional_2018ViewSet, Provisional_2019ViewSet, Provisional_2020ViewSet, CSAB_2020_1ViewSet, CSAB_2020_2ViewSet, Seat_2019ViewSet, Seat_2020ViewSet, CSAB_Seat_2020ViewSet, Round2_2016ViewSet, Round3_2016ViewSet, Round4_2016ViewSet, Round5_2016ViewSet, Round2_2017ViewSet, Round2_2018ViewSet, Round2_2019ViewSet, Round3_2017ViewSet, Round3_2018ViewSet, Round3_2019ViewSet, Round4_2017ViewSet, Round4_2018ViewSet, Round4_2019ViewSet, Round5_2017ViewSet, Round5_2018ViewSet, Round5_2019ViewSet, Round6_2017ViewSet, Round6_2018ViewSet, Round6_2019ViewSet]
