@@ -235,7 +235,7 @@ def reset(request):
     for x in databases:
         x.objects.all().delete()
 
-    return redirect('/soce/')
+    return redirect('/soce/create_table/')
 
 
 def create_tables(request):
