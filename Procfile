@@ -1,0 +1,1 @@
+web: gunicorn SOCE.wsgi —-log-file -
