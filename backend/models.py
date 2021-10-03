@@ -36,6 +36,7 @@ class Institutes(models.Model):
     phone = models.CharField(null=True, max_length=255)
     fax = models.CharField(null=True, max_length=255)
     email = models.CharField(null=True, max_length=255)
+    current = models.CharField(null=True, max_length=2)
 
     def __str__(self) -> str:
         return self.code

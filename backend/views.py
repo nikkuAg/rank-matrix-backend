@@ -10,8 +10,6 @@ from .data import lists
 databases = [Branches, Institutes, Round_2015, Round1_2016, Round6_2016, Round1_2017, Round1_2018, Round1_2019,
              Round1_2020, Round2_2020, Round3_2020, Round4_2020, Round5_2020, Round6_2020, Round7_2017, Round7_2018, Round7_2019, SeatMatrix_2019, SeatMatrix_2020, SeatMatrix_2020_CSAB, CSAB_2020_1, CSAB_2020_2, Provisional_2018, Provisional_2019, Provisional_2020]
 
-# databases = [Round_2015]
-
 
 class BranchesViewSet(viewsets.ModelViewSet):
     queryset = Branches.objects.all()
@@ -180,6 +178,7 @@ def create_tables(request):
             phone=str(data['institute']['Phone'][row-1]),
             fax=str(data['institute']['Fax'][row-1]),
             email=str(data['institute']['Email'][row-1]),
+            current=str(data['institute']['Current'][row-1]),
         )
         for row in data['institute']['Id']
     ]
