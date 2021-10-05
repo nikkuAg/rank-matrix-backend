@@ -7,8 +7,28 @@ from .data import data_list as data
 from .data import lists
 # Create your views here.
 
-databases = [Branches, Institutes, Round2_2016, Round_2015, Round1_2016, Round6_2016, Round1_2017, Round1_2018, Round1_2019, Round1_2020, Round2_2020, Round3_2020, Round4_2020, Round5_2020, Round6_2020, Round7_2017, Round7_2018, Round7_2019, CSAB_2020_1,
-             CSAB_2020_2, Provisional_2018, Provisional_2019, Provisional_2020, Round3_2016, Round4_2016, Round5_2016, Round2_2017, Round2_2018, Round2_2019, Round3_2017, Round3_2018, Round3_2019, Round4_2017, Round4_2018, Round4_2019, Round5_2017, Round5_2018, Round5_2019, Round6_2017, Round6_2018, Round6_2019,  SeatMatrix_2019, SeatMatrix_2020, SeatMatrix_2020_CSAB]
+databases = [Branches, Institutes, Round_2015,
+             Round1_2016, Round6_2016, Round1_2017]
+
+database3 = [Round1_2018, Round1_2019, Round1_2020,
+             Round2_2020, Round3_2020, Round4_2020]
+
+database4 = [Round5_2020, Round6_2020, Round7_2017,
+             Round7_2018, Round7_2019, CSAB_2020_1]
+
+database5 = [CSAB_2020_2,  SeatMatrix_2019, SeatMatrix_2020,
+             SeatMatrix_2020_CSAB, Round2_2016, Provisional_2018]
+
+databases2 = [Provisional_2019, Provisional_2020, Round3_2016,
+              Round4_2016, Round5_2016, Round2_2017, Round2_2018]
+
+database6 = [Round2_2019, Round3_2017, Round3_2018,
+             Round3_2019, Round4_2017, Round4_2018]
+
+database7 = [Round4_2019, Round5_2017, Round5_2018,
+             Round5_2019, Round6_2017, Round6_2018, Round6_2019]
+
+databaseT = [Round7_2017, Round7_2018, Round7_2019, Round5_2020, Round6_2020]
 
 
 class BranchesViewSet(viewsets.ModelViewSet):
@@ -231,15 +251,15 @@ class Round6_2019ViewSet(viewsets.ModelViewSet):
     serializer_class = Round6_2019Serializer
 
 
-def reset(request):
-    for x in databases:
+def reset(request, data):
+    for x in data:
         x.objects.all().delete()
 
     return redirect('/soce/create_table/')
 
 
 def create_tables(request):
-    reset(None)
+    reset(None, databases)
 
     branches = [
         Branches(
@@ -328,7 +348,365 @@ def create_tables(request):
 
             x.objects.bulk_create(lists[name[13:]])
 
-    return HttpResponse("Branch Data Created")
+    return redirect('/soce/create_table2/')
+
+
+def create2(request):
+    reset(None, databases2)
+
+    for x in databases2:
+        name = x._meta.db_table
+        print(name[13:])
+        if (x != Branches) and (x != Institutes) and (x != SeatMatrix_2020_CSAB) and (x != SeatMatrix_2020) and (x != SeatMatrix_2019):
+            for row in data[name[13:]]['Id']:
+                try:
+                    open = int(data[name[13:]]['Opening Rank'][row-1])
+                except ValueError:
+                    open = None
+                try:
+                    close = int(data[name[13:]]['Closing Rank'][row-1])
+                except ValueError:
+                    close = None
+                lists[name[13:]].append(x(
+                    id=int(data[name[13:]]['Id'][row-1]),
+                    institute_code=Institutes.objects.get(
+                        code=str(data[name[13:]]['Institute Code'][row-1])),
+                    branch_code=Branches.objects.get(
+                        code=str(data[name[13:]]['Branch Code'][row-1])),
+                    quota=str(data[name[13:]]['Quota'][row-1]),
+                    category=str(data[name[13:]]['Category'][row-1]),
+                    seat_pool=str(data[name[13:]]['Seat Pool'][row-1]),
+                    opening_rank=open,
+                    closing_rank=close,
+                ))
+
+            x.objects.bulk_create(lists[name[13:]])
+        elif (x == SeatMatrix_2019) or (x == SeatMatrix_2020) or (x == SeatMatrix_2020_CSAB):
+            for row in data[name[13:]]['Id']:
+                print(data[name[13:]]['Id'][row-1])
+                try:
+                    seat = int(data[name[13:]]['Total Seats'][row-1])
+                except ValueError:
+                    seat = None
+                lists[name[13:]].append(x(
+                    id=int(data[name[13:]]['Id'][row-1]),
+                    institute_code=Institutes.objects.get(
+                        code=str(data[name[13:]]['Institute Code'][row-1])),
+                    branch_code=Branches.objects.get(
+                        code=str(data[name[13:]]['Branch Code'][row-1])),
+                    quota=str(data[name[13:]]['Quota'][row-1]),
+                    category=str(data[name[13:]]['Category'][row-1]),
+                    seat_pool=str(data[name[13:]]['Seat Pool'][row-1]),
+                    seats=seat,
+                ))
+
+            x.objects.bulk_create(lists[name[13:]])
+
+    return redirect('/soce/create_table3/')
+
+
+def create3(request):
+    reset(None, database3)
+
+    for x in database3:
+        name = x._meta.db_table
+        print(name[13:])
+        if (x != Branches) and (x != Institutes) and (x != SeatMatrix_2020_CSAB) and (x != SeatMatrix_2020) and (x != SeatMatrix_2019):
+            for row in data[name[13:]]['Id']:
+                try:
+                    open = int(data[name[13:]]['Opening Rank'][row-1])
+                except ValueError:
+                    open = None
+                try:
+                    close = int(data[name[13:]]['Closing Rank'][row-1])
+                except ValueError:
+                    close = None
+                lists[name[13:]].append(x(
+                    id=int(data[name[13:]]['Id'][row-1]),
+                    institute_code=Institutes.objects.get(
+                        code=str(data[name[13:]]['Institute Code'][row-1])),
+                    branch_code=Branches.objects.get(
+                        code=str(data[name[13:]]['Branch Code'][row-1])),
+                    quota=str(data[name[13:]]['Quota'][row-1]),
+                    category=str(data[name[13:]]['Category'][row-1]),
+                    seat_pool=str(data[name[13:]]['Seat Pool'][row-1]),
+                    opening_rank=open,
+                    closing_rank=close,
+                ))
+
+            x.objects.bulk_create(lists[name[13:]])
+        elif (x == SeatMatrix_2019) or (x == SeatMatrix_2020) or (x == SeatMatrix_2020_CSAB):
+            for row in data[name[13:]]['Id']:
+                print(data[name[13:]]['Id'][row-1])
+                try:
+                    seat = int(data[name[13:]]['Total Seats'][row-1])
+                except ValueError:
+                    seat = None
+                lists[name[13:]].append(x(
+                    id=int(data[name[13:]]['Id'][row-1]),
+                    institute_code=Institutes.objects.get(
+                        code=str(data[name[13:]]['Institute Code'][row-1])),
+                    branch_code=Branches.objects.get(
+                        code=str(data[name[13:]]['Branch Code'][row-1])),
+                    quota=str(data[name[13:]]['Quota'][row-1]),
+                    category=str(data[name[13:]]['Category'][row-1]),
+                    seat_pool=str(data[name[13:]]['Seat Pool'][row-1]),
+                    seats=seat,
+                ))
+
+            x.objects.bulk_create(lists[name[13:]])
+
+    return redirect('/soce/create_table4/')
+
+
+def create4(request):
+    reset(None, database4)
+
+    for x in database4:
+        name = x._meta.db_table
+        print(name[13:])
+        if (x != Branches) and (x != Institutes) and (x != SeatMatrix_2020_CSAB) and (x != SeatMatrix_2020) and (x != SeatMatrix_2019):
+            for row in data[name[13:]]['Id']:
+                try:
+                    open = int(data[name[13:]]['Opening Rank'][row-1])
+                except ValueError:
+                    open = None
+                try:
+                    close = int(data[name[13:]]['Closing Rank'][row-1])
+                except ValueError:
+                    close = None
+                lists[name[13:]].append(x(
+                    id=int(data[name[13:]]['Id'][row-1]),
+                    institute_code=Institutes.objects.get(
+                        code=str(data[name[13:]]['Institute Code'][row-1])),
+                    branch_code=Branches.objects.get(
+                        code=str(data[name[13:]]['Branch Code'][row-1])),
+                    quota=str(data[name[13:]]['Quota'][row-1]),
+                    category=str(data[name[13:]]['Category'][row-1]),
+                    seat_pool=str(data[name[13:]]['Seat Pool'][row-1]),
+                    opening_rank=open,
+                    closing_rank=close,
+                ))
+
+            x.objects.bulk_create(lists[name[13:]])
+        elif (x == SeatMatrix_2019) or (x == SeatMatrix_2020) or (x == SeatMatrix_2020_CSAB):
+            for row in data[name[13:]]['Id']:
+                print(data[name[13:]]['Id'][row-1])
+                try:
+                    seat = int(data[name[13:]]['Total Seats'][row-1])
+                except ValueError:
+                    seat = None
+                lists[name[13:]].append(x(
+                    id=int(data[name[13:]]['Id'][row-1]),
+                    institute_code=Institutes.objects.get(
+                        code=str(data[name[13:]]['Institute Code'][row-1])),
+                    branch_code=Branches.objects.get(
+                        code=str(data[name[13:]]['Branch Code'][row-1])),
+                    quota=str(data[name[13:]]['Quota'][row-1]),
+                    category=str(data[name[13:]]['Category'][row-1]),
+                    seat_pool=str(data[name[13:]]['Seat Pool'][row-1]),
+                    seats=seat,
+                ))
+
+            x.objects.bulk_create(lists[name[13:]])
+
+    return redirect('/soce/create_table5/')
+
+
+def create5(request):
+    reset(None, database4)
+
+    for x in database5:
+        name = x._meta.db_table
+        print(name[13:])
+        if (x != Branches) and (x != Institutes) and (x != SeatMatrix_2020_CSAB) and (x != SeatMatrix_2020) and (x != SeatMatrix_2019):
+            for row in data[name[13:]]['Id']:
+                try:
+                    open = int(data[name[13:]]['Opening Rank'][row-1])
+                except ValueError:
+                    open = None
+                try:
+                    close = int(data[name[13:]]['Closing Rank'][row-1])
+                except ValueError:
+                    close = None
+                lists[name[13:]].append(x(
+                    id=int(data[name[13:]]['Id'][row-1]),
+                    institute_code=Institutes.objects.get(
+                        code=str(data[name[13:]]['Institute Code'][row-1])),
+                    branch_code=Branches.objects.get(
+                        code=str(data[name[13:]]['Branch Code'][row-1])),
+                    quota=str(data[name[13:]]['Quota'][row-1]),
+                    category=str(data[name[13:]]['Category'][row-1]),
+                    seat_pool=str(data[name[13:]]['Seat Pool'][row-1]),
+                    opening_rank=open,
+                    closing_rank=close,
+                ))
+
+            x.objects.bulk_create(lists[name[13:]])
+        elif (x == SeatMatrix_2019) or (x == SeatMatrix_2020) or (x == SeatMatrix_2020_CSAB):
+            for row in data[name[13:]]['Id']:
+                print(data[name[13:]]['Id'][row-1])
+                try:
+                    seat = int(data[name[13:]]['Total Seats'][row-1])
+                except ValueError:
+                    seat = None
+                lists[name[13:]].append(x(
+                    id=int(data[name[13:]]['Id'][row-1]),
+                    institute_code=Institutes.objects.get(
+                        code=str(data[name[13:]]['Institute Code'][row-1])),
+                    branch_code=Branches.objects.get(
+                        code=str(data[name[13:]]['Branch Code'][row-1])),
+                    quota=str(data[name[13:]]['Quota'][row-1]),
+                    category=str(data[name[13:]]['Category'][row-1]),
+                    seat_pool=str(data[name[13:]]['Seat Pool'][row-1]),
+                    seats=seat,
+                ))
+
+            x.objects.bulk_create(lists[name[13:]])
+
+    return redirect('/soce/create_table6/')
+
+
+def create6(request):
+    reset(None, database6)
+
+    for x in database6:
+        name = x._meta.db_table
+        print(name[13:])
+        if (x != Branches) and (x != Institutes) and (x != SeatMatrix_2020_CSAB) and (x != SeatMatrix_2020) and (x != SeatMatrix_2019):
+            for row in data[name[13:]]['Id']:
+                try:
+                    open = int(data[name[13:]]['Opening Rank'][row-1])
+                except ValueError:
+                    open = None
+                try:
+                    close = int(data[name[13:]]['Closing Rank'][row-1])
+                except ValueError:
+                    close = None
+                lists[name[13:]].append(x(
+                    id=int(data[name[13:]]['Id'][row-1]),
+                    institute_code=Institutes.objects.get(
+                        code=str(data[name[13:]]['Institute Code'][row-1])),
+                    branch_code=Branches.objects.get(
+                        code=str(data[name[13:]]['Branch Code'][row-1])),
+                    quota=str(data[name[13:]]['Quota'][row-1]),
+                    category=str(data[name[13:]]['Category'][row-1]),
+                    seat_pool=str(data[name[13:]]['Seat Pool'][row-1]),
+                    opening_rank=open,
+                    closing_rank=close,
+                ))
+
+            x.objects.bulk_create(lists[name[13:]])
+        elif (x == SeatMatrix_2019) or (x == SeatMatrix_2020) or (x == SeatMatrix_2020_CSAB):
+            for row in data[name[13:]]['Id']:
+                print(data[name[13:]]['Id'][row-1])
+                try:
+                    seat = int(data[name[13:]]['Total Seats'][row-1])
+                except ValueError:
+                    seat = None
+                lists[name[13:]].append(x(
+                    id=int(data[name[13:]]['Id'][row-1]),
+                    institute_code=Institutes.objects.get(
+                        code=str(data[name[13:]]['Institute Code'][row-1])),
+                    branch_code=Branches.objects.get(
+                        code=str(data[name[13:]]['Branch Code'][row-1])),
+                    quota=str(data[name[13:]]['Quota'][row-1]),
+                    category=str(data[name[13:]]['Category'][row-1]),
+                    seat_pool=str(data[name[13:]]['Seat Pool'][row-1]),
+                    seats=seat,
+                ))
+
+            x.objects.bulk_create(lists[name[13:]])
+
+    return redirect('/soce/create_table7/')
+
+
+def create7(request):
+    reset(None, database7)
+
+    for x in database6:
+        name = x._meta.db_table
+        print(name[13:])
+        if (x != Branches) and (x != Institutes) and (x != SeatMatrix_2020_CSAB) and (x != SeatMatrix_2020) and (x != SeatMatrix_2019):
+            for row in data[name[13:]]['Id']:
+                try:
+                    open = int(data[name[13:]]['Opening Rank'][row-1])
+                except ValueError:
+                    open = None
+                try:
+                    close = int(data[name[13:]]['Closing Rank'][row-1])
+                except ValueError:
+                    close = None
+                lists[name[13:]].append(x(
+                    id=int(data[name[13:]]['Id'][row-1]),
+                    institute_code=Institutes.objects.get(
+                        code=str(data[name[13:]]['Institute Code'][row-1])),
+                    branch_code=Branches.objects.get(
+                        code=str(data[name[13:]]['Branch Code'][row-1])),
+                    quota=str(data[name[13:]]['Quota'][row-1]),
+                    category=str(data[name[13:]]['Category'][row-1]),
+                    seat_pool=str(data[name[13:]]['Seat Pool'][row-1]),
+                    opening_rank=open,
+                    closing_rank=close,
+                ))
+
+            x.objects.bulk_create(lists[name[13:]])
+        elif (x == SeatMatrix_2019) or (x == SeatMatrix_2020) or (x == SeatMatrix_2020_CSAB):
+            for row in data[name[13:]]['Id']:
+                print(data[name[13:]]['Id'][row-1])
+                try:
+                    seat = int(data[name[13:]]['Total Seats'][row-1])
+                except ValueError:
+                    seat = None
+                lists[name[13:]].append(x(
+                    id=int(data[name[13:]]['Id'][row-1]),
+                    institute_code=Institutes.objects.get(
+                        code=str(data[name[13:]]['Institute Code'][row-1])),
+                    branch_code=Branches.objects.get(
+                        code=str(data[name[13:]]['Branch Code'][row-1])),
+                    quota=str(data[name[13:]]['Quota'][row-1]),
+                    category=str(data[name[13:]]['Category'][row-1]),
+                    seat_pool=str(data[name[13:]]['Seat Pool'][row-1]),
+                    seats=seat,
+                ))
+
+            x.objects.bulk_create(lists[name[13:]])
+
+    return HttpResponse("Branch Created")
+
+
+def create8(request):
+    reset(None, databaseT)
+
+    for x in databaseT:
+        name = x._meta.db_table
+        print(name[13:])
+        if (x != Branches) and (x != Institutes) and (x != SeatMatrix_2020_CSAB) and (x != SeatMatrix_2020) and (x != SeatMatrix_2019):
+            for row in data[name[13:]]['Id']:
+                try:
+                    open = int(data[name[13:]]['Opening Rank'][row-1])
+                except ValueError:
+                    open = None
+                try:
+                    close = int(data[name[13:]]['Closing Rank'][row-1])
+                except ValueError:
+                    close = None
+                lists[name[13:]].append(x(
+                    id=int(data[name[13:]]['Id'][row-1]),
+                    institute_code=Institutes.objects.get(
+                        code=str(data[name[13:]]['Institute Code'][row-1])),
+                    branch_code=Branches.objects.get(
+                        code=str(data[name[13:]]['Branch Code'][row-1])),
+                    quota=str(data[name[13:]]['Quota'][row-1]),
+                    category=str(data[name[13:]]['Category'][row-1]),
+                    seat_pool=str(data[name[13:]]['Seat Pool'][row-1]),
+                    opening_rank=open,
+                    closing_rank=close,
+                ))
+
+            x.objects.bulk_create(lists[name[13:]])
+
+    return HttpResponse("Branch Created")
 
 
 viewset_list = [BranchesViewSet, InstitutesViewSet, Round1_2016ViewSet, Round1_2017ViewSet, Round1_2018ViewSet, Round1_2019ViewSet, Round1_2020ViewSet, Round2_2020ViewSet,
