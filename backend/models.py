@@ -625,3 +625,8 @@ class SeatMatrix_2020_CSAB(models.Model):
 
     def __str__(self) -> str:
         return f"{self.institute_code} - {self.branch_code}"
+
+
+class Updates(models.Model):
+    id = models.BigAutoField(auto_created=False, primary_key=True)
+    text = models.CharField(max_length=255)
