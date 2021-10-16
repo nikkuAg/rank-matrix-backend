@@ -108,6 +108,8 @@ data_2019_5 = pd.read_csv(
 
 data_2019_6 = pd.read_csv(
     'database/CSV/Rounds/Round6_2019.csv', sep=',', header=0, na_filter=False)
+data_cb = pd.read_csv(
+    'database/CSV/College_Branch.csv', sep=',', header=0, na_filter=False)
 
 
 data_list = {
@@ -155,7 +157,7 @@ data_list = {
     '4_2019': data_2019_4,
     '5_2019': data_2019_5,
     '6_2019': data_2019_6,
-
+    'college_branch': data_cb,
 }
 
 round_2015 = []
@@ -200,7 +202,7 @@ round_2020_provisonal = []
 seats_2020 = []
 seats_2019 = []
 seats_CSAB = []
-
+cb = []
 
 lists = {
     '_2015': round_2015,
@@ -245,8 +247,9 @@ lists = {
     'atrix_2020': seats_2020,
     'atrix_2019': seats_2019,
     'atrix_2020_csab': seats_CSAB,
+    'college_branch': cb,
 }
 
 
 viewset_url = ['branches', 'institutes', '1_2016', '1_2017', '1_2018', '1_2019', '1_2020', '2_2020',
-               '3_2020', '4_2020', '5_2020', '6_2016', '6_2020', '7_2017', '7_2018', '7_2019', '7_2015', 'provisional_2018', 'provisional_2019', 'provisional_2020', '1_csab_2020', '2_csab_2020', 'seat_2019', 'seat_2020', 'seat_csab_2020', '2_2016', '3_2016', '4_2016', '5_2016', '2_2017', '3_2017', '4_2017', '5_2017', '6_2017', '2_2018', '3_2018', '4_2018', '5_2018', '6_2018', '2_2019', '3_2019', '4_2019', '5_2019', '6_2019', 'update']
+               '3_2020', '4_2020', '5_2020', '6_2016', '6_2020', '7_2017', '7_2018', '7_2019', '7_2015', 'provisional_2018', 'provisional_2019', 'provisional_2020', '1_csab_2020', '2_csab_2020', 'seat_2019', 'seat_2020', 'seat_csab_2020', '2_2016', '3_2016', '4_2016', '5_2016', '2_2017', '2_2018', '2_2019', '3_2017', '3_2018', '3_2019', '4_2017', '4_2018', '4_2019', '5_2017', '5_2018', '5_2019', '6_2017', '6_2018', '6_2019',  'update', 'college_branch']

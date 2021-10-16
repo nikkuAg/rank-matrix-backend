@@ -628,5 +628,11 @@ class SeatMatrix_2020_CSAB(models.Model):
 
 
 class Updates(models.Model):
-    id = models.BigAutoField(auto_created=False, primary_key=True)
+    id = models.BigAutoField(auto_created=True, primary_key=True)
     text = models.CharField(max_length=255)
+
+
+class College_Branch(models.Model):
+    id = models.BigAutoField(auto_created=False, primary_key=True)
+    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
+    branch_code = models.ForeignKey(to=Branches, on_delete=CASCADE)
