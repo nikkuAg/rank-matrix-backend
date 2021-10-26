@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import create2, create3, create4, create419, create5, create517, create518, create519, create6, create617, create618, create619, create7, create8, create_tables, createCollegeBranch, createCollegeCategory, createS, reset, create_21I
+from .views import create2, create2021, create3, create4, create419, create5, create517, create518, create519, create6, create617, create618, create619, create7, create8, create_tables, createCollegeBranch, createCollegeCategory, createS, reset, create_21I
 from .views import viewset_list as viewset
 from .data import viewset_url as urls
 from rest_framework.routers import DefaultRouter
@@ -32,5 +32,6 @@ urlpatterns = [
     path('create_21s/', createS),
     path('create_cc/', createCollegeCategory),
     path('create_21/', create_21I),
+    path('create_2021/', create2021),
     path('reset/', reset),
 ]
