@@ -115,6 +115,21 @@ data_cb = pd.read_csv(
 data_category = pd.read_csv(
     'database/CSV/College_Category.csv', sep=',', header=0, na_filter=False)
 
+
+data_2021_1 = pd.read_csv(
+    'database/CSV/Rounds/Round1_2021.csv', sep=',', header=0, na_filter=False)
+# data_2021_2 = pd.read_csv(
+#     'database/CSV/Rounds/Round2_2021.csv', sep=',', header=0, na_filter=False)
+# data_2021_3 = pd.read_csv(
+#     'database/CSV/Rounds/Round3_2021.csv', sep=',', header=0, na_filter=False)
+# data_2021_4 = pd.read_csv(
+#     'database/CSV/Rounds/Round4_2021.csv', sep=',', header=0, na_filter=False)
+# data_2021_5 = pd.read_csv(
+#     'database/CSV/Rounds/Round5_2021.csv', sep=',', header=0, na_filter=False)
+# data_2021_6 = pd.read_csv(
+#     'database/CSV/Rounds/Round6_2021.csv', sep=',', header=0, na_filter=False)
+
+
 data_list = {
     'branch': branch_data,
     'institute': inst_data,
@@ -163,7 +178,13 @@ data_list = {
     '5_2019': data_2019_5,
     '6_2019': data_2019_6,
     'college_branch': data_cb,
-    'college_category': data_category
+    'college_category': data_category,
+    '1_2021': data_2021_1,
+    # '2_2021': data_2021_2,
+    # '3_2021': data_2021_3,
+    # '4_2021': data_2021_4,
+    # '5_2021': data_2021_5,
+    # '6_2021': data_2021_6,
 }
 
 round_2015 = []
@@ -212,6 +233,12 @@ seats_2021I = []
 seats_CSAB = []
 cb = []
 cc = []
+round_1_2021 = []
+round_2_2021 = []
+round_3_2021 = []
+round_4_2021 = []
+round_5_2021 = []
+round_6_2021 = []
 
 lists = {
     '_2015': round_2015,
@@ -260,8 +287,14 @@ lists = {
     'atrix_2020_csab': seats_CSAB,
     'college_branch': cb,
     'college_category': cc,
+    '1_2021': round_1_2021,
+    '2_2021': round_2_2021,
+    '3_2021': round_3_2021,
+    '4_2021': round_4_2021,
+    '5_2021': round_5_2021,
+    '6_2021': round_6_2020,
 }
 
 
 viewset_url = ['branches', 'institutes', '1_2016', '1_2017', '1_2018', '1_2019', '1_2020', '2_2020',
-               '3_2020', '4_2020', '5_2020', '6_2016', '6_2020', '7_2017', '7_2018', '7_2019', '7_2015', 'provisional_2018', 'provisional_2019', 'provisional_2020', '1_csab_2020', '2_csab_2020', 'seat_2019', 'seat_2020', 'seat_csab_2020', '2_2016', '3_2016', '4_2016', '5_2016', '2_2017', '2_2018', '2_2019', '3_2017', '3_2018', '3_2019', '4_2017', '4_2018', '4_2019', '5_2017', '5_2018', '5_2019', '6_2017', '6_2018', '6_2019',  'update', 'college_branch', 'seat_2021', 'seat_2021I', 'college_category']
+               '3_2020', '4_2020', '5_2020', '6_2016', '6_2020', '7_2017', '7_2018', '7_2019', '7_2015', 'provisional_2018', 'provisional_2019', 'provisional_2020', '1_csab_2020', '2_csab_2020', 'seat_2019', 'seat_2020', 'seat_csab_2020', '2_2016', '3_2016', '4_2016', '5_2016', '2_2017', '2_2018', '2_2019', '3_2017', '3_2018', '3_2019', '4_2017', '4_2018', '4_2019', '5_2017', '5_2018', '5_2019', '6_2017', '6_2018', '6_2019',  'update', 'college_branch', 'seat_2021', 'seat_2021I', 'college_category', '1_2021', '2_2021', '3_2021', '4_2021', '5_2021', '6_2021']
