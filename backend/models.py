@@ -614,6 +614,33 @@ class SeatMatrix_2019(models.Model):
         return f"{self.institute_code} - {self.branch_code}"
 
 
+class SeatMatrix_2021(models.Model):
+    id = models.BigAutoField(auto_created=False, primary_key=True)
+    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
+    branch_code = models.ForeignKey(to=Branches, on_delete=CASCADE)
+    quota = models.CharField(max_length=100, null=True)
+    category = models.CharField(max_length=100)
+    seat_pool = models.CharField(max_length=100, null=True)
+    seats = models.IntegerField(null=True)
+
+    def __str__(self) -> str:
+        return f"{self.institute_code} - {self.branch_code}"
+
+
+class SeatMatrix_2021I(models.Model):
+    id = models.BigAutoField(auto_created=False, primary_key=True)
+    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
+    branch_code = models.ForeignKey(to=Branches, on_delete=CASCADE)
+    quota = models.CharField(max_length=100, null=True)
+    category = models.CharField(max_length=100)
+    seat_pool = models.CharField(max_length=100, null=True)
+    seats = models.IntegerField(null=True)
+    remark = models.CharField(max_length=255, null=True)
+
+    def __str__(self) -> str:
+        return f"{self.institute_code} - {self.branch_code}"
+
+
 class SeatMatrix_2020_CSAB(models.Model):
     id = models.BigAutoField(auto_created=False, primary_key=True)
     institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
@@ -636,3 +663,10 @@ class College_Branch(models.Model):
     id = models.BigAutoField(auto_created=False, primary_key=True)
     institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
     branch_code = models.ForeignKey(to=Branches, on_delete=CASCADE)
+    current = models.CharField(max_length=5, null=True)
+
+
+class College_category(models.Model):
+    id = models.BigAutoField(auto_created=False, primary_key=True)
+    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
+    category = models.CharField(max_length=5)

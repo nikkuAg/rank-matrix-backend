@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import fields
 from rest_framework import serializers
-from .models import Branches, Institutes, Updates, Round2_2016, Round_2015, Round1_2016, Round6_2016, Round1_2017, Round1_2018, Round1_2019, Round1_2020, Round2_2020, Round3_2020, Round4_2020, Round5_2020, Round6_2020, Round7_2017, Round7_2018, Round7_2019, SeatMatrix_2019, SeatMatrix_2020, SeatMatrix_2020_CSAB, CSAB_2020_1, CSAB_2020_2, Provisional_2018, Provisional_2019, Provisional_2020, Round3_2016, Round4_2016, Round5_2016, Round2_2017, Round2_2018, Round2_2019, Round3_2017, Round3_2018, Round3_2019, Round4_2017, Round4_2018, Round4_2019, Round5_2017, Round5_2018, Round5_2019, Round6_2017, Round6_2018, Round6_2019, College_Branch
+from .models import Branches, College_category, Institutes, Updates, Round2_2016, Round_2015, Round1_2016, Round6_2016, Round1_2017, Round1_2018, Round1_2019, Round1_2020, Round2_2020, Round3_2020, Round4_2020, Round5_2020, Round6_2020, Round7_2017, Round7_2018, Round7_2019, SeatMatrix_2019, SeatMatrix_2020, SeatMatrix_2020_CSAB, CSAB_2020_1, CSAB_2020_2, Provisional_2018, Provisional_2019, Provisional_2020, Round3_2016, Round4_2016, Round5_2016, Round2_2017, Round2_2018, Round2_2019, Round3_2017, Round3_2018, Round3_2019, Round4_2017, Round4_2018, Round4_2019, Round5_2017, Round5_2018, Round5_2019, Round6_2017, Round6_2018, Round6_2019, College_Branch, SeatMatrix_2021I, SeatMatrix_2021
 
 
 class BranchesSerializer(serializers.ModelSerializer):
@@ -277,4 +277,22 @@ class Round6_2019Serializer(serializers.ModelSerializer):
 class College_BranchSerializer(serializers.ModelSerializer):
     class Meta:
         model = College_Branch
+        fields = '__all__'
+
+
+class Seat_2021Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = SeatMatrix_2021
+        fields = '__all__'
+
+
+class Seat_2021ISerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SeatMatrix_2021I
+        fields = '__all__'
+
+
+class College_CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = College_category
         fields = '__all__'
