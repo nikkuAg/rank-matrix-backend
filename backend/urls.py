@@ -1,7 +1,7 @@
 from django.urls import path, include
 from .views import create
-from .viewsTemp import viewset_list as viewset
-from .data import viewset_url as urls
+from .variableData import viewset_list as viewset
+from .variableData import viewset_url as urls
 from rest_framework.routers import DefaultRouter
 
 

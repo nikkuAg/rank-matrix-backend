@@ -12,3 +12,5 @@ backend/tests.py
 #Files in SOCE folder
 SOCE/__pycache__
 __pycache__
+
+Extra/
