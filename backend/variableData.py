@@ -21,11 +21,12 @@ viewset_list = [BranchesViewSet, InstitutesViewSet,UpdatesViewSet, College_Branc
                 Round1_2021ViewSet, Round2_2021ViewSet, Round3_2021ViewSet, Round4_2021ViewSet, Round5_2021ViewSet, Round6_2021ViewSet, Seat_2021ViewSet, Seat_2021IViewSet]
 
 
+
 viewset_url = ['branches', 'institutes', 'update', 'college_branch', 'college_category',
                '7_2015',
                '1_2016', '2_2016', '3_2016', '4_2016', '5_2016', '6_2016',
-               '1_2017', '2_2017', '3_2017', '4_2017', '5_2020', '6_2020', '7_2017'
+               '1_2017', '2_2017', '3_2017', '4_2017', '5_2020', '6_2020', '7_2017',
                '1_2018', '2_2018', '3_2017', '4_2017', '5_2020', '6_2020', '7_2018', 'provisional_2018',
-               '1_2019', '2_2019', '3_2017', '4_2017', '5_2020', '6_2020', '7_2019', 'provisional_2019', 'seat_2019'
+               '1_2019', '2_2019', '3_2017', '4_2017', '5_2020', '6_2020', '7_2019', 'provisional_2019', 'seat_2019',
                '1_2020', '2_2020', '3_2020', '4_2020', '5_2020', '6_2020', 'provisional_2020', '1_csab_2020', '2_csab_2020', 'seat_2020', 'seat_csab_2020',
                '1_2021', '2_2021', '3_2021', '4_2021', '5_2021', '6_2021', 'seat_2021', 'seat_2021I',]

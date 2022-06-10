@@ -6,6 +6,7 @@ from rest_framework.routers import DefaultRouter
 
 
 router = DefaultRouter()
+
 for x in range(len(viewset)):
     router.register(urls[x], viewset[x])
 
