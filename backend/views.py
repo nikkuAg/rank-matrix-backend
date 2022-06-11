@@ -6,7 +6,7 @@ import pandas as pd
 from .viewsFunction import create_table
 
 #Import all models 
-from .models import Branches, College_Branch, College_Category, Institutes, Updates
+from .models import Branches, College_Branch, College_Category, Institutes, Updates, College_Type
 
 #Imprting all serializers
 from .serializers import BranchesSerializer, College_BranchSerializer, College_CategorySerializer, InstitutesSerializer, UpdatesSerializer
@@ -34,6 +34,16 @@ class College_BranchViewSet(viewsets.ModelViewSet):
 class College_CategoryViewSet(viewsets.ModelViewSet):
     queryset = College_Category.objects.all()
     serializer_class = College_CategorySerializer
+
+
+
+def getType():
+    type = []
+    types = College_Type.objects.all()
+    for x in types:
+        type.append(x.type)
+    
+    return type
 
 
 def create(request, key):

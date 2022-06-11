@@ -2,28 +2,8 @@ from django.http import Http404
 from rest_framework import viewsets, filters
 from ..permission import CustomApiPermission
 from .serializers import InstituteListSerializers
-from ..models import Institutes, College_Type
-
-def getType():
-    type = []
-    types = College_Type.objects.all()
-    for x in types:
-        type.append(x.type)
-    
-    return type
-
-
-# def pagination_detail(request, type):
-    
-#     acceptable_type = getType()
-    
-#     if(type.upper() in acceptable_type):
-#         print("hi")
-#     else:
-#         raise Http404("No such institute type found!!")
-    
-    
-#     return HttpResponse(type)
+from ..models import Institutes
+from ..views import getType
 
 
 class institutesViewsets(viewsets.ModelViewSet):
