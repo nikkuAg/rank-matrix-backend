@@ -261,14 +261,23 @@ class SeatMatrix_2021I(SeatMatrix):
 
 
 models_list = {
-    "info" : [Branches, Institutes, College_Category, College_Branch, Updates],
-    "2015" : [Round_2015],
-    "2016" : [Round1_2016, Round2_2016, Round3_2016, Round4_2016, Round5_2016, Round6_2016],
-    "2017" : [Round1_2017, Round2_2017, Round3_2017, Round4_2017, Round5_2017, Round6_2017, Round7_2017],
-    "2018" : [Round1_2018, Round2_2018, Round3_2018, Round4_2018, Round5_2018, Round6_2018, Round7_2018, Provisional_2018],
-    "2019" : [Round1_2019, Round2_2019, Round3_2019, Round4_2019, Round5_2019, Round6_2019, Round7_2019, Provisional_2019, SeatMatrix_2019],
-    "2020" : [Round1_2020, Round2_2020, Round3_2020, Round4_2020, Round5_2020, Round6_2020, CSAB_2020_1, CSAB_2020_2, Provisional_2020, SeatMatrix_2020, SeatMatrix_2020_CSAB],
-    "2021" : [Round1_2021, Round2_2021, Round3_2021, Round4_2021, Round5_2021, Round6_2021, SeatMatrix_2021, SeatMatrix_2021I],
+    "info"                 : [Branches, Institutes, College_Category, College_Branch, Updates],
+    "rounds_2015"          : [Round_2015],
+    "rounds_2016"          : [Round1_2016, Round2_2016, Round3_2016, Round4_2016, Round5_2016, Round6_2016],
+    "rounds_2017"          : [Round1_2017, Round2_2017, Round3_2017, Round4_2017, Round5_2017, Round6_2017, Round7_2017],
+    "rounds_2018"          : [Round1_2018, Round2_2018, Round3_2018, Round4_2018, Round5_2018, Round6_2018, Round7_2018],
+    "provisional_2018"     : [Provisional_2018], 
+    "rounds_2019"          : [Round1_2019, Round2_2019, Round3_2019, Round4_2019, Round5_2019, Round6_2019, Round7_2019],
+    "provisional_2019"     : [Provisional_2019],
+    "seatmatrix_2019"      : [SeatMatrix_2019],
+    "rounds_2020"          : [Round1_2020, Round2_2020, Round3_2020, Round4_2020, Round5_2020, Round6_2020],
+    "provisional_2020"     : [Provisional_2020],
+    "seatmatrix_2020"      : [SeatMatrix_2020],
+    "csab_round_2020"      : [CSAB_2020_1, CSAB_2020_2],
+    "csab_seatmatrix_2020" : [SeatMatrix_2020_CSAB],
+    "rounds_2021"          : [Round1_2021, Round2_2021, Round3_2021, Round4_2021, Round5_2021, Round6_2021],
+    "seatmatrix_2021"      : [SeatMatrix_2021],
+    "seatincrease_2021"    : [SeatMatrix_2021I],
 }
 
 complete_model_list = [
