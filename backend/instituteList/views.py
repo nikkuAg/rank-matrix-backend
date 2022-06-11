@@ -1,5 +1,6 @@
 from django.http import Http404
-from rest_framework import viewsets, filters
+from rest_framework import viewsets, filters, status
+from rest_framework.response import Response
 from ..permission import CustomApiPermission
 from .serializers import InstituteListSerializers
 from ..models import Institutes
@@ -24,9 +25,9 @@ class institutesViewsets(viewsets.ModelViewSet):
                 if(current == 'y'):
                     queryset = queryset.filter(current='Y') 
             else:
-                raise Http404("No such institute type found")
+                return Response("No Such institute type exists", status=status.HTTP_404_NOT_FOUND)
         else:            
-            raise Http404("No institute type given")
+            return Response("No Institute found", status=status.HTTP_404_NOT_FOUND)
         
         return queryset
     

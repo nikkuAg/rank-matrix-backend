@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from backend.models import SeatMatrix_2019, SeatMatrix_2020, SeatMatrix_2020_CSAB, SeatMatrix_2021, SeatMatrix_2021I
-from backend.serializers import CSAB_Seat_2020Serializer, Seat_2019Serializer, Seat_2020Serializer, Seat_2021ISerializer, Seat_2021Serializer
+from backend.Extra.serializersTemp import CSAB_Seat_2020Serializer, Seat_2019Serializer, Seat_2020Serializer, Seat_2021ISerializer, Seat_2021Serializer
 
 
 class Seat_2019ViewSet(viewsets.ModelViewSet):

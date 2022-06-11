@@ -1,11 +1,12 @@
+from email.mime import base
 from django.urls import path, include
-from .views import institutesViewsets
 from rest_framework.routers import DefaultRouter
+from .views import SeatmatrixViewset
 
-    
+
 router = DefaultRouter()
+router.register('list', SeatmatrixViewset, basename='Seatmatrix')
 
-router.register('list', institutesViewsets, basename='InstitutesList')
 
 urlpatterns = [
     path('', include(router.urls)),

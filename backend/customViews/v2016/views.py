@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from ...models import Round1_2016, Round2_2016, Round3_2016, Round4_2016, Round5_2016, Round6_2016
-from ...serializers import Round1_2016Serializer, Round2_2016Serializer, Round3_2016Serializer, Round4_2016Serializer, Round5_2016Serializer, Round6_2016Serializer
+from ...Extra.serializersTemp import Round1_2016Serializer, Round2_2016Serializer, Round3_2016Serializer, Round4_2016Serializer, Round5_2016Serializer, Round6_2016Serializer
 
 class Round1_2016ViewSet(viewsets.ModelViewSet):
     queryset = Round1_2016.objects.all()

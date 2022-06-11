@@ -9,7 +9,7 @@ from .viewsFunction import create_table
 from .models import Branches, College_Branch, College_Category, Institutes, Updates, College_Type
 
 #Imprting all serializers
-from .serializers import BranchesSerializer, College_BranchSerializer, College_CategorySerializer, InstitutesSerializer, UpdatesSerializer
+from .Extra.serializersTemp import BranchesSerializer, College_BranchSerializer, College_CategorySerializer, InstitutesSerializer, UpdatesSerializer
 
 #Import list of models
 from .models import models_list
@@ -54,16 +54,20 @@ def create(request, key):
         filesRounds = [name for name in os.listdir("database/CSV/Rounds") if os.path.splitext(name)[1] == '.csv']
         
         models = models_list.get(key)
+        print(models)
         if models != None:
             for model in models:
                 model_name = str(model.__name__)
+                print(model_name)
+                print(files.index((model_name + '.csv')))
                 try:
-                    if files.index((model_name + '.csv')):
+                    if files.index((model_name + '.csv')) >= 0:
+                        print("hii")
                         database_name = 'database/CSV/' + model_name+ '.csv'
                         data = pd.read_csv(database_name, sep=',', header=0, na_filter=False)
                 except:
                     try:
-                        if filesRounds.index((model_name + '.csv')):
+                        if filesRounds.index((model_name + '.csv')) >= 0:
                             database_name = 'database/CSV/Rounds/' + model_name+ '.csv'
                             data = pd.read_csv(database_name, sep=',', header=0, na_filter=False)
                     except:

@@ -15,5 +15,6 @@ urlpatterns = [
     path('', include(router.urls)),
     path('<int:pk>/', include(router.urls)),
     path('create/<str:key>/', create),
-    path('api/v1/', include('backend.instituteList.urls'))
+    path('api/v1/institute/', include('backend.instituteList.urls')),
+    path('api/v1/seat/', include('backend.seatMatrix.urls'))
 ]

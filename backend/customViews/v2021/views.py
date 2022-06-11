@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from ...models import Round1_2021, Round2_2021, Round3_2021, Round4_2021, Round5_2021, Round6_2021
-from ...serializers import Round1_2021Serializer, Round2_2021Serializer, Round3_2021Serializer, Round4_2021Serializer, Round5_2021Serializer, Round6_2021Serializer
+from ...Extra.serializersTemp import Round1_2021Serializer, Round2_2021Serializer, Round3_2021Serializer, Round4_2021Serializer, Round5_2021Serializer, Round6_2021Serializer
 
 
 class Round1_2021ViewSet(viewsets.ModelViewSet):
