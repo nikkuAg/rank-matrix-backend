@@ -54,9 +54,7 @@ def create_cc_data(data, name):
             id=int(data['Id'][row-1]),
             institute_code=Institutes.objects.get(
                 code=str(data['Institute Code'][row-1])),
-            branch_code=Branches.objects.get(
-                code=str(data['Branch Code'][row-1])),
-            current=str(data['Current'][row-1]),
+            category=str(data['Category'][row-1]),
         ))
     return table
 
@@ -102,7 +100,6 @@ def create_round_data(data, name):
     model = apps.get_model(APP_NAME, name)
     table = []
     for row in data['Id']:
-        print(row)
         try:
             open = int(data['Opening Rank'][row-1])
         except ValueError:

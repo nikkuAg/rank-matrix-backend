@@ -37,31 +37,35 @@ class College_CategoryViewSet(viewsets.ModelViewSet):
 
 
 def create(request, key):
-    files = [name for name in os.listdir("database/CSV") if os.path.splitext(name)[1] == '.csv']
-    filesRounds = [name for name in os.listdir("database/CSV/Rounds") if os.path.splitext(name)[1] == '.csv']
     
-    models = models_list.get(key)
-    if models != None:
-        for model in models:
-            model_name = str(model.__name__)
-            print(model_name)
-            try:
-                if files.index((model_name + '.csv')):
-                    database_name = 'database/CSV/' + model_name+ '.csv'
-                    data = pd.read_csv(database_name, sep=',', header=0, na_filter=False)
-            except:
+    if(request.user.is_staff and request.user.is_superuser):
+    
+        files = [name for name in os.listdir("database/CSV") if os.path.splitext(name)[1] == '.csv']
+        filesRounds = [name for name in os.listdir("database/CSV/Rounds") if os.path.splitext(name)[1] == '.csv']
+        
+        models = models_list.get(key)
+        if models != None:
+            for model in models:
+                model_name = str(model.__name__)
                 try:
-                    if filesRounds.index((model_name + '.csv')):
-                        database_name = 'database/CSV/Rounds/' + model_name+ '.csv'
+                    if files.index((model_name + '.csv')):
+                        database_name = 'database/CSV/' + model_name+ '.csv'
                         data = pd.read_csv(database_name, sep=',', header=0, na_filter=False)
                 except:
-                    data = None
-            try:
-                create_table(data, model_name)
-            except:
-                continue
+                    try:
+                        if filesRounds.index((model_name + '.csv')):
+                            database_name = 'database/CSV/Rounds/' + model_name+ '.csv'
+                            data = pd.read_csv(database_name, sep=',', header=0, na_filter=False)
+                    except:
+                        data = None
+                try:
+                    create_table(data, model_name)
+                except:
+                    continue
+            
+        else:
+            raise Http404("Model not found for {}".format(key))
         
-    else:
-        raise Http404("Model not found for {}".format(key))
+        return HttpResponse(key)
     
-    return HttpResponse(key)
+    raise Http404("You are not authorized to perform this action")

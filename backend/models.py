@@ -4,6 +4,7 @@ from django.db.models.deletion import CASCADE
 # Create your models here.
 
 
+
 class Branches(models.Model):
     id = models.BigAutoField(auto_created=False, primary_key=True)
     code = models.CharField(max_length=10)
@@ -85,6 +86,10 @@ class College_Category(models.Model):
     institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
     category = models.CharField(max_length=5)
 
+class College_Type(models.Model):
+    id = models.AutoField(auto_created=False, primary_key=True)
+    type = models.CharField(max_length=10, verbose_name='College Type')
+    
 
 #Models for year 2015
 class Round_2015(Rounds):
@@ -267,7 +272,7 @@ models_list = {
 }
 
 complete_model_list = [
-    Branches, Institutes, College_Category, College_Branch, Updates, Round_2015, 
+    Branches, Institutes, College_Category, College_Branch, Updates, College_Type, Round_2015, 
     Round1_2016, Round2_2016, Round3_2016, Round4_2016, Round5_2016, Round6_2016,
     Round1_2017, Round2_2017, Round3_2017, Round4_2017, Round5_2017, Round6_2017, Round7_2017,
     Round1_2018, Round2_2018, Round3_2018, Round4_2018, Round5_2018, Round6_2018, Round7_2018, Provisional_2018,
