@@ -1,9 +1,9 @@
+from django.http import Http404
 from ..serializers import create_serializer
 from ..views import getType
 from ..models import models_list as models
 from ..permission import CustomApiPermission
-from rest_framework import viewsets, filters, status
-from rest_framework.response import Response
+from rest_framework import viewsets, filters
 
 def getSeatmatrixModel(year=2020, increase=False):
     key = "seat"
@@ -28,23 +28,19 @@ class SeatmatrixViewset(viewsets.ModelViewSet):
 
 
     def get_queryset(self):
-        institute_type = self.request.query_params.get('institute_type')
-        year = self.request.query_params.get('year', 2020)
+        institute_type = self.request.query_params.get('institute_type', "IIT")
+        year = self.request.query_params.get('year', 2021)
         increase = bool(self.request.query_params.get('increase', False))
         try:
             model = getSeatmatrixModel(year, increase)
         except:
-            raise Response("Data does not exists", status=status.HTTP_404_NOT_FOUND)
+            raise Http404("Data does not exists")
         
-        print(increase)
         
-        if(institute_type != None):
-            if(institute_type.upper() in self.acceptable_type):
-                queryset = model.objects.filter(institute_code__category=institute_type.upper())
-            else:
-                return Response("No such institute type exists", status=status.HTTP_404_NOT_FOUND)
-        else:    
-            return Response("Institute not found", status=status.HTTP_404_NOT_FOUND)
+        if(institute_type.upper() in self.acceptable_type):
+            queryset = model.objects.filter(institute_code__category=institute_type.upper())
+        else:
+            raise Http404("No such institute type exists")
             
         return queryset
     
@@ -56,7 +52,7 @@ class SeatmatrixViewset(viewsets.ModelViewSet):
         try:
             model = getSeatmatrixModel(year, increase)
         except:
-            return Response("Data does not exists", status=status.HTTP_404_NOT_FOUND)
+            raise Http404("Data does not exists")
         
         return create_serializer(model, '__all__')
 
