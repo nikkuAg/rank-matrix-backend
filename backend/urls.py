@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import create
+from .views import UpdatesViewSet, create
 from .variableData import viewset_list as viewset
 from .variableData import viewset_url as urls
 from rest_framework.routers import DefaultRouter
@@ -9,6 +9,8 @@ router = DefaultRouter()
 
 for x in range(len(viewset)):
     router.register(urls[x], viewset[x])
+    
+router.register('abc', UpdatesViewSet)
 
 app = 'backend'
 urlpatterns = [

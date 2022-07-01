@@ -1,12 +1,12 @@
 from django.http import Http404
 from django.http.response import HttpResponse
-from rest_framework import viewsets
+from rest_framework import viewsets, serializers
 import os, os.path
 import pandas as pd
 from .viewsFunction import create_table
 
 #Import all models 
-from .models import Branches, College_Branch, College_Category, Institutes, Updates, College_Type
+from .models import Branches, College_Branch, College_Category, Institutes, Updates, College_Type, Album, Track
 
 #Imprting all serializers
 from .Extra.serializersTemp import BranchesSerializer, College_BranchSerializer, College_CategorySerializer, InstitutesSerializer, UpdatesSerializer
@@ -19,9 +19,6 @@ class BranchesViewSet(viewsets.ModelViewSet):
     queryset = Branches.objects.all()
     serializer_class = BranchesSerializer
 
-class UpdatesViewSet(viewsets.ModelViewSet):
-    queryset = Updates.objects.all()
-    serializer_class = UpdatesSerializer
 
 class InstitutesViewSet(viewsets.ModelViewSet):
     queryset = Institutes.objects.all()
@@ -45,7 +42,23 @@ def getType():
     
     return type
 
+class TrackSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Track
+        fields = ['order', 'title', 'duration']
 
+class AlbumSerializer(serializers.ModelSerializer):
+    track = TrackSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Album
+        fields = ['album_name', 'artist', 'track']
+
+
+class UpdatesViewSet(viewsets.ModelViewSet):
+    queryset = Album.objects.all()
+    serializer_class = AlbumSerializer
+    
 def create(request, key):
     
     if(request.user.is_staff and request.user.is_superuser):
