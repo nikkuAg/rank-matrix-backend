@@ -4,7 +4,6 @@ from .constants import NORMAL_SERIALIZER, FULL_BRANCH_DETAIL_SERIALIZER, BRANCH_
 
 def create_serializer(model_name, field_array, serializer_type):
     
-  
     if(serializer_type == NORMAL_SERIALIZER):
         class CustomSerializer(serializers.ModelSerializer):
 

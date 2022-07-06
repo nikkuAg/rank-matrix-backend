@@ -342,6 +342,12 @@ models_list = {
     "seatincrease_2021"    : [SeatMatrix_2021I],
 }
 
+
+def getRoundsModel(year, round, rounds_type):
+    key = str(rounds_type) + "_" + str(year)
+    return models_list.get(key)[int(round)-1]
+
+
 complete_model_list = [
     Branches, Institutes, College_Category, College_Branch, Updates, College_Type, Round_2015, 
     Round1_2016, Round2_2016, Round3_2016, Round4_2016, Round5_2016, Round6_2016,
