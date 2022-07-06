@@ -37,10 +37,6 @@ class Institutes(models.Model):
     fax = models.CharField(null=True, max_length=255)
     email = models.CharField(null=True, max_length=255)
     current = models.CharField(null=True, max_length=2)
-
-    class Meta:
-        unique_together = ['name', 'id']
-        ordering = ['id']
     
     def __str__(self) -> str:
         return self.code
@@ -57,11 +53,40 @@ class Rounds(models.Model):
     def __str__(self) -> str:
         return f"{self.institute_code} - {self.branch_code}"
     
+    @property
+    def institute_detail(self):
+        detail = dict()
+        detail['name'] = self.institute_code.name
+        detail['code'] = self.institute_code.code
+        detail['display_code'] = self.institute_code.display_code
+
+        return detail
+
+    @property
+    def branch_detail(self):
+        detail = dict()
+        detail['full_name'] = self.branch_code.branch_name
+        detail['code'] = self.branch_code.code
+        detail['name'] = self.branch_code.branch_code
+        
+        return detail
+
+    @property
+    def branch_full_detail(self):
+        detail = dict()
+        detail['full_name'] = self.branch_code.branch_name
+        detail['code'] = self.branch_code.code
+        detail['name'] = self.branch_code.branch_code
+        detail['duration'] = self.branch_code.duration
+        detail['degree'] = self.branch_code.degree
+        
+        return detail
+
     class Meta:
         abstract = True
 
 class SeatMatrix(models.Model):    
-    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE, related_name='institute')
+    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
     branch_code = models.ForeignKey(to=Branches, on_delete=CASCADE)
     quota = models.CharField(max_length=100, null=True)
     category = models.CharField(max_length=100)
@@ -71,6 +96,36 @@ class SeatMatrix(models.Model):
     def __str__(self) -> str:
         return f"{self.institute_code} - {self.branch_code}"
     
+    @property
+    def institute_detail(self):
+        detail = dict()
+        detail['full_name'] = self.institute_code.name
+        detail['code'] = self.institute_code.code
+        detail['name'] = self.institute_code.display_code
+
+        return detail
+
+    @property
+    def branch_detail(self):
+        detail = dict()
+        detail['full_name'] = self.branch_code.branch_name
+        detail['code'] = self.branch_code.code
+        detail['name'] = self.branch_code.branch_code
+        
+        return detail
+
+    @property
+    def branch_full_detail(self):
+        detail = dict()
+        detail['full_name'] = self.branch_code.branch_name
+        detail['code'] = self.branch_code.code
+        detail['name'] = self.branch_code.branch_code
+        detail['duration'] = self.branch_code.duration
+        detail['degree'] = self.branch_code.degree
+        
+        return detail
+
+
     class Meta:
         abstract = True
 
@@ -93,6 +148,9 @@ class College_Category(models.Model):
 class College_Type(models.Model):
     id = models.AutoField(auto_created=False, primary_key=True)
     type = models.CharField(max_length=10, verbose_name='College Type')
+    
+    def __str__(self) -> str:
+        return self.type
     
 
 #Models for year 2015
@@ -198,7 +256,7 @@ class Provisional_2019(Rounds):
     pass
 
 class SeatMatrix_2019(SeatMatrix):
-    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE, related_name='institute_2019')
+    pass
 
 
 
@@ -231,10 +289,10 @@ class Provisional_2020(Rounds):
     pass
 
 class SeatMatrix_2020(SeatMatrix):
-    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE, related_name='institute_2020')
+    pass
 
 class SeatMatrix_2020_CSAB(SeatMatrix):
-    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE, related_name='institute_2020_CSAB')
+    pass
 
 
 
@@ -258,14 +316,10 @@ class Round6_2021(Rounds):
     pass
 
 class SeatMatrix_2021(SeatMatrix):
-    institute_code = models.ForeignKey(Institutes,related_name='institute', on_delete=CASCADE)
-    
-    class Meta:
-        unique_together = ['institute_code', 'id']
-        ordering = ['id']
+    pass
 
 class SeatMatrix_2021I(SeatMatrix):
-    institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE, related_name='institute_2021')
+    pass
 
 
 models_list = {
@@ -288,23 +342,6 @@ models_list = {
     "seatincrease_2021"    : [SeatMatrix_2021I],
 }
 
-class Album(models.Model):
-    album_name = models.CharField(max_length=100)
-    artist = models.CharField(max_length=100)
-
-class Track(models.Model):
-    album = models.ForeignKey(Album, related_name='track', on_delete=models.CASCADE)
-    order = models.IntegerField()
-    title = models.CharField(max_length=100)
-    duration = models.IntegerField()
-
-    class Meta:
-        unique_together = ['album', 'order']
-        ordering = ['order']
-
-    def __str__(self):
-        return '%d: %s' % (self.order, self.title)
-    
 complete_model_list = [
     Branches, Institutes, College_Category, College_Branch, Updates, College_Type, Round_2015, 
     Round1_2016, Round2_2016, Round3_2016, Round4_2016, Round5_2016, Round6_2016,
@@ -312,6 +349,5 @@ complete_model_list = [
     Round1_2018, Round2_2018, Round3_2018, Round4_2018, Round5_2018, Round6_2018, Round7_2018, Provisional_2018,
     Round1_2019, Round2_2019, Round3_2019, Round4_2019, Round5_2019, Round6_2019, Round7_2019, Provisional_2019, SeatMatrix_2019,
     Round1_2020, Round2_2020, Round3_2020, Round4_2020, Round5_2020, Round6_2020, CSAB_2020_1, CSAB_2020_2, Provisional_2020, SeatMatrix_2020, SeatMatrix_2020_CSAB,
-    Round1_2021, Round2_2021, Round3_2021, Round4_2021, Round5_2021, Round6_2021, SeatMatrix_2021, SeatMatrix_2021I,
-    Album, Track
+    Round1_2021, Round2_2021, Round3_2021, Round4_2021, Round5_2021, Round6_2021, SeatMatrix_2021, SeatMatrix_2021I
 ]

@@ -1,12 +1,12 @@
 from django.http import Http404
 from django.http.response import HttpResponse
-from rest_framework import viewsets, serializers
+from rest_framework import viewsets
 import os, os.path
 import pandas as pd
 from .viewsFunction import create_table
 
 #Import all models 
-from .models import Branches, College_Branch, College_Category, Institutes, Updates, College_Type, Album, Track
+from .models import Branches, College_Branch, College_Category, Institutes, Updates, College_Type
 
 #Imprting all serializers
 from .Extra.serializersTemp import BranchesSerializer, College_BranchSerializer, College_CategorySerializer, InstitutesSerializer, UpdatesSerializer
@@ -42,22 +42,9 @@ def getType():
     
     return type
 
-class TrackSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Track
-        fields = ['order', 'title', 'duration']
-
-class AlbumSerializer(serializers.ModelSerializer):
-    track = TrackSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Album
-        fields = ['album_name', 'artist', 'track']
-
-
 class UpdatesViewSet(viewsets.ModelViewSet):
-    queryset = Album.objects.all()
-    serializer_class = AlbumSerializer
+    queryset = Updates.objects.all()
+    serializer_class = UpdatesSerializer
     
 def create(request, key):
     
@@ -67,15 +54,12 @@ def create(request, key):
         filesRounds = [name for name in os.listdir("database/CSV/Rounds") if os.path.splitext(name)[1] == '.csv']
         
         models = models_list.get(key)
-        print(models)
         if models != None:
             for model in models:
                 model_name = str(model.__name__)
                 print(model_name)
-                print(files.index((model_name + '.csv')))
                 try:
                     if files.index((model_name + '.csv')) >= 0:
-                        print("hii")
                         database_name = 'database/CSV/' + model_name+ '.csv'
                         data = pd.read_csv(database_name, sep=',', header=0, na_filter=False)
                 except:

@@ -1,4 +1,5 @@
 from django.http import Http404
+from ..constants import BRANCH_INSTITUTE_DATA_SERIALIZER
 from ..serializers import create_serializer
 from ..views import getType
 from ..models import models_list as models
@@ -52,4 +53,4 @@ class RankViewsets(viewsets.ModelViewSet):
         except:
             raise Http404("No corresponding data found")
         
-        return create_serializer(model, '__all__')
+        return create_serializer(model, ['institute_detail', 'branch_detail', 'quota', 'category', 'seat_pool', 'opening_rank', 'closing_rank'], BRANCH_INSTITUTE_DATA_SERIALIZER)

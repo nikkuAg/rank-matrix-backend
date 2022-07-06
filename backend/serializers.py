@@ -1,12 +1,35 @@
 from rest_framework import serializers
+from .constants import NORMAL_SERIALIZER, FULL_BRANCH_DETAIL_SERIALIZER, BRANCH_INSTITUTE_DATA_SERIALIZER
 
 
-def create_serializer(mdl, field):
+def create_serializer(model_name, field_array, serializer_type):
     
-    class MySerializer(serializers.ModelSerializer):
-        class Meta:
-            model = mdl
-            fields = field
+  
+    if(serializer_type == NORMAL_SERIALIZER):
+        class CustomSerializer(serializers.ModelSerializer):
+
+            class Meta:
+                model = model_name
+                fields = field_array
+    
+    elif(serializer_type == BRANCH_INSTITUTE_DATA_SERIALIZER):
+        class CustomSerializer(serializers.ModelSerializer):
+            institute_detail = serializers.ReadOnlyField()
+            branch_detail = serializers.ReadOnlyField()
+
+            class Meta:
+                model = model_name
+                fields = field_array
+                
+    elif(serializer_type == FULL_BRANCH_DETAIL_SERIALIZER):
+        class CustomSerializer(serializers.ModelSerializer):
+            institute_detail = serializers.ReadOnlyField()
+            branch_full_detail = serializers.ReadOnlyField()
+
+            class Meta:
+                model = model_name
+                fields = field_array
         
-    return MySerializer
+    return CustomSerializer
             
+
