@@ -3,6 +3,8 @@ from django.http.response import HttpResponse
 from rest_framework import viewsets
 import os, os.path
 import pandas as pd
+
+from .constants import CREATE_SUCCESS, DO_NOT_HAVE_PERMISSION_ERROR, MODLE_DOES_NOT_EXISTS_ERROR
 from .viewsFunction import create_table
 
 #Import all models 
@@ -32,7 +34,9 @@ class College_CategoryViewSet(viewsets.ModelViewSet):
     queryset = College_Category.objects.all()
     serializer_class = College_CategorySerializer
 
-
+class UpdatesViewSet(viewsets.ModelViewSet):
+    queryset = Updates.objects.all()
+    serializer_class = UpdatesSerializer
 
 def getType():
     type = []
@@ -42,9 +46,6 @@ def getType():
     
     return type
 
-class UpdatesViewSet(viewsets.ModelViewSet):
-    queryset = Updates.objects.all()
-    serializer_class = UpdatesSerializer
     
 def create(request, key):
     
@@ -75,8 +76,8 @@ def create(request, key):
                     continue
             
         else:
-            raise Http404("Model not found for {}".format(key))
+            raise Http404(MODLE_DOES_NOT_EXISTS_ERROR)
         
-        return HttpResponse(key)
+        return HttpResponse(CREATE_SUCCESS)
     
-    raise Http404("You are not authorized to perform this action")
+    raise Http404(DO_NOT_HAVE_PERMISSION_ERROR)

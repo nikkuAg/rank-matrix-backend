@@ -20,4 +20,5 @@ urlpatterns = [
     path('api/v1/institute/', include('backend.instituteList.urls')),
     path('api/v1/seat/', include('backend.seatMatrix.urls')),
     path('api/v1/ranks/', include('backend.openingClosingRank.urls')),
+    path('api/v1/all_all/', include('backend.allBranch&College.urls')),
 ]

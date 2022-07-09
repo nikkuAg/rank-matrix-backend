@@ -55,6 +55,7 @@ class Rounds(models.Model):
     
     @property
     def institute_detail(self):
+        print("hii")
         detail = dict()
         detail['name'] = self.institute_code.name
         detail['code'] = self.institute_code.code
