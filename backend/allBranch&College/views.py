@@ -2,7 +2,7 @@ from django.http import Http404
 
 from ..instituteList.serializers import InstituteMinimalSerializers
 
-from ..constants import BRANCH_INSTITUTE_DATA_SERIALIZER, DATA_DOES_NOT_EXISTS_ERROR, DEFAULT_CATEGORY, DEFAULT_GENDER, DEFAULT_INSTITUTE_TYPE, DEFAULT_QUOTA, DEFAULT_RANK_OPTION, DEFAULT_ROUND_NUMBER, DEFAULT_ROUND_TYPE, DEFAULT_YEAR, NO_SUCH_INSTITUTE_TYPE_ERROR
+from ..constants import BRANCH_INSTITUTE_DATA_SERIALIZER, DATA_DOES_NOT_EXISTS_ERROR, DEFAULT_CATEGORY, DEFAULT_SEAT_POOL, DEFAULT_INSTITUTE_TYPE, DEFAULT_QUOTA, DEFAULT_RANK_OPTION, DEFAULT_ROUND_NUMBER, DEFAULT_ROUND_TYPE, DEFAULT_SEAT_POOL, DEFAULT_YEAR, NO_SUCH_INSTITUTE_TYPE_ERROR
 from ..serializers import BranchMinimalSerializer, create_serializer
 from ..views import getType
 from ..models import Branches, Institutes, getRoundsModel
@@ -26,7 +26,7 @@ class all_allViewset(viewsets.ModelViewSet):
         round = self.request.query_params.get('round', DEFAULT_ROUND_NUMBER)
         round_type = self.request.query_params.get('round_type', DEFAULT_ROUND_TYPE)
         category = self.request.query_params.get('category', DEFAULT_CATEGORY)
-        gender = self.request.query_params.get('gender', DEFAULT_GENDER)
+        seat_pool = self.request.query_params.get('seat_pool', DEFAULT_SEAT_POOL)
         quota = self.request.query_params.get('quota', DEFAULT_QUOTA)
             
         if(institute_type.upper() in self.acceptable_type):
@@ -36,7 +36,7 @@ class all_allViewset(viewsets.ModelViewSet):
                 raise Http404(DATA_DOES_NOT_EXISTS_ERROR)
             
             queryset = model.objects.filter(
-                institute_code__category=institute_type.upper(), category=category, quota=quota,seat_pool=gender)
+                institute_code__category=institute_type.upper(), category=category, quota=quota,seat_pool=seat_pool)
         else:
             raise Http404(NO_SUCH_INSTITUTE_TYPE_ERROR)
         print(queryset)
@@ -74,7 +74,7 @@ class all_allInstituteViewset(viewsets.ModelViewSet):
         round = self.request.query_params.get('round', DEFAULT_ROUND_NUMBER)
         round_type = self.request.query_params.get('round_type', DEFAULT_ROUND_TYPE)
         category = self.request.query_params.get('category', DEFAULT_CATEGORY)
-        gender = self.request.query_params.get('gender', DEFAULT_GENDER)
+        seat_pool = self.request.query_params.get('seat_pool', DEFAULT_SEAT_POOL)
         quota = self.request.query_params.get('quota', DEFAULT_QUOTA)
             
         if(institute_type.upper() in self.acceptable_type):
@@ -84,7 +84,7 @@ class all_allInstituteViewset(viewsets.ModelViewSet):
                 raise Http404(DATA_DOES_NOT_EXISTS_ERROR)
             
             institutes = list(model.objects.filter(
-                institute_code__category=institute_type.upper(), category=category, quota=quota,seat_pool=gender).values_list('institute_code', flat=True).distinct())
+                institute_code__category=institute_type.upper(), category=category, quota=quota,seat_pool=seat_pool).values_list('institute_code', flat=True).distinct())
             
             queryset = Institutes.objects.filter(id__in=institutes)
         else:
@@ -106,7 +106,7 @@ class all_allBranchViewset(viewsets.ModelViewSet):
         round = self.request.query_params.get('round', DEFAULT_ROUND_NUMBER)
         round_type = self.request.query_params.get('round_type', DEFAULT_ROUND_TYPE)
         category = self.request.query_params.get('category', DEFAULT_CATEGORY)
-        gender = self.request.query_params.get('gender', DEFAULT_GENDER)
+        seat_pool = self.request.query_params.get('seat_pool', DEFAULT_SEAT_POOL)
         quota = self.request.query_params.get('quota', DEFAULT_QUOTA)
             
         if(institute_type.upper() in self.acceptable_type):
@@ -116,7 +116,7 @@ class all_allBranchViewset(viewsets.ModelViewSet):
                 raise Http404(DATA_DOES_NOT_EXISTS_ERROR)
             
             branches = list(model.objects.filter(
-                institute_code__category=institute_type.upper(), category=category, quota=quota,seat_pool=gender).values_list('branch_code', flat=True).distinct())
+                institute_code__category=institute_type.upper(), category=category, quota=quota,seat_pool=seat_pool).values_list('branch_code', flat=True).distinct())
             
             queryset = Branches.objects.filter(id__in=branches)
         else:

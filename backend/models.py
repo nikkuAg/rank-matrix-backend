@@ -1,3 +1,4 @@
+from datetime import date
 from django.db import models
 from django.db.models.deletion import CASCADE
 
@@ -55,7 +56,6 @@ class Rounds(models.Model):
     
     @property
     def institute_detail(self):
-        print("hii")
         detail = dict()
         detail['name'] = self.institute_code.name
         detail['code'] = self.institute_code.code
@@ -139,6 +139,15 @@ class College_Branch(models.Model):
     institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
     branch_code = models.ForeignKey(to=Branches, on_delete=CASCADE)
     current = models.CharField(max_length=5, null=True)
+    
+    @property
+    def branch_detail(self):
+        detail = dict()
+        detail['full_name'] = self.branch_code.branch_name
+        detail['code'] = self.branch_code.code
+        detail['name'] = self.branch_code.branch_code
+        
+        return detail
 
 
 class College_Category(models.Model):
@@ -347,6 +356,22 @@ models_list = {
 def getRoundsModel(year, round, rounds_type):
     key = str(rounds_type) + "_" + str(year)
     return models_list.get(key)[int(round)-1]
+
+def getLatestYear():
+    year = date.today().year
+    key = "rounds_"+str(year)
+    if key in models_list.keys():
+        return year
+
+    return year-1
+
+def getRelatedModelsKeys(key_type):
+    key_array = []
+    latest_year = getLatestYear()
+    for x in range(2015, latest_year+1):
+        key_array.append(str(key_type)+ "_" + str(x))
+    
+    return key_array
 
 
 complete_model_list = [
