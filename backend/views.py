@@ -4,7 +4,7 @@ from rest_framework import viewsets
 import os, os.path
 import pandas as pd
 
-from .constants import CREATE_SUCCESS, DO_NOT_HAVE_PERMISSION_ERROR, MODLE_DOES_NOT_EXISTS_ERROR
+from .constants import CREATE_SUCCESS, DEFAULT_YEAR, DO_NOT_HAVE_PERMISSION_ERROR, MODLE_DOES_NOT_EXISTS_ERROR
 from .viewsFunction import create_table
 
 #Import all models 
@@ -56,6 +56,26 @@ def availableYears(request):
         return JsonResponse(years, safe=False)
     
     return HttpResponseForbidden(DO_NOT_HAVE_PERMISSION_ERROR)
+
+
+def availableRound(request):
+    if(request.method == "GET"):
+        year = request.GET.get('year', DEFAULT_YEAR)
+        rounds = []
+        for round in models_list['rounds_' + str(year)]:
+            rounds.append(str(str(round.__name__).split('_')[0]))
+            
+        return JsonResponse(rounds, safe=False)
+        
+    return HttpResponseForbidden(DO_NOT_HAVE_PERMISSION_ERROR)
+
+
+def availableInstituteType(request):
+    if(request.method == "GET"):
+        return JsonResponse(getType(), safe=False)
+        
+    return HttpResponseForbidden(DO_NOT_HAVE_PERMISSION_ERROR)
+
 
     
 def create(request, key):

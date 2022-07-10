@@ -1,7 +1,7 @@
 from django.urls import path, include
 
 from backend.instituteList.views import instituteMinimalViewset
-from .views import create, availableYears
+from .views import availableInstituteType, availableRound, create, availableYears
 from .variableData import viewset_list as viewset
 from .variableData import viewset_url as urls
 from rest_framework.routers import DefaultRouter
@@ -26,5 +26,8 @@ urlpatterns = [
     path('api/v1/one_one/', include('backend.oneBranch&oneCollege.urls')),
     path('api/v1/one_all/', include('backend.oneBranch&allCollege.urls')),
     path('api/v1/all_one/', include('backend.allBranch&oneCollege.urls')),
+    path('api/v1/choice/', include('backend.testChoices.urls')),
     path("api/v1/latest_year/", availableYears),
+    path("api/v1/total_rounds/", availableRound),
+    path("api/v1/available_type/", availableInstituteType),
 ]

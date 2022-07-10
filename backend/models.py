@@ -1,4 +1,5 @@
 from datetime import date
+from unicodedata import category
 from django.db import models
 from django.db.models.deletion import CASCADE
 
@@ -57,9 +58,11 @@ class Rounds(models.Model):
     @property
     def institute_detail(self):
         detail = dict()
-        detail['name'] = self.institute_code.name
+        detail['full_name'] = self.institute_code.name
         detail['code'] = self.institute_code.code
-        detail['display_code'] = self.institute_code.display_code
+        detail['name'] = self.institute_code.display_code
+        detail['id'] = self.institute_code.id
+        category['institute_type'] = self.institute_code.category
 
         return detail
 
@@ -69,6 +72,8 @@ class Rounds(models.Model):
         detail['full_name'] = self.branch_code.branch_name
         detail['code'] = self.branch_code.code
         detail['name'] = self.branch_code.branch_code
+        detail['id'] = self.institute_code.id
+        
         
         return detail
 
@@ -80,6 +85,8 @@ class Rounds(models.Model):
         detail['name'] = self.branch_code.branch_code
         detail['duration'] = self.branch_code.duration
         detail['degree'] = self.branch_code.degree
+        detail['id'] = self.institute_code.id
+        
         
         return detail
 
@@ -103,6 +110,8 @@ class SeatMatrix(models.Model):
         detail['full_name'] = self.institute_code.name
         detail['code'] = self.institute_code.code
         detail['name'] = self.institute_code.display_code
+        detail['id'] = self.institute_code.id
+        
 
         return detail
 
@@ -112,6 +121,8 @@ class SeatMatrix(models.Model):
         detail['full_name'] = self.branch_code.branch_name
         detail['code'] = self.branch_code.code
         detail['name'] = self.branch_code.branch_code
+        detail['id'] = self.institute_code.id
+        
         
         return detail
 
@@ -123,6 +134,7 @@ class SeatMatrix(models.Model):
         detail['name'] = self.branch_code.branch_code
         detail['duration'] = self.branch_code.duration
         detail['degree'] = self.branch_code.degree
+        detail['id'] = self.institute_code.id
         
         return detail
 
@@ -146,6 +158,7 @@ class College_Branch(models.Model):
         detail['full_name'] = self.branch_code.branch_name
         detail['code'] = self.branch_code.code
         detail['name'] = self.branch_code.branch_code
+        detail['id'] = self.institute_code.id
         
         return detail
 

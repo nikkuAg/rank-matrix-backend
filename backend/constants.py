@@ -1,6 +1,8 @@
 from datetime import date
 from unittest.mock import DEFAULT
 
+from backend.models import getLatestYear
+
 #Serializers Type
 NORMAL_SERIALIZER = 'normal serializer'
 INSTITUTE_DATA_SERIALIZER = 'normal serializer with institute detail'
@@ -17,7 +19,7 @@ DO_NOT_HAVE_PERMISSION_ERROR = "You do not have permission to perform this actio
 
 #Default Value
 DEFAULT_INSTITUTE_TYPE = "IIT"
-DEFAULT_YEAR = date.today().year - 1
+DEFAULT_YEAR = getLatestYear()
 DEFAULT_ROUND_NUMBER = 6
 DEFAULT_ROUND_TYPE = 'rounds'
 DEFAULT_CATEGORY = 'General'
