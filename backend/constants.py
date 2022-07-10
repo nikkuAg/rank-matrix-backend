@@ -30,3 +30,10 @@ DEFAULT_NULL = None
 
 #Messages
 CREATE_SUCCESS = "Data has been populated for the models for the given key"
+
+
+#Institute Type
+INSTITUTE_TYPE_IIT = "IIT"
+INSTITUTE_TYPE_NIT = "NIT"
+INSTITUTE_TYPE_IIIT = "IIIT"
+INSTITUTE_TYPE_GFTI = "GFTI"

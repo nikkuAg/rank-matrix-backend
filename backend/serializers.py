@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from backend.models import Branches
+from backend.models import Branches, College_Branch
 from .constants import BRANCH_DATA_SERIALIZER, INSTITUTE_DATA_SERIALIZER, NORMAL_SERIALIZER, FULL_BRANCH_DETAIL_SERIALIZER, BRANCH_INSTITUTE_DATA_SERIALIZER
 
 
@@ -55,3 +55,11 @@ class BranchMinimalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Branches
         fields = ('code', 'branch_name', 'branch_code')
+        
+        
+class CollegeBranchSerializer(serializers.ModelSerializer):
+    branch_detail = serializers.ReadOnlyField()
+    
+    class Meta:
+        model = College_Branch
+        fields = ['branch_detail']

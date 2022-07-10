@@ -1,4 +1,4 @@
-from django.http import Http404
+from django.http import Http404, HttpResponseForbidden, JsonResponse
 from django.http.response import HttpResponse
 from rest_framework import viewsets
 import os, os.path
@@ -8,7 +8,7 @@ from .constants import CREATE_SUCCESS, DO_NOT_HAVE_PERMISSION_ERROR, MODLE_DOES_
 from .viewsFunction import create_table
 
 #Import all models 
-from .models import Branches, College_Branch, College_Category, Institutes, Updates, College_Type
+from .models import Branches, College_Branch, College_Category, Institutes, Updates, College_Type, getLatestYear
 
 #Imprting all serializers
 from .Extra.serializersTemp import BranchesSerializer, College_BranchSerializer, College_CategorySerializer, InstitutesSerializer, UpdatesSerializer
@@ -45,6 +45,17 @@ def getType():
         type.append(x.type)
     
     return type
+
+
+def availableYears(request):
+    if(request.method == "GET"):
+        years = []
+        for year in range(2015, getLatestYear()+1):
+            years.append(year)
+            
+        return JsonResponse(years, safe=False)
+    
+    return HttpResponseForbidden(DO_NOT_HAVE_PERMISSION_ERROR)
 
     
 def create(request, key):

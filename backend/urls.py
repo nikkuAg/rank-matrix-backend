@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import UpdatesViewSet, create
+from .views import UpdatesViewSet, create, availableYears
 from .variableData import viewset_list as viewset
 from .variableData import viewset_url as urls
 from rest_framework.routers import DefaultRouter
@@ -22,4 +22,6 @@ urlpatterns = [
     path('api/v1/ranks/', include('backend.openingClosingRank.urls')),
     path('api/v1/all_all/', include('backend.allBranch&College.urls')),
     path('api/v1/one_one/', include('backend.oneBranch&oneCollege.urls')),
+    path('api/v1/one_all/', include('backend.oneBranch&allCollege.urls')),
+    path("api/v1/latest_year/", availableYears),
 ]

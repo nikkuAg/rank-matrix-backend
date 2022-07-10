@@ -32,6 +32,8 @@ class instituteMinimalViewset(viewsets.ModelViewSet):
     acceptable_type = getType()
     serializer_class = InstituteMinimalSerializers
     permission_classes = [CustomApiPermission]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['code', 'name', 'display_code']
     pagination_class = None
     
     def get_queryset(self):

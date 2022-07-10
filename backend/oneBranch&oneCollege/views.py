@@ -1,16 +1,16 @@
-from django.http import Http404, HttpResponse, HttpResponseForbidden, JsonResponse
-from rest_framework import viewsets
+from django.http import Http404, HttpResponseForbidden, JsonResponse
+from rest_framework import viewsets, filters
 
+from ..serializers import CollegeBranchSerializer
 from ..constants import DATA_DOES_NOT_EXISTS_ERROR, DEFAULT_CATEGORY, DEFAULT_NULL, DEFAULT_QUOTA, DEFAULT_SEAT_POOL, DO_NOT_HAVE_PERMISSION_ERROR
 from ..views import getType
 from ..models import Branches, College_Branch, Institutes, getRelatedModelsKeys, models_list
 from ..permission import CustomApiPermission
-from .serializers import BranchOneOneSerializer
 
 class branchOneOneViewset(viewsets.ModelViewSet):
     acceptable_type = getType()
     permission_classes = [CustomApiPermission]
-    serializer_class = BranchOneOneSerializer
+    serializer_class = CollegeBranchSerializer
     pagination_class = None
     
     def get_queryset(self):
@@ -36,10 +36,10 @@ def one_one(request):
         category = request.GET.get('category', DEFAULT_CATEGORY)
         seat_pool = request.GET.get('seat_pool', DEFAULT_SEAT_POOL)
         
-        institute_detail = list(Institutes.objects.filter(id=institute_id).values('name', 'code', 'display_code'))
-        branch_detail = list(Branches.objects.filter(id=branch_id).values('branch_name', 'code', 'branch_code'))
         
         if(institute_id != DEFAULT_NULL and branch_id != DEFAULT_NULL):
+            institute_detail = list(Institutes.objects.filter(id=institute_id).values('name', 'code', 'display_code'))
+            branch_detail = list(Branches.objects.filter(id=branch_id).values('branch_name', 'code', 'branch_code'))
             key_arrays = getRelatedModelsKeys("rounds")
             data = {
                 'institute': institute_detail[0],
