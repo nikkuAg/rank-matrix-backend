@@ -45,12 +45,12 @@ def one_all(request):
         
         if(branch_id != DEFAULT_NULL):
             branch_detail = list(Branches.objects.filter(id=branch_id).values('branch_name', 'code', 'branch_code'))
-            institutes_id = list(College_Branch.objects.filter(branch_code=branch_id, current="Y").values_list('institute_code', flat=True))
+            institutes_id = list(College_Branch.objects.filter(branch_code=branch_id).values_list('institute_code', flat=True))
             institutes = []
             for x in institutes_id:
                 institute = list(Institutes.objects.filter(id=x).values('category', 'name', 'code', 'display_code'))[0]
                 if institute['category'] == institute_type:
-                    institutes.append({'full_name': institute['name'], 'code': institute['code'], 'name': institute['display_code']})
+                    institutes.append({'full_name': institute['name'], 'code': institute['code'], 'name': institute['display_code'], 'id':institute['id']})
             
             key_arrays = getRelatedModelsKeys("rounds")
             
