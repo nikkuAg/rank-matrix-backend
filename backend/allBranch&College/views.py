@@ -57,41 +57,7 @@ class all_allViewset(viewsets.ModelViewSet):
             return create_serializer(model, ['institute_detail', 'branch_detail', 'quota', 'category', 'seat_pool', 'closing_rank'], BRANCH_INSTITUTE_DATA_SERIALIZER)
         else:
             return create_serializer(model, ['institute_detail', 'branch_detail', 'quota', 'category', 'seat_pool', 'opening_rank'], BRANCH_INSTITUTE_DATA_SERIALIZER)
-            
-            
-            
-
-class all_allInstituteViewset(viewsets.ModelViewSet):
-    acceptable_type = getType()
-    permission_classes = [CustomApiPermission]
-    serializer_class = InstituteMinimalSerializers
-    pagination_class = None
-    
-    
-    def get_queryset(self):
-        institute_type = self.request.query_params.get('institute_type', DEFAULT_INSTITUTE_TYPE)
-        year = self.request.query_params.get('year', DEFAULT_YEAR)
-        round = self.request.query_params.get('round', DEFAULT_ROUND_NUMBER)
-        round_type = self.request.query_params.get('round_type', DEFAULT_ROUND_TYPE)
-        category = self.request.query_params.get('category', DEFAULT_CATEGORY)
-        seat_pool = self.request.query_params.get('seat_pool', DEFAULT_SEAT_POOL)
-        quota = self.request.query_params.get('quota', DEFAULT_QUOTA)
-            
-        if(institute_type.upper() in self.acceptable_type):
-            try:
-                model = getRoundsModel(year, round, round_type)
-            except:
-                raise Http404(DATA_DOES_NOT_EXISTS_ERROR)
-            
-            institutes = list(model.objects.filter(
-                institute_code__category=institute_type.upper(), category=category, quota=quota,seat_pool=seat_pool).values_list('institute_code', flat=True).distinct())
-            
-            queryset = Institutes.objects.filter(id__in=institutes)
-        else:
-            raise Http404(NO_SUCH_INSTITUTE_TYPE_ERROR)
-        return queryset
-
-            
+               
 
 class all_allBranchViewset(viewsets.ModelViewSet):
     acceptable_type = getType()

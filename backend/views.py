@@ -8,31 +8,13 @@ from .constants import CREATE_SUCCESS, DEFAULT_YEAR, DO_NOT_HAVE_PERMISSION_ERRO
 from .viewsFunction import create_table
 
 #Import all models 
-from .models import Branches, College_Branch, College_Category, Institutes, Updates, College_Type, getLatestYear
+from .models import Updates, College_Type, getLatestYear
 
 #Imprting all serializers
-from .Extra.serializersTemp import BranchesSerializer, College_BranchSerializer, College_CategorySerializer, InstitutesSerializer, UpdatesSerializer
+from .serializers import UpdatesSerializer
 
 #Import list of models
 from .models import models_list
-
-
-class BranchesViewSet(viewsets.ModelViewSet):
-    queryset = Branches.objects.all()
-    serializer_class = BranchesSerializer
-
-
-class InstitutesViewSet(viewsets.ModelViewSet):
-    queryset = Institutes.objects.all()
-    serializer_class = InstitutesSerializer
-
-class College_BranchViewSet(viewsets.ModelViewSet):
-    queryset = College_Branch.objects.all()
-    serializer_class = College_BranchSerializer
-
-class College_CategoryViewSet(viewsets.ModelViewSet):
-    queryset = College_Category.objects.all()
-    serializer_class = College_CategorySerializer
 
 class UpdatesViewSet(viewsets.ModelViewSet):
     queryset = Updates.objects.all()

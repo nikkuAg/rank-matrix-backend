@@ -2,16 +2,12 @@ from django.urls import path, include
 
 from backend.instituteList.views import instituteMinimalViewset
 from .views import availableInstituteType, availableRound, create, availableYears
-from .variableData import viewset_list as viewset
-from .variableData import viewset_url as urls
+# from .variableData import viewset_list as viewset
+# from .variableData import viewset_url as urls
 from rest_framework.routers import DefaultRouter
 
 
 router = DefaultRouter()
-
-for x in range(len(viewset)):
-    router.register(urls[x], viewset[x])
-    
 router.register('api/v1/institute_list', instituteMinimalViewset, basename='Institiute_List')
 
 app = 'backend'

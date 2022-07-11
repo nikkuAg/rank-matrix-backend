@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from backend.models import Branches, College_Branch
+from .models import Branches, College_Branch, Updates
 from .constants import BRANCH_DATA_SERIALIZER, INSTITUTE_DATA_SERIALIZER, NORMAL_SERIALIZER, FULL_BRANCH_DETAIL_SERIALIZER, BRANCH_INSTITUTE_DATA_SERIALIZER
 
 
@@ -63,3 +63,9 @@ class CollegeBranchSerializer(serializers.ModelSerializer):
     class Meta:
         model = College_Branch
         fields = ['branch_detail']
+        
+
+class UpdatesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Updates
+        fields = '__all__'

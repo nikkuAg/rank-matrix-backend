@@ -42,8 +42,8 @@ class instituteMinimalViewset(viewsets.ModelViewSet):
         
         if(institute_type.upper() in self.acceptable_type):
             queryset = Institutes.objects.filter(category=institute_type.upper())
-            if(current == 'y'):
-                queryset = queryset.filter(current='Y') 
+            if(current == DEFAULT_BRANCH_AND_INSTITUTE_EXISTS):
+                queryset = queryset.filter(current='Y')
         else:
             raise Http404(NO_SUCH_INSTITUTE_TYPE_ERROR)
         
