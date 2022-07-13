@@ -4,22 +4,32 @@ from rest_framework import viewsets
 import os, os.path
 import pandas as pd
 
+from backend.permission import CustomApiPermission
+
 from .constants import CREATE_SUCCESS, DEFAULT_YEAR, DO_NOT_HAVE_PERMISSION_ERROR, MODLE_DOES_NOT_EXISTS_ERROR
 from .viewsFunction import create_table
 
 #Import all models 
-from .models import Updates, College_Type, getLatestYear
+from .models import NewUpdate, Updates, College_Type, getLatestYear
 
 #Imprting all serializers
-from .serializers import UpdatesSerializer
+from .serializers import NewUpdatesSerializer, UpdatesSerializer
 
 #Import list of models
 from .models import models_list
 
 class UpdatesViewSet(viewsets.ModelViewSet):
+    permission_classes = [CustomApiPermission]
+    pagination_class = None
     queryset = Updates.objects.all()
     serializer_class = UpdatesSerializer
 
+class NewUpdatesViewSet(viewsets.ModelViewSet):
+    permission_classes = [CustomApiPermission]
+    pagination_class = None
+    queryset = NewUpdate.objects.all()
+    serializer_class = NewUpdatesSerializer
+    
 def getType():
     type = []
     types = College_Type.objects.all()

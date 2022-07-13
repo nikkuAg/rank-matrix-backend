@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Branches, College_Branch, Updates
+from .models import Branches, College_Branch, NewUpdate, Updates
 from .constants import BRANCH_DATA_SERIALIZER, INSTITUTE_DATA_SERIALIZER, NORMAL_SERIALIZER, FULL_BRANCH_DETAIL_SERIALIZER, BRANCH_INSTITUTE_DATA_SERIALIZER
 
 
@@ -59,7 +59,6 @@ class BranchMinimalSerializer(serializers.ModelSerializer):
         
 class CollegeBranchSerializer(serializers.ModelSerializer):
     branch_detail = serializers.ReadOnlyField()
-    
     class Meta:
         model = College_Branch
         fields = ['branch_detail']
@@ -68,4 +67,9 @@ class CollegeBranchSerializer(serializers.ModelSerializer):
 class UpdatesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Updates
+        fields = '__all__'
+        
+class NewUpdatesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NewUpdate
         fields = '__all__'
