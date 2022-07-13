@@ -1,4 +1,4 @@
-from django.http import Http404, HttpResponseForbidden, JsonResponse
+from django.http import HttpResponseForbidden, HttpResponseNotFound, JsonResponse
 from rest_framework import viewsets, filters
 
 from ..models import Branches, College_Branch, Institutes, getRelatedModelsKeys, models_list
@@ -32,7 +32,7 @@ class branchOneAllViewsets(viewsets.ModelViewSet):
             
             return queryset
  
-        raise Http404(NO_SUCH_INSTITUTE_TYPE_ERROR)
+        return HttpResponseNotFound(NO_SUCH_INSTITUTE_TYPE_ERROR)
     
 
 def one_all(request):
@@ -72,6 +72,6 @@ def one_all(request):
             return JsonResponse(data)
 
         
-        raise Http404(DATA_DOES_NOT_EXISTS_ERROR)
+        return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
     
     return HttpResponseForbidden(DO_NOT_HAVE_PERMISSION_ERROR)

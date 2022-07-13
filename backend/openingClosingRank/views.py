@@ -1,4 +1,4 @@
-from django.http import Http404
+from django.http import HttpResponseNotFound
 from ..constants import BRANCH_INSTITUTE_DATA_SERIALIZER, DATA_DOES_NOT_EXISTS_ERROR, DEFAULT_INSTITUTE_TYPE, DEFAULT_ROUND_NUMBER, DEFAULT_ROUND_TYPE, DEFAULT_YEAR, NO_SUCH_INSTITUTE_TYPE_ERROR
 from ..serializers import create_serializer
 from ..views import getType
@@ -26,12 +26,12 @@ class RankViewsets(viewsets.ModelViewSet):
             try:
                 model = getRoundsModel(year, round, rounds_type)
             except:
-                raise Http404(DATA_DOES_NOT_EXISTS_ERROR)
+                return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
 
             queryset = model.objects.filter(
                 institute_code__category=institute_type.upper())
         else:
-            raise Http404(NO_SUCH_INSTITUTE_TYPE_ERROR)
+            return HttpResponseNotFound(NO_SUCH_INSTITUTE_TYPE_ERROR)
 
         return queryset
 
@@ -43,6 +43,6 @@ class RankViewsets(viewsets.ModelViewSet):
         try:
             model = getRoundsModel(year, round, rounds_type)
         except:
-            raise Http404(DATA_DOES_NOT_EXISTS_ERROR)
+            return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
 
         return create_serializer(model, ['institute_detail', 'branch_detail', 'quota', 'category', 'seat_pool', 'opening_rank', 'closing_rank'], BRANCH_INSTITUTE_DATA_SERIALIZER)

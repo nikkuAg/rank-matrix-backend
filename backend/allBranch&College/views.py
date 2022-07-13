@@ -1,5 +1,5 @@
-from django.http import Http404
 
+from django.http import HttpResponseNotFound
 from ..instituteList.serializers import InstituteMinimalSerializers
 
 from ..constants import BRANCH_INSTITUTE_DATA_SERIALIZER, DATA_DOES_NOT_EXISTS_ERROR, DEFAULT_CATEGORY, DEFAULT_SEAT_POOL, DEFAULT_INSTITUTE_TYPE, DEFAULT_QUOTA, DEFAULT_RANK_OPTION, DEFAULT_ROUND_NUMBER, DEFAULT_ROUND_TYPE, DEFAULT_SEAT_POOL, DEFAULT_YEAR, NO_SUCH_INSTITUTE_TYPE_ERROR
@@ -33,12 +33,12 @@ class all_allViewset(viewsets.ModelViewSet):
             try:
                 model = getRoundsModel(year, round, round_type)
             except:
-                raise Http404(DATA_DOES_NOT_EXISTS_ERROR)
+                return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
             
             queryset = model.objects.filter(
                 institute_code__category=institute_type.upper(), category=category, quota=quota,seat_pool=seat_pool)
         else:
-            raise Http404(NO_SUCH_INSTITUTE_TYPE_ERROR)
+            return HttpResponseNotFound(NO_SUCH_INSTITUTE_TYPE_ERROR)
         print(queryset)
         return queryset
     
@@ -51,7 +51,7 @@ class all_allViewset(viewsets.ModelViewSet):
         try:
             model = getRoundsModel(year, round, round_type)
         except:
-            raise Http404(DATA_DOES_NOT_EXISTS_ERROR)
+            return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
         
         if(option == DEFAULT_RANK_OPTION):
             return create_serializer(model, ['institute_detail', 'branch_detail', 'quota', 'category', 'seat_pool', 'closing_rank'], BRANCH_INSTITUTE_DATA_SERIALIZER)
@@ -79,14 +79,14 @@ class all_allBranchViewset(viewsets.ModelViewSet):
             try:
                 model = getRoundsModel(year, round, round_type)
             except:
-                raise Http404(DATA_DOES_NOT_EXISTS_ERROR)
+                return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
             
             branches = list(model.objects.filter(
                 institute_code__category=institute_type.upper(), category=category, quota=quota,seat_pool=seat_pool).values_list('branch_code', flat=True).distinct())
             
             queryset = Branches.objects.filter(id__in=branches)
         else:
-            raise Http404(NO_SUCH_INSTITUTE_TYPE_ERROR)
+            return HttpResponseNotFound(NO_SUCH_INSTITUTE_TYPE_ERROR)
         
         return queryset
     

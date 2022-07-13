@@ -1,5 +1,5 @@
-from django.http import Http404, HttpResponseForbidden, JsonResponse
-from rest_framework import viewsets, filters
+from django.http import HttpResponseForbidden, HttpResponseNotFound, JsonResponse
+from rest_framework import viewsets
 
 from ..serializers import CollegeBranchSerializer
 from ..constants import DATA_DOES_NOT_EXISTS_ERROR, DEFAULT_CATEGORY, DEFAULT_NULL, DEFAULT_QUOTA, DEFAULT_SEAT_POOL, DO_NOT_HAVE_PERMISSION_ERROR
@@ -21,11 +21,11 @@ class branchOneOneViewset(viewsets.ModelViewSet):
             queryset = College_Branch.objects.filter(institute_code=institute_id)
 
             if(queryset.count() == 0):
-                raise Http404(DATA_DOES_NOT_EXISTS_ERROR)
+                return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
                 
             return queryset
     
-        raise Http404(DATA_DOES_NOT_EXISTS_ERROR)
+        return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
 
 
 def one_one(request):
@@ -63,8 +63,8 @@ def one_one(request):
             
             return JsonResponse(data)
 
-        raise Http404(DATA_DOES_NOT_EXISTS_ERROR)
+        return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
     else:
-        raise HttpResponseForbidden(DO_NOT_HAVE_PERMISSION_ERROR)
+        return HttpResponseForbidden(DO_NOT_HAVE_PERMISSION_ERROR)
     
 

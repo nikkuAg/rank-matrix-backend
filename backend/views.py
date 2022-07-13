@@ -1,4 +1,4 @@
-from django.http import Http404, HttpResponseForbidden, JsonResponse
+from django.http import HttpResponseForbidden, HttpResponseNotFound, JsonResponse
 from django.http.response import HttpResponse
 from rest_framework import viewsets
 import os, os.path
@@ -99,8 +99,8 @@ def create(request, key):
                     continue
             
         else:
-            raise Http404(MODLE_DOES_NOT_EXISTS_ERROR)
+            return HttpResponseNotFound(MODLE_DOES_NOT_EXISTS_ERROR)
         
         return HttpResponse(CREATE_SUCCESS)
     
-    raise Http404(DO_NOT_HAVE_PERMISSION_ERROR)
+    return HttpResponseForbidden(DO_NOT_HAVE_PERMISSION_ERROR)

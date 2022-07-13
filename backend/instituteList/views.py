@@ -1,4 +1,4 @@
-from django.http import Http404
+from django.http import Http404, HttpResponseNotFound
 from rest_framework import viewsets, filters
 
 from ..constants import DEFAULT_BRANCH_AND_INSTITUTE_EXISTS, DEFAULT_INSTITUTE_TYPE, NO_SUCH_INSTITUTE_TYPE_ERROR
@@ -24,7 +24,7 @@ class institutesViewsets(viewsets.ModelViewSet):
             if(current == 'y'):
                 queryset = queryset.filter(current='Y') 
         else:
-            raise Http404(NO_SUCH_INSTITUTE_TYPE_ERROR)
+            return HttpResponseNotFound(NO_SUCH_INSTITUTE_TYPE_ERROR)
         
         return queryset
     
@@ -45,6 +45,6 @@ class instituteMinimalViewset(viewsets.ModelViewSet):
             if(current == DEFAULT_BRANCH_AND_INSTITUTE_EXISTS):
                 queryset = queryset.filter(current='Y')
         else:
-            raise Http404(NO_SUCH_INSTITUTE_TYPE_ERROR)
+            return HttpResponseNotFound(NO_SUCH_INSTITUTE_TYPE_ERROR)
         
         return queryset

@@ -1,4 +1,4 @@
-from django.http import Http404, HttpResponseForbidden, JsonResponse
+from django.http import HttpResponseForbidden, HttpResponseNotFound, JsonResponse
 
 from ..constants import DATA_DOES_NOT_EXISTS_ERROR, DEFAULT_CATEGORY, DEFAULT_NULL, DEFAULT_QUOTA, DEFAULT_SEAT_POOL, DO_NOT_HAVE_PERMISSION_ERROR
 from ..models import Branches, College_Branch, Institutes, getLatestYear, models_list
@@ -20,7 +20,7 @@ def branchesList(request):
             return JsonResponse(data)
 
         
-        raise Http404(DATA_DOES_NOT_EXISTS_ERROR)
+        return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
     
     return HttpResponseForbidden(DO_NOT_HAVE_PERMISSION_ERROR)
 
@@ -52,7 +52,7 @@ def getData(request):
             return JsonResponse(data)
 
         
-        raise Http404(DATA_DOES_NOT_EXISTS_ERROR)
+        return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
     
     return HttpResponseForbidden(DO_NOT_HAVE_PERMISSION_ERROR)
 
