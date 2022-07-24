@@ -1,5 +1,4 @@
 from datetime import date
-from unicodedata import category
 from django.db import models
 from django.db.models.deletion import CASCADE
 
@@ -31,9 +30,9 @@ class Institutes(models.Model):
     state = models.CharField(max_length=255, null=True)
     city = models.CharField(max_length=255, null=True)
     website = models.CharField(max_length=255, null=True)
-    nirf_19 = models.CharField(null=True, max_length=255)
-    nirf_20 = models.CharField(null=True, max_length=255)
-    nirf_21 = models.CharField(null=True, max_length=255)
+    nirf_3 = models.CharField(null=True, max_length=255)
+    nirf_2 = models.CharField(null=True, max_length=255)
+    nirf_1 = models.CharField(null=True, max_length=255)
     address = models.CharField(null=True, max_length=255)
     phone = models.CharField(null=True, max_length=255)
     fax = models.CharField(null=True, max_length=255)
@@ -42,6 +41,29 @@ class Institutes(models.Model):
     
     def __str__(self) -> str:
         return self.code
+    
+    @property
+    def nirf_year(self):
+        return NIRF_Year.objects.last().year
+
+class NIRF_Year(models.Model):
+    year = models.BigIntegerField()
+    
+    def __str__(self) -> str:
+        return self.year
+
+class Category(models.Model):
+    category = models.CharField(max_length=200)
+    
+    def __str__(self) -> str:
+        return self.category
+    
+
+class Gender(models.Model):
+    gender = models.CharField(max_length=200)
+    
+    def __str__(self) -> str:
+        return self.gender
 
 class Rounds(models.Model):
     institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
@@ -62,7 +84,7 @@ class Rounds(models.Model):
         detail['code'] = self.institute_code.code
         detail['name'] = self.institute_code.display_code
         detail['id'] = self.institute_code.id
-        category['institute_type'] = self.institute_code.category
+        detail['institute_type'] = self.institute_code.category
 
         return detail
 
@@ -162,7 +184,7 @@ class College_Branch(models.Model):
         detail['full_name'] = self.branch_code.branch_name
         detail['code'] = self.branch_code.code
         detail['name'] = self.branch_code.branch_code
-        detail['id'] = self.institute_code.id
+        detail['id'] = self.branch_code.id
         
         return detail
 
@@ -170,7 +192,7 @@ class College_Branch(models.Model):
 class College_Category(models.Model):
     id = models.BigAutoField(auto_created=False, primary_key=True)
     institute_code = models.ForeignKey(to=Institutes, on_delete=CASCADE)
-    category = models.CharField(max_length=5)
+    quota = models.CharField(max_length=5)
 
 class College_Type(models.Model):
     id = models.AutoField(auto_created=False, primary_key=True)
@@ -181,7 +203,7 @@ class College_Type(models.Model):
     
 
 #Models for year 2015
-class Round_2015(Rounds):
+class Round7_2015(Rounds):
     pass
 
 
@@ -350,8 +372,8 @@ class SeatMatrix_2021I(SeatMatrix):
 
 
 models_list = {
-    "info"                 : [Branches, Institutes, College_Category, College_Branch, Updates, NewUpdate],
-    "rounds_2015"          : [Round_2015],
+    "info"                 : [Branches, Institutes, College_Category, College_Branch],
+    "rounds_2015"          : [Round7_2015],
     "rounds_2016"          : [Round1_2016, Round2_2016, Round3_2016, Round4_2016, Round5_2016, Round6_2016],
     "rounds_2017"          : [Round1_2017, Round2_2017, Round3_2017, Round4_2017, Round5_2017, Round6_2017, Round7_2017],
     "rounds_2018"          : [Round1_2018, Round2_2018, Round3_2018, Round4_2018, Round5_2018, Round6_2018, Round7_2018],
@@ -382,6 +404,7 @@ def getLatestYear():
 
     return year-1
 
+
 def getRelatedModelsKeys(key_type):
     key_array = []
     latest_year = getLatestYear()
@@ -392,7 +415,8 @@ def getRelatedModelsKeys(key_type):
 
 
 complete_model_list = [
-    Branches, Institutes, College_Category, College_Branch, Updates, College_Type, NewUpdate, Round_2015, 
+    Branches, Institutes, College_Category, College_Branch, Updates, College_Type, NewUpdate, NIRF_Year, Category, Gender,
+    Round7_2015, 
     Round1_2016, Round2_2016, Round3_2016, Round4_2016, Round5_2016, Round6_2016,
     Round1_2017, Round2_2017, Round3_2017, Round4_2017, Round5_2017, Round6_2017, Round7_2017,
     Round1_2018, Round2_2018, Round3_2018, Round4_2018, Round5_2018, Round6_2018, Round7_2018, Provisional_2018,

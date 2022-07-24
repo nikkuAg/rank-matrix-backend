@@ -2,7 +2,7 @@ from django.http import HttpResponseForbidden, HttpResponseNotFound, JsonRespons
 from rest_framework import viewsets, filters
 
 from ..models import Branches, College_Branch, Institutes, getRelatedModelsKeys, models_list
-from ..constants import DATA_DOES_NOT_EXISTS_ERROR, DEFAULT_CATEGORY, DEFAULT_INSTITUTE_TYPE, DEFAULT_NULL, DEFAULT_QUOTA, DEFAULT_SEAT_POOL, DO_NOT_HAVE_PERMISSION_ERROR, INSTITUTE_TYPE_GFTI, INSTITUTE_TYPE_IIIT, INSTITUTE_TYPE_IIT, INSTITUTE_TYPE_NIT, NO_SUCH_INSTITUTE_TYPE_ERROR
+from ..constants import DATA_DOES_NOT_EXISTS_ERROR, DEFAULT_CATEGORY, DEFAULT_CUTOFF, DEFAULT_INSTITUTE_TYPE, DEFAULT_NULL, DEFAULT_QUOTA, DEFAULT_SEAT_POOL, DO_NOT_HAVE_PERMISSION_ERROR, INSTITUTE_TYPE_GFTI, INSTITUTE_TYPE_IIIT, INSTITUTE_TYPE_IIT, INSTITUTE_TYPE_NIT, NO_SUCH_INSTITUTE_TYPE_ERROR
 from ..serializers import BranchMinimalSerializer
 from ..permission import CustomApiPermission
 from ..views import getType
@@ -42,13 +42,15 @@ def one_all(request):
         quota = request.GET.get('quota', DEFAULT_QUOTA)
         category = request.GET.get('category', DEFAULT_CATEGORY)
         seat_pool = request.GET.get('seat_pool', DEFAULT_SEAT_POOL)
+        rank = request.GET.get('rank', DEFAULT_NULL)
+        delta = int(request.GET.get('cutoff', DEFAULT_CUTOFF))
         
         if(branch_id != DEFAULT_NULL):
-            branch_detail = list(Branches.objects.filter(id=branch_id).values('branch_name', 'code', 'branch_code'))
+            branch_detail = list(Branches.objects.filter(id=branch_id).values('id','branch_name', 'code', 'branch_code'))
             institutes_id = list(College_Branch.objects.filter(branch_code=branch_id).values_list('institute_code', flat=True))
             institutes = []
             for x in institutes_id:
-                institute = list(Institutes.objects.filter(id=x).values('category', 'name', 'code', 'display_code'))[0]
+                institute = list(Institutes.objects.filter(id=x).values('category', 'name', 'code', 'display_code', 'id'))[0]
                 if institute['category'] == institute_type:
                     institutes.append({'full_name': institute['name'], 'code': institute['code'], 'name': institute['display_code'], 'id':institute['id']})
             
@@ -61,13 +63,33 @@ def one_all(request):
                 'quota': quota,
                 'seat_pool': seat_pool,
                 'category': category,
+                'round_data': [],
+                'keys': [],
             }
             
             for key in key_arrays:
                 model = models_list[key][-1]
                 data_key = str(model.__name__).split('_')[0] + "_" + str(key[-4:])
+                data['keys'].append(data_key)
                 one_all_data = list(model.objects.filter(branch_code=branch_id, quota=quota, category=category, seat_pool=seat_pool).values('institute_code', 'opening_rank', 'closing_rank'))
-                data[data_key] = one_all_data
+                for obj in one_all_data:
+                    if(rank == DEFAULT_NULL):
+                        obj['color'] = "null"
+                    else:
+                        rank = int(rank)
+                        if(rank <= round((1 - (delta / 100)) * obj['closing_rank'])):
+                            obj['color'] = 'green'
+                        elif ((rank > round((1 - (delta / 100)) * obj['closing_rank'])) and (rank <= round(obj['closing_rank']))):
+                            obj['color'] = 'yellow'
+                        elif (rank > round(obj['closing_rank']) and rank <= round((1 + (delta / 100)) * obj['closing_rank'])):
+                            obj['color'] = 'orange'   
+                        elif (rank > round((1 + (delta / 100)) * obj['closing_rank'])):
+                            obj['color'] = 'red'
+                
+                data['round_data'].append(one_all_data)
+                
+            data['keys'].reverse()
+            data['round_data'].reverse()
             
             return JsonResponse(data)
 

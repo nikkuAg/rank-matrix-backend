@@ -1,3 +1,4 @@
+from re import L
 from django.http import HttpResponseForbidden, HttpResponseNotFound, JsonResponse
 from django.http.response import HttpResponse
 from rest_framework import viewsets
@@ -6,14 +7,14 @@ import pandas as pd
 
 from backend.permission import CustomApiPermission
 
-from .constants import CREATE_SUCCESS, DEFAULT_YEAR, DO_NOT_HAVE_PERMISSION_ERROR, MODLE_DOES_NOT_EXISTS_ERROR
+from .constants import CREATE_SUCCESS, DEFAULT_INSTITUTE_TYPE, DEFAULT_NULL, DEFAULT_YEAR, DO_NOT_HAVE_PERMISSION_ERROR, MODLE_DOES_NOT_EXISTS_ERROR
 from .viewsFunction import create_table
 
 #Import all models 
-from .models import NewUpdate, Updates, College_Type, getLatestYear
+from .models import Category, College_Category, Gender, NewUpdate, Updates, College_Type, getLatestYear
 
 #Imprting all serializers
-from .serializers import NewUpdatesSerializer, UpdatesSerializer
+from .serializers import CategorySerializer, GenderSerializer, NewUpdatesSerializer, QuotaSerializer, UpdatesSerializer
 
 #Import list of models
 from .models import models_list
@@ -30,6 +31,29 @@ class NewUpdatesViewSet(viewsets.ModelViewSet):
     queryset = NewUpdate.objects.all()
     serializer_class = NewUpdatesSerializer
     
+class CategoryViewSet(viewsets.ModelViewSet):
+    permission_classes = [CustomApiPermission]
+    pagination_class = None
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer    
+    
+class GenderViewSet(viewsets.ModelViewSet):
+    permission_classes = [CustomApiPermission]
+    pagination_class = None
+    queryset = Gender.objects.all()
+    serializer_class =  GenderSerializer
+   
+class QuotaViewSet(viewsets.ModelViewSet):
+    permission_classes = [CustomApiPermission]
+    pagination_class = None
+    serializer_class = QuotaSerializer
+    
+    def get_queryset(self):
+        institute_type = self.request.query_params.get('institute_type', DEFAULT_INSTITUTE_TYPE)
+        queryset = College_Category.objects.filter(institute_code__category=institute_type).values('quota').distinct()
+        
+        return queryset
+
 def getType():
     type = []
     types = College_Type.objects.all()
@@ -49,13 +73,14 @@ def availableYears(request):
     
     return HttpResponseForbidden(DO_NOT_HAVE_PERMISSION_ERROR)
 
-
 def availableRound(request):
     if(request.method == "GET"):
         year = request.GET.get('year', DEFAULT_YEAR)
         rounds = []
         for round in models_list['rounds_' + str(year)]:
-            rounds.append(str(str(round.__name__).split('_')[0]))
+            round_name = str(str(round.__name__).split('_')[0])
+            round = round_name[:len(round_name)-1] + " " + round_name[len(round_name)-1]
+            rounds.append(round)
             
         return JsonResponse(rounds, safe=False)
         
@@ -64,10 +89,17 @@ def availableRound(request):
 
 def availableInstituteType(request):
     if(request.method == "GET"):
-        return JsonResponse(getType(), safe=False)
+        choice  = request.GET.get('choice', DEFAULT_NULL)
+        data = getType()
+        if(choice != DEFAULT_NULL):
+            if(choice == "mains"):
+                data.remove("IIT")
+            elif(choice == "advance"):
+                data = ["IIT"]
+        
+        return JsonResponse(data, safe=False)
         
     return HttpResponseForbidden(DO_NOT_HAVE_PERMISSION_ERROR)
-
 
     
 def create(request, key):

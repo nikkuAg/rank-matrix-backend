@@ -2,9 +2,9 @@ from django.http import HttpResponseForbidden, HttpResponseNotFound, JsonRespons
 from rest_framework import viewsets
 
 from ..serializers import CollegeBranchSerializer
-from ..constants import DATA_DOES_NOT_EXISTS_ERROR, DEFAULT_CATEGORY, DEFAULT_NULL, DEFAULT_QUOTA, DEFAULT_SEAT_POOL, DO_NOT_HAVE_PERMISSION_ERROR
+from ..constants import DATA_DOES_NOT_EXISTS_ERROR, DEFAULT_CATEGORY, DEFAULT_CUTOFF, DEFAULT_NULL, DEFAULT_QUOTA, DEFAULT_SEAT_POOL, DO_NOT_HAVE_PERMISSION_ERROR
 from ..views import getType
-from ..models import Branches, College_Branch, Institutes, getRelatedModelsKeys, models_list
+from ..models import Branches, College_Branch, Institutes, getLatestYear, getRelatedModelsKeys, models_list
 from ..permission import CustomApiPermission
 
 class branchOneOneViewset(viewsets.ModelViewSet):
@@ -18,7 +18,7 @@ class branchOneOneViewset(viewsets.ModelViewSet):
             
         if(institute_id != DEFAULT_NULL):
             
-            queryset = College_Branch.objects.filter(institute_code=institute_id)
+            queryset = College_Branch.objects.filter(institute_code=institute_id, current="Y")
 
             if(queryset.count() == 0):
                 return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
@@ -35,31 +35,58 @@ def one_one(request):
         quota = request.GET.get('quota', DEFAULT_QUOTA)
         category = request.GET.get('category', DEFAULT_CATEGORY)
         seat_pool = request.GET.get('seat_pool', DEFAULT_SEAT_POOL)
+        rank = request.GET.get('rank', DEFAULT_NULL)
+        delta = int(request.GET.get('cutoff', DEFAULT_CUTOFF))
         
         
         if(institute_id != DEFAULT_NULL and branch_id != DEFAULT_NULL):
-            institute_detail = list(Institutes.objects.filter(id=institute_id).values('name', 'code', 'display_code'))
-            branch_detail = list(Branches.objects.filter(id=branch_id).values('branch_name', 'code', 'branch_code'))
+            institute_detail = list(Institutes.objects.filter(id=institute_id).values('name', 'code', 'display_code', 'id'))
+            branch_detail = list(Branches.objects.filter(id=branch_id).values('branch_name', 'code', 'branch_code', 'id'))
             key_arrays = getRelatedModelsKeys("rounds")
+            
             data = {
                 'institute': institute_detail[0],
                 'branch': branch_detail[0],
                 'quota': quota,
                 'seat_pool': seat_pool,
                 'category': category,
+                'round_data': [],
+                'keys': [],
+                'years': list(range(2015, getLatestYear()+1)),
             }
             for key in key_arrays:
                 models = models_list[key]
-                data_key = str(key[-4:])
-                year_data = {}
+                year_data = []
+                
                 for model in models:
                     one_one_data = list(model.objects.filter(institute_code=institute_id, branch_code=branch_id, quota=quota, category=category, seat_pool=seat_pool).values('opening_rank', 'closing_rank'))[0]
-                    
                     round_key = str(model.__name__).split('_')[0]
-                    year_data[round_key] = one_one_data
+                    if(round_key not in data['keys']):
+                        data['keys'].append(round_key)
                     
-            
-                data[data_key] = year_data
+                    if(rank == DEFAULT_NULL):
+                        one_one_data['color'] = "null"
+                    else:
+                        rank = int(rank)
+                        if(rank <= round((1 - (delta / 100)) * one_one_data['closing_rank'])):
+                            one_one_data['color'] = 'green'
+                        elif ((rank > round((1 - (delta / 100)) * one_one_data['closing_rank'])) and (rank <= round(one_one_data['closing_rank']))):
+                            one_one_data['color'] = 'yellow'
+                        elif (rank > round(one_one_data['closing_rank']) and rank <= round((1 + (delta / 100)) * one_one_data['closing_rank'])):
+                            one_one_data['color'] = 'orange'   
+                        elif (rank > round((1 + (delta / 100)) * one_one_data['closing_rank'])):
+                            one_one_data['color'] = 'red'
+                            
+                    year_data.append(one_one_data)
+                for x in range(0, 7-len(models)):
+                    year_data.append({'color': "null"})  
+                if(len(models) == 1):
+                    year_data.reverse()
+                data['round_data'].append(year_data)
+                
+            data['round_data'].reverse()
+            data['years'].reverse()
+            data['keys'].sort()
             
             return JsonResponse(data)
 

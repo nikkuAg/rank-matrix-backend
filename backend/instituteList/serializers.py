@@ -3,6 +3,7 @@ from ..models import Institutes
 
 
 class InstituteListSerializers(serializers.ModelSerializer):
+    nirf_year = serializers.ReadOnlyField()
     class Meta:
         model = Institutes
         fields = '__all__'

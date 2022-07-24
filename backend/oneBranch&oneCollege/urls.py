@@ -10,5 +10,5 @@ router.register('branch_list', branchOneOneViewset, basename='Branch_List_One_On
 urlpatterns = [
     path('', include(router.urls)),
     path('<int:pk>', include(router.urls)),
-    path('rank_list', one_one),
+    path('rank_list/', one_one),
 ]

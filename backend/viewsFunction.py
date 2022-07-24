@@ -54,7 +54,7 @@ def create_cc_data(data, name):
             id=int(data['Id'][row-1]),
             institute_code=Institutes.objects.get(
                 code=str(data['Institute Code'][row-1])),
-            category=str(data['Category'][row-1]),
+            quota=str(data['Quota'][row-1]),
         ))
     return table
 

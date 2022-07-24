@@ -1,7 +1,8 @@
-from django.http import Http404, HttpResponseNotFound
+from django.http import HttpResponseNotFound
 from rest_framework import viewsets, filters
+from django.db.models import Q
 
-from ..constants import DEFAULT_BRANCH_AND_INSTITUTE_EXISTS, DEFAULT_INSTITUTE_TYPE, NO_SUCH_INSTITUTE_TYPE_ERROR
+from ..constants import DEFAULT_BRANCH_AND_INSTITUTE_EXISTS, DEFAULT_INSTITUTE_TYPE, DEFAULT_NULL, NO_SUCH_INSTITUTE_TYPE_ERROR
 from ..permission import CustomApiPermission
 from .serializers import InstituteListSerializers, InstituteMinimalSerializers
 from ..models import Institutes
@@ -13,7 +14,8 @@ class institutesViewsets(viewsets.ModelViewSet):
     serializer_class = InstituteListSerializers
     permission_classes = [CustomApiPermission]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ['code', 'name', 'state', 'nirf_19', 'nirf_20', 'nirf_21', 'website']
+    search_fields = ['code', 'name', 'state', 'nirf_1', 'nirf_2', 'nirf_3', 'website']
+    ordering_fields = ['code', 'name', 'state', 'nirf_1', 'nirf_2', 'nirf_3']
     
     def get_queryset(self):
         institute_type = self.request.query_params.get('institute_type', DEFAULT_INSTITUTE_TYPE)
@@ -39,12 +41,12 @@ class instituteMinimalViewset(viewsets.ModelViewSet):
     def get_queryset(self):
         institute_type = self.request.query_params.get('institute_type', DEFAULT_INSTITUTE_TYPE)
         current = self.request.query_params.get('current', DEFAULT_BRANCH_AND_INSTITUTE_EXISTS)
-        
+    
         if(institute_type.upper() in self.acceptable_type):
             queryset = Institutes.objects.filter(category=institute_type.upper())
             if(current == DEFAULT_BRANCH_AND_INSTITUTE_EXISTS):
                 queryset = queryset.filter(current='Y')
         else:
             return HttpResponseNotFound(NO_SUCH_INSTITUTE_TYPE_ERROR)
-        
+       
         return queryset

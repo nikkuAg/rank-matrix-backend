@@ -18,9 +18,9 @@ class RankViewsets(viewsets.ModelViewSet):
 
     def get_queryset(self):
         institute_type = self.request.query_params.get('institute_type', DEFAULT_INSTITUTE_TYPE)
-        year = self.request.query_params.get('year', 2021)
-        round = self.request.query_params.get('round', 6)
-        rounds_type = self.request.query_params.get('rounds_type', "rounds")
+        year = self.request.query_params.get('year', DEFAULT_YEAR)
+        round = self.request.query_params.get('round', DEFAULT_ROUND_NUMBER)
+        rounds_type = self.request.query_params.get('rounds_type', DEFAULT_ROUND_TYPE)
 
         if(institute_type.upper() in self.acceptable_type):
             try:

@@ -1,9 +1,8 @@
 from django.urls import path
 
-from .views import branchesList, getData
+from .views import getData
 
 
 urlpatterns = [
-    path("branch_list/", branchesList),
-    path('rank/', getData)
+    path('rank_list/', getData)
 ]

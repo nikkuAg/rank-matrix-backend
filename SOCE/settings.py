@@ -111,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 #Rest Framework default pagination for data
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_PAGINATION_CLASS': 'backend.serializers.CustomPaginationSerializer',
     'PAGE_SIZE': 10
 }
 
