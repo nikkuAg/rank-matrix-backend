@@ -7,11 +7,11 @@ from ..permission import CustomApiPermission
 from rest_framework import viewsets, filters
 
 def getSeatmatrixModel(year=2020, increase=False):
-    key = "seat"
+    key = "seatmatrix_"
     if(increase):
-        key += 'increase_' + str(year)
+        key += 'increase'
     else:
-        key += 'matrix_' + str(year)
+        key += str(year)
         
     return models.get(key)[0]
 
@@ -31,6 +31,7 @@ class SeatmatrixViewset(viewsets.ModelViewSet):
         increase = bool(self.request.query_params.get('increase', DEFAULT_SEAT_INCREASE))
         try:
             model = getSeatmatrixModel(year, increase)
+
         except:
             return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
         

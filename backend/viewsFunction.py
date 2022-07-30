@@ -77,23 +77,27 @@ def create_seat_data(data, name):
     table = []
     for row in data['Id']:
         try:
-            if(name[(len(name)-1):] == 'I'):
+            if(name[(len(name)-8):] == 'Increase'):
                 seat = int(data['Increase'][row-1])
             else:
                 seat = int(data['Total Seats'][row-1])
         except ValueError:
             seat = None
-        table.append(model(
-            id=int(data['Id'][row-1]),
-            institute_code=Institutes.objects.get(
-                code=str(data['Institute Code'][row-1])),
-            branch_code=Branches.objects.get(
-                code=str(data['Branch Code'][row-1])),
-            quota=str(data['Quota'][row-1]),
-            category=str(data['Category'][row-1]),
-            seat_pool=str(data['Seat Pool'][row-1]),
-            seats=seat,
-        ))
+        
+        try:
+            table.append(model(
+                id=int(data['Id'][row-1]),
+                institute_code=Institutes.objects.get(
+                    code=str(data['Institute Code'][row-1])),
+                branch_code=Branches.objects.get(
+                    code=str(data['Branch Code'][row-1])),
+                quota=str(data['Quota'][row-1]),
+                category=str(data['Category'][row-1]),
+                seat_pool=str(data['Seat Pool'][row-1]),
+                seats=seat,
+            ))
+        except Exception as e:
+            print(e)
     return table
 
 def create_round_data(data, name):
@@ -135,7 +139,7 @@ def create_table(my_data, name):
     elif(name == 'College_Branch'):
         data_to_store = create_cb_data(my_data, name)
     elif(name[:10] == 'SeatMatrix'):
-            data_to_store = create_seat_data(my_data, name)
+        data_to_store = create_seat_data(my_data, name)
     else:
         data_to_store = create_round_data(my_data, name)
     
