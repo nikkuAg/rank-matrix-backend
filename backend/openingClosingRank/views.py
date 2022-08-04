@@ -1,5 +1,5 @@
 from django.http import HttpResponseNotFound
-from ..constants import BRANCH_INSTITUTE_DATA_SERIALIZER, DATA_DOES_NOT_EXISTS_ERROR, DEFAULT_INSTITUTE_TYPE, DEFAULT_ROUND_NUMBER, DEFAULT_ROUND_TYPE, DEFAULT_YEAR, NO_SUCH_INSTITUTE_TYPE_ERROR
+from ..constants import BRANCH_INSTITUTE_DATA_SERIALIZER, DATA_DOES_NOT_EXISTS_ERROR, DEFAULT_INSTITUTE_TYPE, DEFAULT_NULL, DEFAULT_ROUND_NUMBER, DEFAULT_ROUND_TYPE, DEFAULT_YEAR, NO_SUCH_INSTITUTE_TYPE_ERROR
 from ..serializers import create_serializer
 from ..views import getType
 from ..models import getRoundsModel
@@ -17,6 +17,7 @@ class RankViewsets(viewsets.ModelViewSet):
                        'branch_code__branch_name', 'branch_code__branch_code']
 
     def get_queryset(self):
+        institute_type_list = self.request.query_params.get('type_list', DEFAULT_NULL)
         institute_type = self.request.query_params.get('institute_type', DEFAULT_INSTITUTE_TYPE)
         year = self.request.query_params.get('year', DEFAULT_YEAR)
         round = self.request.query_params.get('round', DEFAULT_ROUND_NUMBER)
@@ -28,8 +29,13 @@ class RankViewsets(viewsets.ModelViewSet):
             except:
                 return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
 
-            queryset = model.objects.filter(
-                institute_code__category=institute_type.upper())
+            if(institute_type_list == DEFAULT_NULL):
+                queryset = model.objects.filter(
+                    institute_code__category=institute_type.upper())
+            else:
+                types = institute_type_list.split(',')
+                queryset = model.objects.filter(institute_code__category__in=types)
+
         else:
             return HttpResponseNotFound(NO_SUCH_INSTITUTE_TYPE_ERROR)
 

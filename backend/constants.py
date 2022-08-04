@@ -30,6 +30,8 @@ DEFAULT_BRANCH_AND_INSTITUTE_EXISTS = 'Y'
 DEFAULT_SEAT_INCREASE = False
 DEFAULT_NULL = None
 DEFAULT_CUTOFF = 10
+DEFAULT_NUMBER_TYPE = 1
+DEFAULT_TRUE = True
 
 #Messages
 CREATE_SUCCESS = "Data has been populated for the models for the given key"

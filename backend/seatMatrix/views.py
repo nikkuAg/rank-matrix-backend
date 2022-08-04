@@ -1,5 +1,5 @@
 from django.http import HttpResponseNotFound
-from ..constants import DATA_DOES_NOT_EXISTS_ERROR, DEFAULT_INSTITUTE_TYPE, DEFAULT_SEAT_INCREASE, DEFAULT_YEAR, FULL_BRANCH_DETAIL_SERIALIZER, NO_SUCH_INSTITUTE_TYPE_ERROR
+from ..constants import DATA_DOES_NOT_EXISTS_ERROR, DEFAULT_INSTITUTE_TYPE, DEFAULT_NULL, DEFAULT_SEAT_INCREASE, DEFAULT_YEAR, FULL_BRANCH_DETAIL_SERIALIZER, NO_SUCH_INSTITUTE_TYPE_ERROR
 from ..serializers import create_serializer
 from ..views import getType
 from ..models import models_list as models
@@ -26,6 +26,7 @@ class SeatmatrixViewset(viewsets.ModelViewSet):
 
 
     def get_queryset(self):
+        institute_type_list = self.request.query_params.get('type_list', DEFAULT_NULL)
         institute_type = self.request.query_params.get('institute_type', DEFAULT_INSTITUTE_TYPE)
         year = self.request.query_params.get('year', DEFAULT_YEAR)
         increase = bool(self.request.query_params.get('increase', DEFAULT_SEAT_INCREASE))
@@ -37,7 +38,12 @@ class SeatmatrixViewset(viewsets.ModelViewSet):
         
         
         if(institute_type.upper() in self.acceptable_type):
-            queryset = model.objects.filter(institute_code__category=institute_type.upper())
+            if(institute_type_list == DEFAULT_NULL):
+                queryset = model.objects.filter(institute_code__category=institute_type.upper())
+            else:
+                types = institute_type_list.split(',')
+                queryset = model.objects.filter(institute_code__category__in=types)
+
         else:
             return HttpResponseNotFound(NO_SUCH_INSTITUTE_TYPE_ERROR)
             
