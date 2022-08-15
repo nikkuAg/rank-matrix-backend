@@ -1,16 +1,17 @@
 from django.urls import path, include
 
 from backend.instituteList.views import instituteMinimalViewset
-from .views import CategoryViewSet, GenderViewSet, NewUpdatesViewSet, QuotaViewSet, UpdatesViewSet, availableInstituteType, availableRound, create, availableYears
+from .views import CategoryViewSet, GenderViewSet, QuotaViewSet, UpdatesViewSet, availableInstituteType, availableRound, create, availableYears
 # from .variableData import viewset_list as viewset
 # from .variableData import viewset_url as urls
 from rest_framework.routers import DefaultRouter
 
 
 router = DefaultRouter()
-router.register('api/v1/recent_updates', UpdatesViewSet, basename='Recent Updates')
-router.register('api/v1/new_update', NewUpdatesViewSet, basename='New Updates')
-router.register('api/v1/institute_list', instituteMinimalViewset, basename='Institiute_List')
+router.register('api/v1/recent_updates', UpdatesViewSet,
+                basename='Recent Updates')
+router.register('api/v1/institute_list',
+                instituteMinimalViewset, basename='Institiute_List')
 router.register('api/v1/category', CategoryViewSet, basename='Category')
 router.register('api/v1/gender', GenderViewSet, basename='Gender')
 router.register('api/v1/quota', QuotaViewSet, basename='Gender')

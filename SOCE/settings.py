@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 from config import details
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,10 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-7h_9&13-cc5hwyc)bsrxrs5u%k6@#hpf&cw^mn=g((8@3!)rzb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = [
-]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -81,12 +81,12 @@ WSGI_APPLICATION = 'SOCE.wsgi.application'
 
 DATABASES = {
     'default': {
-        'NAME': 'soce',
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '127.0.0.1',
+        'HOST': 'db',
         'PORT': '3306',
-        'USER': details['user'],
-        'PASSWORD': details['password'],
+        'NAME': os.environ.get('MYSQL_NAME'),
+        'USER': os.environ.get('MYSQL_USER'),
+        'PASSWORD': os.environ.get('MYSQL_PASSWORD'),
     }
 }
 
@@ -109,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-#Rest Framework default pagination for data
+# Rest Framework default pagination for data
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'backend.serializers.CustomPaginationSerializer',
     'PAGE_SIZE': 10

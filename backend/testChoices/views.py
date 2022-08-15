@@ -15,15 +15,17 @@ def getData(request):
         round_number = request.GET.get('round', DEFAULT_ROUND_NUMBER)
         rounds_type = request.GET.get('rounds_type', DEFAULT_ROUND_TYPE)
         rank = request.GET.get('rank', DEFAULT_NULL)
+        rankMain = request.GET.get('mains_rank', DEFAULT_NULL)
         delta = int(request.GET.get('cutoff', DEFAULT_CUTOFF))
         if(institute_id != DEFAULT_NULL and branch_id != DEFAULT_NULL):
             try:
                 model = getRoundsModel(year, round_number, rounds_type)
             except:
                 return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
-            
+
             try:
-                round_data = list(model.objects.filter(institute_code=institute_id, branch_code=branch_id, category=category, quota=quota, seat_pool=seat_pool).values())[0]
+                round_data = list(model.objects.filter(institute_code=institute_id, branch_code=branch_id,
+                                  category=category, quota=quota, seat_pool=seat_pool).values())[0]
             except:
                 round_data = {
                     'institute_code_id': int(institute_id),
@@ -34,9 +36,12 @@ def getData(request):
                     'opening_rank': '-',
                     'closing_rank': '-',
                 }
-            institute_detail = list(Institutes.objects.filter(id=round_data['institute_code_id']).values('id', 'code', 'name', 'display_code', 'category'))[0]
-            branch_detail = list(Branches.objects.filter(id=round_data['branch_code_id']).values('id', 'code', 'branch_name', 'branch_code'))[0]
-            id = institute_id + "_" + branch_id + "_" + quota + "_" + category + "_" + seat_pool
+            institute_detail = list(Institutes.objects.filter(id=round_data['institute_code_id']).values(
+                'id', 'code', 'name', 'display_code', 'category'))[0]
+            branch_detail = list(Branches.objects.filter(id=round_data['branch_code_id']).values(
+                'id', 'code', 'branch_name', 'branch_code'))[0]
+            id = institute_id + "_" + branch_id + "_" + \
+                quota + "_" + category + "_" + seat_pool
             data = {
                 'institute': institute_detail,
                 'branch': branch_detail,
@@ -47,8 +52,12 @@ def getData(request):
                 'closing_rank': round_data['closing_rank'],
                 'id': id,
             }
-            
-            if(rank == DEFAULT_NULL or round_data['closing_rank']=='-'):
+
+            if(rankMain != DEFAULT_NULL):
+                if(institute_detail['category'] != "IIT"):
+                    rank = rankMain
+            print(rank)
+            if(rank == DEFAULT_NULL or round_data['closing_rank'] == '-'):
                 data['color'] = "null"
             else:
                 rank = int(rank)
@@ -57,14 +66,12 @@ def getData(request):
                 elif ((rank > round((1 - (delta / 100)) * round_data['closing_rank'])) and (rank <= round(round_data['closing_rank']))):
                     data['color'] = 'yellow'
                 elif (rank > round(round_data['closing_rank']) and rank <= round((1 + (delta / 100)) * round_data['closing_rank'])):
-                    data['color'] = 'orange'   
+                    data['color'] = 'orange'
                 elif (rank > round((1 + (delta / 100)) * round_data['closing_rank'])):
                     data['color'] = 'red'
-            
+
             return JsonResponse(data)
 
-        
         return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
-    
-    return HttpResponseForbidden(DO_NOT_HAVE_PERMISSION_ERROR)
 
+    return HttpResponseForbidden(DO_NOT_HAVE_PERMISSION_ERROR)
