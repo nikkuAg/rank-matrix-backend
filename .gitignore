@@ -13,11 +13,12 @@ backend/tests.py
 RankMatrix/__pycache__
 __pycache__
 
-Extra/
+#Docker env
+database.env
+database_connect.env
 
 #Migrations
 **/migrations/**
 !**/migrations
 !**/migrations/__init__.py
 
-db
