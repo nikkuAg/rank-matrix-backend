@@ -9,8 +9,8 @@ extra
 backend/__pycache__
 backend/tests.py
 
-#Files in SOCE folder
-SOCE/__pycache__
+#Files in RankMatrix folder
+RankMatrix/__pycache__
 __pycache__
 
 Extra/
