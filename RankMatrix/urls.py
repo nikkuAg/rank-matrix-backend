@@ -18,5 +18,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('soce/', include('backend.urls'))
+    path('rankmatrix/', include('backend.urls'))
 ]
