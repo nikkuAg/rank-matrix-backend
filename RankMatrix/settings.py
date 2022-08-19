@@ -83,6 +83,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'HOST': 'db',
         'PORT': '3306',
+        # 'NAME': 'soce',
+        # 'USER': 'soce',
+        # 'PASSWORD': 'soce_pass',
         'NAME': os.environ.get('MYSQL_NAME'),
         'USER': os.environ.get('MYSQL_USER'),
         'PASSWORD': os.environ.get('MYSQL_PASSWORD'),
@@ -131,7 +134,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
+# PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_backend')
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 

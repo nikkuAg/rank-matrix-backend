@@ -3,7 +3,9 @@ config.py
 db.sqlite3
 database/
 extra
-
+supervisor.d/*
+history_dir/*
+web_server_logs/*
 
 #Files in backend folder
 backend/__pycache__
