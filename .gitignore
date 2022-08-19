@@ -17,7 +17,7 @@ __pycache__
 
 #Docker env
 database.env
-database_connect.env
+config.env
 
 #Migrations
 **/migrations/**

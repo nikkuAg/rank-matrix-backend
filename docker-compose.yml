@@ -48,7 +48,7 @@ services:
         read_only: false
 
     env_file:
-      - database_connect.env
+      - config.env
     
     depends_on:
       - db
