@@ -26,13 +26,8 @@ services:
       - type: bind
         source: ./
         target: /rank-matrix
-        read_only: true
-
-       # Mount 'static_backend' as its namesake in the root of the container
-      - type: bind
-        source: ./static_backend
-        target: /static_backend
         read_only: false
+
 
       # Mount 'supervisor.d' as its namesake in the root of the container
       - type: volume
