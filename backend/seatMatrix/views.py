@@ -20,7 +20,8 @@ class SeatmatrixViewset(viewsets.ModelViewSet):
     permission_classes = [CustomApiPermission]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['quota', 'category', 'seat_pool', 'seats', 'institute_code__name', 'institute_code__display_code',
-                     'branch_code__branch_name', 'branch_code__branch_code', 'branch_code__duration', 'branch_code__degree']
+                     'institute_code__city', 'institute_code__state', 'institute_code__category', 'branch_code__branch_name',
+                     'branch_code__branch_code', 'branch_code__duration', 'branch_code__degree']
     ordering_fields = ['quota', 'category', 'seat_pool', 'seats', 'institute_code__name', 'institute_code__display_code',
                      'branch_code__branch_name', 'branch_code__branch_code', 'branch_code__duration', 'branch_code__degree']
 

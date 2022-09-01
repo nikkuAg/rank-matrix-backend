@@ -1,6 +1,5 @@
 from django.http import HttpResponseNotFound
 from rest_framework import viewsets, filters
-
 from ..constants import DEFAULT_BRANCH_AND_INSTITUTE_EXISTS, DEFAULT_INSTITUTE_TYPE, DEFAULT_NULL, DEFAULT_NUMBER_TYPE, DEFAULT_TRUE, NO_SUCH_INSTITUTE_TYPE_ERROR
 from ..permission import CustomApiPermission
 from .serializers import InstituteListSerializers, InstituteMinimalSerializers
@@ -13,7 +12,7 @@ class institutesViewsets(viewsets.ModelViewSet):
     serializer_class = InstituteListSerializers
     permission_classes = [CustomApiPermission]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ['code', 'name', 'state',
+    search_fields = ['code', 'name', 'state', 'city', 'category',
                      'nirf_1', 'nirf_2', 'nirf_3', 'website']
     ordering_fields = ['code', 'name', 'state', 'nirf_1', 'nirf_2', 'nirf_3']
 
