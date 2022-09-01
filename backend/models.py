@@ -406,6 +406,11 @@ class SeatMatrix_2021(SeatMatrix):
     pass
 
 
+# Models for year 2022
+class SeatMatrix_2022(SeatMatrix):
+    pass
+
+
 class SeatMatrix_Increase(SeatMatrix):
     pass
 
@@ -427,6 +432,7 @@ models_list = {
     "csab_seatmatrix_2020": [SeatMatrix_2020_CSAB],
     "rounds_2021": [Round1_2021, Round2_2021, Round3_2021, Round4_2021, Round5_2021, Round6_2021],
     "seatmatrix_2021": [SeatMatrix_2021],
+    "seatmatrix_2022": [SeatMatrix_2022],
     "seatmatrix_increase": [SeatMatrix_Increase],
 }
 
@@ -462,5 +468,7 @@ complete_model_list = [
     Round1_2018, Round2_2018, Round3_2018, Round4_2018, Round5_2018, Round6_2018, Round7_2018, Provisional_2018,
     Round1_2019, Round2_2019, Round3_2019, Round4_2019, Round5_2019, Round6_2019, Round7_2019, Provisional_2019, SeatMatrix_2019,
     Round1_2020, Round2_2020, Round3_2020, Round4_2020, Round5_2020, Round6_2020, CSAB_2020_1, CSAB_2020_2, Provisional_2020, SeatMatrix_2020, SeatMatrix_2020_CSAB,
-    Round1_2021, Round2_2021, Round3_2021, Round4_2021, Round5_2021, Round6_2021, SeatMatrix_2021, SeatMatrix_Increase
+    Round1_2021, Round2_2021, Round3_2021, Round4_2021, Round5_2021, Round6_2021, SeatMatrix_2021,
+    SeatMatrix_2022,
+    SeatMatrix_Increase
 ]
