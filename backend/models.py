@@ -415,6 +415,30 @@ class SeatMatrix_Increase(SeatMatrix):
     pass
 
 
+class Round1_2022(Rounds):
+    pass
+
+
+class Round2_2022(Rounds):
+    pass
+
+
+class Round3_2022(Rounds):
+    pass
+
+
+class Round4_2022(Rounds):
+    pass
+
+
+class Round5_2022(Rounds):
+    pass
+
+
+class Round6_2022(Rounds):
+    pass
+
+
 models_list = {
     "info": [Branches, Institutes, College_Category, College_Branch],
     "rounds_2015": [Round7_2015],
@@ -432,6 +456,7 @@ models_list = {
     "csab_seatmatrix_2020": [SeatMatrix_2020_CSAB],
     "rounds_2021": [Round1_2021, Round2_2021, Round3_2021, Round4_2021, Round5_2021, Round6_2021],
     "seatmatrix_2021": [SeatMatrix_2021],
+    "rounds_2022": [Round1_2022, Round2_2022, Round3_2022, Round4_2022, Round5_2022, Round6_2022],
     "seatmatrix_2022": [SeatMatrix_2022],
     "seatmatrix_increase": [SeatMatrix_Increase],
 }
