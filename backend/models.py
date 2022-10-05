@@ -456,7 +456,7 @@ models_list = {
     "csab_seatmatrix_2020": [SeatMatrix_2020_CSAB],
     "rounds_2021": [Round1_2021, Round2_2021, Round3_2021, Round4_2021, Round5_2021, Round6_2021],
     "seatmatrix_2021": [SeatMatrix_2021],
-    "rounds_2022": [Round1_2022, Round2_2022, Round3_2022, Round4_2022, Round5_2022, Round6_2022],
+    "rounds_2022": [Round1_2022, Round2_2022, Round3_2022],
     "seatmatrix_2022": [SeatMatrix_2022],
     "seatmatrix_increase": [SeatMatrix_Increase],
 }
@@ -494,6 +494,7 @@ complete_model_list = [
     Round1_2019, Round2_2019, Round3_2019, Round4_2019, Round5_2019, Round6_2019, Round7_2019, Provisional_2019, SeatMatrix_2019,
     Round1_2020, Round2_2020, Round3_2020, Round4_2020, Round5_2020, Round6_2020, CSAB_2020_1, CSAB_2020_2, Provisional_2020, SeatMatrix_2020, SeatMatrix_2020_CSAB,
     Round1_2021, Round2_2021, Round3_2021, Round4_2021, Round5_2021, Round6_2021, SeatMatrix_2021,
+    Round1_2022, Round2_2022, Round3_2022, Round4_2022, Round5_2022, Round6_2022,
     SeatMatrix_2022,
     SeatMatrix_Increase
 ]
