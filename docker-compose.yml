@@ -1,0 +1,78 @@
+version: '3.8'
+services:
+  db:
+    image: mysql
+    restart: always
+    env_file:
+      - database.env
+    ports:
+      - '3306:3306'
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - network
+
+  
+  web:
+    image: rank-matrix-backend
+    restart: always
+    expose:
+      - 8000
+    ports:
+      - '8000:8000'
+    command: bash -c "supervisord -c /supervisord.conf"
+    volumes:
+      # Mount the code
+      - type: bind
+        source: ./
+        target: /rank-matrix
+        read_only: false
+
+
+      # Mount 'supervisor.d' as its namesake in the root of the container
+      - type: volume
+        source: supervisor.d
+        target: /supervisor.d
+        read_only: false
+
+      # Mount 'web_server_logs' as its namesake in the root of the container
+      - type: volume
+        source: web_server_logs
+        target: /web_server_logs
+        read_only: false
+
+      # Mount '.history' as its namesake in the root of the container
+      - type: volume
+        source: .history
+        target: /.history
+        read_only: false
+
+    env_file:
+      - config.env
+    
+    depends_on:
+      - db
+
+    # Connect to the custom default network
+    networks:
+      - network
+    # network_mode: host
+      
+volumes:
+  db:
+    driver: local
+
+  # This volume contains web server logs
+  web_server_logs:
+
+  # This volume is for static files of backend
+  static_backend:
+
+  # This volume contains the supervisor.d conf files
+  supervisor.d:
+
+  # This volume contains the history files
+  .history:
+
+networks:
+  network:

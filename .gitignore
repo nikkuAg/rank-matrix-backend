@@ -1,0 +1,20 @@
+#File in Main Folder
+config.py
+db.sqlite3
+database/
+.vscode
+supervisor.d/*
+history_dir/*
+web_server_logs/*
+
+#Files in backend folder
+backend/__pycache__
+backend/tests.py
+
+#Files in RankMatrix folder
+RankMatrix/__pycache__
+__pycache__
+
+#Docker env
+database.env
+config.env
