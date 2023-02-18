@@ -21,6 +21,7 @@ class Round(models.Model):
     def __str__(self) -> str:
         return f"{self.institute_code} - {self.branch_code}"
 
+    
     @property
     def institute_name(self):
         return self.institute_code.name
@@ -32,6 +33,39 @@ class Round(models.Model):
     @property
     def branch_name(self):
         return self.branch_code.branch_name
+    
+    @property
+    def institute_detail(self):
+        detail = dict()
+        detail['full_name'] = self.institute_code.name
+        detail['code'] = self.institute_code.code
+        detail['name'] = self.institute_code.display_code
+        detail['id'] = self.institute_code.id
+
+        return detail
+
+    @property
+    def branch_detail(self):
+        detail = dict()
+        detail['full_name'] = self.branch_code.branch_name
+        detail['code'] = self.branch_code.code
+        detail['name'] = self.branch_code.branch_code
+        detail['id'] = self.institute_code.id
+
+        return detail
+
+    @property
+    def branch_full_detail(self):
+        detail = dict()
+        detail['full_name'] = self.branch_code.branch_name
+        detail['code'] = self.branch_code.code
+        detail['name'] = self.branch_code.branch_code
+        detail['duration'] = self.branch_code.duration
+        detail['degree'] = self.branch_code.degree
+        detail['id'] = self.institute_code.id
+
+        return detail
+    
 
     class Meta:
         abstract = True

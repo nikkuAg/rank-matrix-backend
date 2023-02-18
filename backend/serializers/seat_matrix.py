@@ -1,11 +1,8 @@
-from rest_framework import serializers
-
 from backend.models.seat_matrix import Seat
+from backend.serializers.custom_serializer import BranchFullDetailSerializer
 
 
-class SeatMatrixSerializer(serializers.ModelSerializer):
-    institute_detail = serializers.ReadOnlyField()
-    branch_full_detail = serializers.ReadOnlyField()
+class SeatMatrixSerializer(BranchFullDetailSerializer):
     class Meta:
         model = Seat
-        exclude = ('seats_change', 'institute_code',)   
+        exclude = ('seats_change', 'institute_code', 'branch_code', 'data_updated')
