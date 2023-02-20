@@ -1,6 +1,10 @@
 from rest_framework import serializers, pagination, response
 
 class CustomPaginationSerializer(pagination.PageNumberPagination):
+    """
+    Serializer for fields to be available for paginations
+    """
+    
     def get_paginated_response(self, data):
         return response.Response({
             'links': {

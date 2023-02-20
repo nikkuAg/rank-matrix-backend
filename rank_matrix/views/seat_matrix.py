@@ -13,6 +13,9 @@ from rank_matrix.utils.get_latest_year import get_latest_seat_matrix_year
 
 
 class SeatmatrixViewset(viewsets.ModelViewSet):
+    """
+    Viewset for displaying the seat matrix
+    """
     acceptable_type = get_college_type()
     permission_classes = [CustomApiPermission]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]

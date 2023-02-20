@@ -6,10 +6,28 @@ MODEL_SERIALIZERS = [Round1Serializer, Round2Serializer, Round3Serializer, Round
 	Round5Serializer, Round6Serializer, Round7Serializer]
 
 def get_round_model(round):
+    """
+    Args:
+        round (int): Round number
+
+    Returns:
+        model: Round Model for the round number provided
+    """
     return MODELS[round-1]
 
 def get_round_serializer(round):
+    """
+    Args:
+        round (int): Round number
+
+    Returns:
+        serializer: Round Serializer for the round number provided
+    """
     return MODEL_SERIALIZERS[round-1]
   
 def get_all_round_model():
-	return MODELS
+    """
+    Returns:
+        list: List of all round models
+    """
+    return MODELS

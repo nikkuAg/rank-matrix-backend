@@ -12,6 +12,9 @@ from rank_matrix.utils.get_round import get_round_model, get_round_serializer
 from rank_matrix.utils.get_latest_year import get_latest_round_year
 
 class RankViewsets(viewsets.ModelViewSet):
+    """
+    Viewset for displaying the opening and closing ranks
+    """
     acceptable_type = get_college_type()
     permission_classes = [CustomApiPermission]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]

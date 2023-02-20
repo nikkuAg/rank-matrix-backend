@@ -1,4 +1,4 @@
-NO_SUCH_INSTITUTE_TYPE_ERROR = "The institute type you choose does not exist."
+NO_SUCH_INSTITUTE_TYPE_ERROR = "The college type you choose does not exist."
 DATA_DOES_NOT_EXISTS_ERROR = "No corresponding data found."
 MODLE_DOES_NOT_EXISTS_ERROR = "Model for the given year does not exists."
 DO_NOT_HAVE_PERMISSION_ERROR = "You do not have permission to perform this action."

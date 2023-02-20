@@ -12,6 +12,9 @@ from rank_matrix.utils.get_college_type import get_college_type
 
 
 class InstitutesViewset(viewsets.ModelViewSet):
+    """
+    Viewset for displaying the institutes participating in JoSAA Counselling
+    """
     acceptable_type = get_college_type()
     serializer_class = InstituteListSerializer
     permission_classes = [CustomApiPermission]
@@ -44,6 +47,9 @@ class InstitutesViewset(viewsets.ModelViewSet):
 
 
 class InstituteMinimalViewset(viewsets.ModelViewSet):
+    """
+    Viewset for displaying the institutes with minimal data of institute
+    """
     acceptable_type = get_college_type()
     serializer_class = InstituteMinimalSerializer
     permission_classes = [CustomApiPermission]

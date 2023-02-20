@@ -40,6 +40,25 @@ class YearFilter(admin.SimpleListFilter):
         if self.value():
             return queryset.filter(year=self.value())
 
+class CollegeTypeFilter(admin.SimpleListFilter):
+    title = "Institute Type"
+    parameter_name = "college_type"
+    
+    def lookups(self, request, model_admin):
+        year_dict = list(College_Type.objects.values('type').distinct())
+        type_tuple = ()
+
+        for obj in year_dict:
+            temp = (obj['type'], str(obj['type']))
+            type_tuple += (temp,)
+
+        return type_tuple
+    
+    def queryset(self, request, queryset):
+        if not self.value():
+            return queryset
+        if self.value():
+            return queryset.filter(college_type__type=self.value())
 
 class InstituteTypeFilter(admin.SimpleListFilter):
     title = "Institute Type"
@@ -113,9 +132,12 @@ class CustomSeatFilter(admin.ModelAdmin):
 
 class CustomDataUpdateFilter(admin.ModelAdmin):
     list_filter = (DataUpdateFilter,)
+    
+class CustomCollegeFilter(admin.ModelAdmin):
+    list_filter = (InstituteTypeFilter, DataUpdateFilter)
 
 
-admin.site.register(Institute, CustomDataUpdateFilter)
+admin.site.register(Institute, CustomCollegeFilter)
 admin.site.register(Branch, CustomDataUpdateFilter)
 admin.site.register(College_Type, CustomDataUpdateFilter)
 admin.site.register(Category, CustomDataUpdateFilter)

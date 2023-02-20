@@ -6,6 +6,9 @@ from rank_matrix.models.college_type import College_Type
 
 
 class Institute(models.Model):
+    """
+    Model for storing data of all colleges
+    """
     id = models.BigIntegerField(auto_created=False)
     code = models.CharField(max_length=10, primary_key=True)
     name = models.CharField(max_length=255)
@@ -29,6 +32,15 @@ class Institute(models.Model):
     def __str__(self) -> str:
         return f"{self.code}: {self.name}"
 
+    @property
+    def institute_detail(self):
+        detail = dict()
+        detail['full_name'] = self.name
+        detail['code'] = self.code
+        detail['name'] = self.display_code
+        detail['id'] = self.id
+
+        return detail
     # @property
     # def nirf_year(self):
     #     return NIRF_Year.objects.last().year

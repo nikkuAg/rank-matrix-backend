@@ -74,7 +74,7 @@ def update_institutes():
                     'id': int(str(data['Id'][row-1])),
                     'code': str(data['Code'][row-1]),
                     'name': str(data['Name'][row-1]),
-                    'college_type': College_Type.objects.get(type=str(data['College_Type'][row-1])),
+                    'college_type': College_Type.objects.get(type=str(data['College Type'][row-1])),
                     'display_code': str(data['Display Code'][row-1]),
                     'state': str(data['State'][row-1]),
                     'city': str(data['City'][row-1]),
@@ -144,8 +144,8 @@ def update_college_branch():
 
 
 
-def update_seats(increase):
-    reset(Seat)
+def update_seats(increase, year=None):
+    reset(Seat, year)
     location = input("Enter location of Branch data")
     data = pd.read_csv(location, sep=',', header=0, na_filter=False)
     for row in data['Id']:
@@ -185,10 +185,10 @@ def update_seats(increase):
 
 
 
-def update_rounds(round:int):
+def update_rounds(round:int, year=None):
     rounds = [Round1, Round2, Round3, Round4, Round5, Round6, Round7]
     db = rounds[round-1]
-    reset(db)
+    reset(db, year)
     location = input("Enter location of Branch data")
     data = pd.read_csv(location, sep=',', header=0, na_filter=False)
     for row in data['Id']:
@@ -226,7 +226,12 @@ def update_rounds(round:int):
             continue
 
 
-def reset(database):
-    for data in database.objects.all():
+def reset(database, year=None):
+    if year:
+        dataset = database.objects.filter(year=year)
+    else:
+        dataset = database.objects.all()
+        
+    for data in dataset:
         data.data_updated = False
         data.save()

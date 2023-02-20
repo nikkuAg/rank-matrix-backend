@@ -15,6 +15,9 @@ from rank_matrix.utils.get_round import get_all_round_model
 
 
 class BranchSearchViewset(viewsets.ModelViewSet):
+    """
+    Viewset for displaying the branches for the college with a particular college id
+    """
     acceptable_type = get_college_type()
     permission_classes = [CustomApiPermission]
     serializer_class = CollegeBranchSerializer
@@ -25,9 +28,8 @@ class BranchSearchViewset(viewsets.ModelViewSet):
              'institute_id', DEFAULT_NULL)
 
         if(institute_id != DEFAULT_NULL):
-
             queryset = College_Branch.objects.filter(
-                institute_code=institute_id)
+                institute_code__code=institute_id)
 
             if(queryset.count() == 0):
                 return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
@@ -38,6 +40,12 @@ class BranchSearchViewset(viewsets.ModelViewSet):
 
 
 def one_college_one_branch(request):
+    """
+    Function view for giving response of prediction of a branch from a particular college.
+    
+    Returns:
+        Json Response: Required data for prediction of a branch from a particular college
+    """
     if request.method == "GET":
         institute_id = request.GET.get('institute_id', DEFAULT_NULL)
         branch_id = request.GET.get('branch_id', DEFAULT_NULL)

@@ -7,6 +7,9 @@ from rank_matrix.serializers.recent_update import UpdateSerializer
 
 
 class UpdateViewSet(viewsets.ModelViewSet):
+    """
+    Viewset for displaying recent updates
+    """
     permission_classes = [CustomApiPermission]
     pagination_class = None
     queryset = Update.objects.all()

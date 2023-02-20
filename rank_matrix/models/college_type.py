@@ -3,6 +3,9 @@ from django.db.models.deletion import CASCADE
 
 
 class College_Type(models.Model):
+    """
+    Different types of colleges like IIT, NIT, IIIT, GFTI
+    """
     id = models.AutoField(auto_created=False, primary_key=True)
     type = models.CharField(max_length=50)
 

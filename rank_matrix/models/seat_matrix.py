@@ -8,6 +8,9 @@ from rank_matrix.models.seat_pool import Seat_Pool
 
 
 class Seat(models.Model):
+    """
+    Model for storing the data of seat matrix
+    """
     institute_code = models.ForeignKey(to=Institute, on_delete=CASCADE)
     branch_code = models.ForeignKey(to=Branch, on_delete=CASCADE)
     quota = models.CharField(max_length=100, null=True, blank=True)
@@ -37,33 +40,13 @@ class Seat(models.Model):
     
     @property
     def institute_detail(self):
-        detail = dict()
-        detail['full_name'] = self.institute_code.name
-        detail['code'] = self.institute_code.code
-        detail['name'] = self.institute_code.display_code
-        detail['id'] = self.institute_code.id
-
-        return detail
+        return self.institute_code.institute_detail
 
     @property
     def branch_detail(self):
-        detail = dict()
-        detail['full_name'] = self.branch_code.branch_name
-        detail['code'] = self.branch_code.code
-        detail['name'] = self.branch_code.branch_code
-        detail['id'] = self.institute_code.id
-
-        return detail
+        return self.branch_code.branch_detail
 
     @property
     def branch_full_detail(self):
-        detail = dict()
-        detail['full_name'] = self.branch_code.branch_name
-        detail['code'] = self.branch_code.code
-        detail['name'] = self.branch_code.branch_code
-        detail['duration'] = self.branch_code.duration
-        detail['degree'] = self.branch_code.degree
-        detail['id'] = self.institute_code.id
-
-        return detail
+        return self.branch_code.branch_full_detail
 

@@ -4,6 +4,10 @@ from rank_matrix.models.college_type import College_Type
 
 
 class Branch(models.Model):
+    """
+    Model for storing all the branches
+    """
+    
     id = models.BigIntegerField(auto_created=False)
     code = models.CharField(max_length=10, primary_key=True)
     branch_name = models.CharField(max_length=255)
@@ -20,3 +24,41 @@ class Branch(models.Model):
 
     def __str__(self) -> str:
         return f"{self.code}: {self.branch_name}"
+    
+    @property
+    def get_currently_present(self):
+        data = list()
+        queryset = self.currently_present.all()
+        for item in queryset:
+            data.append(item.type)
+        
+        return data
+    
+    @property
+    def get_previously_present(self):
+        data = list()
+        queryset = self.previously_present.all()
+        for item in queryset:
+            data.append(item.type)
+        return data
+
+    @property
+    def branch_full_detail(self):
+        detail = dict()
+        detail['full_name'] = self.branch_name
+        detail['code'] = self.code
+        detail['name'] = self.branch_code
+        detail['id'] = self.id
+        detail['currently_present'] = self.get_currently_present
+        detail['previously_present'] = self.get_previously_present
+        return detail
+    
+    @property
+    def branch_detail(self):
+        detail = dict()
+        detail['full_name'] = self.branch_name
+        detail['code'] = self.code
+        detail['name'] = self.branch_code
+        detail['id'] = self.id
+
+        return detail

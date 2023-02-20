@@ -6,6 +6,9 @@ from rank_matrix.models.college import Institute
 
 
 class College_Branch(models.Model):
+    """
+    Relation for all branches available in a particular college
+    """
     id = models.BigAutoField(auto_created=False, primary_key=True)
     institute_code = models.ForeignKey(to=Institute, on_delete=CASCADE)
     branch_code = models.ForeignKey(to=Branch, on_delete=CASCADE)
@@ -14,17 +17,13 @@ class College_Branch(models.Model):
 
     @property
     def branch_detail(self):
-        detail = dict()
-        detail['full_name'] = self.branch_code.branch_name
-        detail['code'] = self.branch_code.code
-        detail['name'] = self.branch_code.branch_code
-        detail['id'] = self.branch_code.id
-        detail['currently_present'] = self.branch_code.currently_present
-        detail['previously_present'] = self.branch_code.previously_present
-        return detail
+        return self.branch_code.branch_full_detail
     
 
 class College_Quota(models.Model):
+    """
+    Relation for all quotas available in a particular college
+    """
     institute_code = models.ForeignKey(to=Institute, on_delete=CASCADE)
     quota = models.CharField(max_length=5)
     data_updated = models.BooleanField(default=False)

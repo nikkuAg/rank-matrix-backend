@@ -5,13 +5,13 @@ from unittest.mock import DEFAULT
 
 # Serializers Type
 NORMAL_SERIALIZER = 'normal serializer'
-INSTITUTE_DATA_SERIALIZER = 'normal serializer with institute detail'
+INSTITUTE_DATA_SERIALIZER = 'normal serializer with college detail'
 BRANCH_DATA_SERIALIZER = 'normal serializer with branch detail'
-BRANCH_INSTITUTE_DATA_SERIALIZER = 'normal serializer with branch and institute detail'
-FULL_BRANCH_DETAIL_SERIALIZER = 'branch institute data serializer with extra branch information'
+BRANCH_INSTITUTE_DATA_SERIALIZER = 'normal serializer with branch and college detail'
+FULL_BRANCH_DETAIL_SERIALIZER = 'branch college data serializer with extra branch information'
 
 # Error Messages
-NO_SUCH_INSTITUTE_TYPE_ERROR = "The institute type you choose does not exist."
+NO_SUCH_INSTITUTE_TYPE_ERROR = "The college type you choose does not exist."
 DATA_DOES_NOT_EXISTS_ERROR = "No corresponding data found."
 MODLE_DOES_NOT_EXISTS_ERROR = "Model for the given year does not exists."
 DO_NOT_HAVE_PERMISSION_ERROR = "You do not have permission to perform this action."
@@ -38,7 +38,7 @@ CREATE_SUCCESS = "Data has been populated"
 CREATE_FILE_FAILED = "File not found at that location"
 CREATE_PARTIAL = "Data was populated partially"
 
-# Institute Type
+# College Type
 INSTITUTE_TYPE_IIT = "IIT"
 INSTITUTE_TYPE_NIT = "NIT"
 INSTITUTE_TYPE_IIIT = "IIIT"
