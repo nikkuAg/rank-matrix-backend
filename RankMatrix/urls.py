@@ -3,5 +3,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('rankmatrix/api/', include('backend.urls'))
+    path('rankmatrix/api/', include('rank_matrix.urls'))
 ]

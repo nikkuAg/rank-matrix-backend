@@ -7,9 +7,9 @@ supervisor.d/*
 history_dir/*
 web_server_logs/*
 
-#Files in backend folder
-backend/__pycache__
-backend/tests.py
+#Files in rank_matrix folder
+rank_matrix/__pycache__
+rank_matrix/tests.py
 
 #Files in RankMatrix folder
 RankMatrix/__pycache__

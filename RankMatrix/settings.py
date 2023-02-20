@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'backend',
+    'rank_matrix',
     'rest_framework',
 ]
 
@@ -71,7 +71,7 @@ TEMPLATES = [
 
 # Rest Framework default pagination for data
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'backend.serializers.pagination.CustomPaginationSerializer',
+    'DEFAULT_PAGINATION_CLASS': 'rank_matrix.serializers.pagination.CustomPaginationSerializer',
     'PAGE_SIZE': 10
 }
 
@@ -87,7 +87,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'HOST': 'localhost',
         'PORT': '3306',
-        'NAME': 'soce_revamp',
+        'NAME': 'soce_new',
         'USER': 'soce',
         'PASSWORD': 'soce_pass',
         # 'NAME': os.environ.get('MYSQL_NAME'),
