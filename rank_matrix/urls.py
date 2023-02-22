@@ -9,6 +9,7 @@ from rank_matrix.views.perdictions.one_college_one_branch import BranchSearchVie
 
 from rank_matrix.views.recent_update import UpdateViewSet
 from rank_matrix.views.seat_matrix import SeatmatrixViewset
+from rank_matrix.views.test_your_choice import test_your_choice
 
 
 router = DefaultRouter()
@@ -28,4 +29,5 @@ urlpatterns = [
     path('one_all/rank_list', all_college_one_branch),
     path('all_one/rank_list', one_college_all_branch),
     path('all_all/rank_list', all_college_all_branch),
+    path('choice/rank_list', test_your_choice),
 ]
