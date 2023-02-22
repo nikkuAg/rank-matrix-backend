@@ -78,7 +78,7 @@ def all_college_one_branch(request):
                     round_model = get_round_model(round)
                     try:
                         round_data = list(round_model.objects.filter(branch_code__code=branch_id, 
-                            institute_code=ins['code'], quota=quota, category__category=category, 
+                            institute_code=ins['code'], quota__quota=quota, category__category=category, 
                             seat_pool__seat_pool=seat_pool, year=i)
                                 .values('institute_code', 'opening_rank', 'closing_rank'))[0]
                     except Exception as e:

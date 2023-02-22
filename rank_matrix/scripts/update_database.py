@@ -31,6 +31,9 @@ def update_branches():
     reset(Branch)
     try:
         data = download_csv('Branches') 
+        if data.empty:
+           print(f'data not found for branches')
+           return 
     except Exception as e:
         print(Exception)
         return
@@ -87,6 +90,9 @@ def update_institutes():
     reset(Institute)
     try:
         data = download_csv('Institutes') 
+        if data.empty:
+           print(f'data not found for colleges')
+           return 
     except Exception as e:
         print(Exception)
         return
@@ -123,6 +129,9 @@ def update_college_category():
     reset(Institute)
     try:
         data = download_csv('College_Category') 
+        if data.empty:
+           print(f'data not found for college and category relation')
+           return 
     except Exception as e:
         print(Exception)
         return
@@ -142,6 +151,9 @@ def update_college_branch():
     reset(Institute)
     try:
         data = download_csv('College_Branch') 
+        if data.empty:
+           print(f'data not found for college and branch relation')
+           return 
     except Exception as e:
         print(Exception)
         return
@@ -168,8 +180,13 @@ def update_college_branch():
 def update_seats(year,increase=False):
     reset(Seat, year)
     file_name = f'SeatMatrix_{year}'
+    if increase:
+        file_name = 'SeatMatrix_Increase'
     try:
         data = download_csv(file_name) 
+        if data.empty:
+           print(f'data not found for seat matrix for year{year}')
+           return 
     except Exception as e:
         print(Exception)
         return
@@ -183,11 +200,11 @@ def update_seats(year,increase=False):
                 category=str(data['Category'][row-1]))
             seat_pool = Seat_Pool.objects.get(
                 seat_pool=str(data['Seat Pool'][row-1]))
-
+            quota=Quota.objects.get(quota=str(data['Quota'][row-1]))
             Seat.objects.update_or_create(
                 institute_code=ins,
                 branch_code=branch,
-                quota=str(data['Quota'][row-1]),
+                quota=quota,
                 category=category,
                 seat_pool=seat_pool,
                 year=int(str(data['Year'][row-1])),
@@ -195,7 +212,7 @@ def update_seats(year,increase=False):
                 defaults={
                     'institute_code': ins,
                     'branch_code': branch,
-                    'quota': str(data['Quota'][row-1]),
+                    'quota':quota,
                     'category': category,
                     'seat_pool': seat_pool,
                     'year': int(str(data['Year'][row-1])),
@@ -216,7 +233,10 @@ def update_rounds(round:int, year:int):
     reset(db, year)
     file_name = f'Round{round}_{year}'
     try:
-        data = download_csv(file_name) 
+        data = download_csv(file_name)
+        if data.empty:
+           print(f'data not found for round {round}:year{year}')
+           return 
     except Exception as e:
         print(Exception)
         return
@@ -230,18 +250,19 @@ def update_rounds(round:int, year:int):
                 category=str(data['Category'][row-1]))
             seat_pool = Seat_Pool.objects.get(
                 seat_pool=str(data['Seat Pool'][row-1]))
+            quota=Quota.objects.get(quota=str(data['Quota'][row-1]))
 
             db.objects.update_or_create(
                 institute_code=ins,
                 branch_code=branch,
-                quota=str(data['Quota'][row-1]),
+                quota=quota,
                 category=category,
                 seat_pool=seat_pool,
                 year=int(str(data['Year'][row-1])),
                 defaults={
                     'institute_code': ins,
                     'branch_code': branch,
-                    'quota': str(data['Quota'][row-1]),
+                    'quota': quota,
                     'category': category,
                     'seat_pool': seat_pool,
                     'year': int(str(data['Year'][row-1])),

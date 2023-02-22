@@ -78,7 +78,7 @@ def one_college_one_branch(request):
                 for year in years:
                     try:
                         one_one_data = list(model.objects.filter(institute_code=institute_id, branch_code=branch_id,
-                                quota=quota, category__category=category, seat_pool__seat_pool=seat_pool, year=year)
+                                quota__quota=quota, category__category=category, seat_pool__seat_pool=seat_pool, year=year)
                                     .values('opening_rank', 'closing_rank'))[0]
                     except:
                         one_one_data = {'opening_rank': 0, 'closing_rank': 0}

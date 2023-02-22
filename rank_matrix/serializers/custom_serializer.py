@@ -11,6 +11,7 @@ class RankMatrixCustomSerializer(serializers.ModelSerializer):
     institute_detail = serializers.ReadOnlyField()
     category = serializers.CharField(source="category.category")
     seat_pool = serializers.CharField(source="seat_pool.seat_pool")  
+    quota = serializers.CharField(source="quota.quota")
     
 class BranchFullDetailSerializer(RankMatrixCustomSerializer):
     """
