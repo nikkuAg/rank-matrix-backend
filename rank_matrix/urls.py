@@ -2,6 +2,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rank_matrix.views.college_list import InstitutesViewset
 from rank_matrix.views.opening_closing_rank import RankViewsets
+from rank_matrix.views.perdictions.all_college_all_branch import all_college_all_branch
 from rank_matrix.views.perdictions.all_college_one_branch import InstituteSearchViewset, all_college_one_branch
 from rank_matrix.views.perdictions.one_college_all_branch import one_college_all_branch
 from rank_matrix.views.perdictions.one_college_one_branch import BranchSearchViewset, one_college_one_branch
@@ -26,4 +27,5 @@ urlpatterns = [
     path('one_one/rank_list', one_college_one_branch),
     path('one_all/rank_list', all_college_one_branch),
     path('all_one/rank_list', one_college_all_branch),
+    path('all_all/rank_list', all_college_all_branch),
 ]

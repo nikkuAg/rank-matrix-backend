@@ -23,7 +23,8 @@ def one_college_all_branch(request):
         if(institute_id != DEFAULT_NULL):
             ins = Institute.objects.get(code=institute_id)
             institute_detail = InstituteMinimalSerializer(ins).data
-            branches = BranchMinimalSerializer(ins.presently_available_branches.all(), many=True).data
+            branches = BranchMinimalSerializer(ins.presently_available_branches.all()
+                                               .order_by('branch_name'), many=True).data
 
             data = {
                 'institutes': institute_detail,
