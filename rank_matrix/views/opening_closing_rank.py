@@ -9,7 +9,7 @@ from rank_matrix.permission import CustomApiPermission
 from rank_matrix.serializers.opening_closing_rank import Round1Serializer
 from rank_matrix.utils.get_college_type import get_college_type
 from rank_matrix.utils.get_round import get_round_model, get_round_serializer
-from rank_matrix.utils.get_latest_year import get_latest_round_year
+from rank_matrix.utils.get_year import get_latest_round_year
 
 class RankViewsets(viewsets.ModelViewSet):
     """

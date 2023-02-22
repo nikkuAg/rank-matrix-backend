@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from rank_matrix.models.branch import Branch
+
 
 class RankMatrixCustomSerializer(serializers.ModelSerializer):
     """
@@ -23,3 +25,4 @@ class BranchDetailSerializer(RankMatrixCustomSerializer):
     """
     
     branch_detail = serializers.ReadOnlyField()
+    

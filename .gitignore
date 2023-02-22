@@ -15,6 +15,4 @@ rank_matrix/tests.py
 RankMatrix/__pycache__
 __pycache__
 
-#Docker env
-database.env
-config.env
+.env

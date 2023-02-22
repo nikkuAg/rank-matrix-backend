@@ -39,7 +39,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='College',
+            name='Institute',
             fields=[
                 ('id', models.BigIntegerField()),
                 ('code', models.CharField(max_length=10, primary_key=True, serialize=False)),
@@ -85,7 +85,7 @@ class Migration(migrations.Migration):
                 ('data_updated', models.BooleanField(default=False)),
                 ('branch_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.branch')),
                 ('category', models.ForeignKey(max_length=100, on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.category')),
-                ('college_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.college')),
+                ('institute_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.institute')),
                 ('seat_pool', models.ForeignKey(blank=True, max_length=100, null=True, on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.seat_pool')),
             ],
         ),
@@ -100,7 +100,7 @@ class Migration(migrations.Migration):
                 ('closing_rank', models.IntegerField(blank=True, null=True)),
                 ('branch_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.branch')),
                 ('category', models.ForeignKey(blank=True, max_length=100, null=True, on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.category')),
-                ('college_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.college')),
+                ('institute_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.institute')),
                 ('seat_pool', models.ForeignKey(blank=True, max_length=100, null=True, on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.seat_pool')),
             ],
             options={
@@ -118,7 +118,7 @@ class Migration(migrations.Migration):
                 ('closing_rank', models.IntegerField(blank=True, null=True)),
                 ('branch_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.branch')),
                 ('category', models.ForeignKey(blank=True, max_length=100, null=True, on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.category')),
-                ('college_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.college')),
+                ('institute_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.institute')),
                 ('seat_pool', models.ForeignKey(blank=True, max_length=100, null=True, on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.seat_pool')),
             ],
             options={
@@ -136,7 +136,7 @@ class Migration(migrations.Migration):
                 ('closing_rank', models.IntegerField(blank=True, null=True)),
                 ('branch_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.branch')),
                 ('category', models.ForeignKey(blank=True, max_length=100, null=True, on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.category')),
-                ('college_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.college')),
+                ('institute_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.institute')),
                 ('seat_pool', models.ForeignKey(blank=True, max_length=100, null=True, on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.seat_pool')),
             ],
             options={
@@ -154,7 +154,7 @@ class Migration(migrations.Migration):
                 ('closing_rank', models.IntegerField(blank=True, null=True)),
                 ('branch_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.branch')),
                 ('category', models.ForeignKey(blank=True, max_length=100, null=True, on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.category')),
-                ('college_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.college')),
+                ('institute_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.institute')),
                 ('seat_pool', models.ForeignKey(blank=True, max_length=100, null=True, on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.seat_pool')),
             ],
             options={
@@ -172,7 +172,7 @@ class Migration(migrations.Migration):
                 ('closing_rank', models.IntegerField(blank=True, null=True)),
                 ('branch_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.branch')),
                 ('category', models.ForeignKey(blank=True, max_length=100, null=True, on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.category')),
-                ('college_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.college')),
+                ('institute_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.institute')),
                 ('seat_pool', models.ForeignKey(blank=True, max_length=100, null=True, on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.seat_pool')),
             ],
             options={
@@ -190,7 +190,7 @@ class Migration(migrations.Migration):
                 ('closing_rank', models.IntegerField(blank=True, null=True)),
                 ('branch_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.branch')),
                 ('category', models.ForeignKey(blank=True, max_length=100, null=True, on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.category')),
-                ('college_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.college')),
+                ('institute_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.institute')),
                 ('seat_pool', models.ForeignKey(blank=True, max_length=100, null=True, on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.seat_pool')),
             ],
             options={
@@ -208,7 +208,7 @@ class Migration(migrations.Migration):
                 ('closing_rank', models.IntegerField(blank=True, null=True)),
                 ('branch_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.branch')),
                 ('category', models.ForeignKey(blank=True, max_length=100, null=True, on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.category')),
-                ('college_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.college')),
+                ('institute_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.institute')),
                 ('seat_pool', models.ForeignKey(blank=True, max_length=100, null=True, on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.seat_pool')),
             ],
             options={
@@ -221,7 +221,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('quota', models.CharField(max_length=5)),
                 ('data_updated', models.BooleanField(default=False)),
-                ('college_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.college')),
+                ('institute_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.institute')),
             ],
         ),
         migrations.CreateModel(
@@ -231,7 +231,7 @@ class Migration(migrations.Migration):
                 ('current', models.CharField(blank=True, max_length=5, null=True)),
                 ('data_updated', models.BooleanField(default=False)),
                 ('branch_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.branch')),
-                ('college_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.college')),
+                ('institute_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rank_matrix.institute')),
             ],
         ),
         migrations.AddField(

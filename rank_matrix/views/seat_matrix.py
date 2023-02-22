@@ -9,7 +9,7 @@ from rank_matrix.models.seat_matrix import Seat
 from rank_matrix.permission import CustomApiPermission
 from rank_matrix.serializers.seat_matrix import SeatMatrixSerializer
 from rank_matrix.utils.get_college_type import get_college_type
-from rank_matrix.utils.get_latest_year import get_latest_seat_matrix_year
+from rank_matrix.utils.get_year import get_latest_seat_matrix_year
 
 
 class SeatmatrixViewset(viewsets.ModelViewSet):

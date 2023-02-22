@@ -22,3 +22,4 @@ class InstituteMinimalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Institute
         fields = ('id', 'name', 'code', 'display_code')
+        

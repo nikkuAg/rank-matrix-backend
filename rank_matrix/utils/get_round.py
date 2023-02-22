@@ -31,3 +31,31 @@ def get_all_round_model():
         list: List of all round models
     """
     return MODELS
+
+
+def get_total_exisiting_round_count():
+    """
+    Returns:
+        int: Total number of round models that exists
+    """
+    return len(MODELS)
+
+def year_exists_in_round(round:int, year:int):
+    return bool(get_round_model(round).objects.filter(year=year).count())
+
+def get_last_round(year:int):
+    """
+    This function provides the last round that exists for the year
+
+    Args:
+        year (int): Year for which last round needs to be found
+    
+    Returns:
+        int: Last Round for the year
+    """
+    round_count = get_total_exisiting_round_count()
+    for i in range(round_count, 0, -1):
+        if year_exists_in_round(i, year):
+            return i
+    
+    return -1

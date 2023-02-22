@@ -19,7 +19,7 @@ class Branch(models.Model):
         College_Type, related_name='Currently_Present', blank=True)
     previously_present = models.ManyToManyField(
         College_Type, related_name='Previously_Present', blank=True)
-
+    
     data_updated = models.BooleanField(default=False)
 
     def __str__(self) -> str:

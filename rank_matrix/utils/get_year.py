@@ -20,4 +20,3 @@ def get_latest_round_year():
     round = Round1.objects.all().values_list('year', flat=True).distinct()
     return round.aggregate(Max('year'))['year__max']
     
-    

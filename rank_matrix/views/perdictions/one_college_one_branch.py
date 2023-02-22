@@ -7,9 +7,11 @@ from rank_matrix.models.branch import Branch
 from rank_matrix.models.college import Institute
 from rank_matrix.models.relation import College_Branch
 from rank_matrix.permission import CustomApiPermission
+from rank_matrix.serializers.branch import BranchMinimalSerializer
+from rank_matrix.serializers.college import InstituteMinimalSerializer
 from rank_matrix.serializers.predictions.one_college_one_branch import CollegeBranchSerializer
 from rank_matrix.utils.get_college_type import get_college_type
-from rank_matrix.utils.get_latest_year import get_latest_round_year
+from rank_matrix.utils.get_year import get_latest_round_year
 from rank_matrix.utils.get_rank_color_code import get_rank_color_code
 from rank_matrix.utils.get_round import get_all_round_model
 
@@ -20,7 +22,7 @@ class BranchSearchViewset(viewsets.ModelViewSet):
     """
     acceptable_type = get_college_type()
     permission_classes = [CustomApiPermission]
-    serializer_class = CollegeBranchSerializer
+    serializer_class = BranchMinimalSerializer
     pagination_class = None
 
     def get_queryset(self):
@@ -28,12 +30,12 @@ class BranchSearchViewset(viewsets.ModelViewSet):
              'institute_id', DEFAULT_NULL)
 
         if(institute_id != DEFAULT_NULL):
-            queryset = College_Branch.objects.filter(
-                institute_code__code=institute_id)
+            queryset = Institute.objects.get(
+                code=institute_id).presently_available_branches.all()
 
             if(queryset.count() == 0):
                 return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
-
+            print(queryset)
             return queryset
 
         return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
@@ -56,15 +58,13 @@ def one_college_one_branch(request):
         delta = int(request.GET.get('cutoff', DEFAULT_CUTOFF))
 
         if(institute_id != DEFAULT_NULL and branch_id != DEFAULT_NULL):
-            institute_detail = list(Institute.objects.filter(
-                id=institute_id).values('name', 'code', 'display_code', 'id'))
-            branch_detail = list(Branch.objects.filter(id=branch_id).values(
-                'branch_name', 'code', 'branch_code', 'id'))
+            institute_detail = InstituteMinimalSerializer(Institute.objects.get(id=institute_id)).data
+            branch_detail = BranchMinimalSerializer(Branch.objects.get(id=branch_id)).data
             model_arrays = get_all_round_model()
             years = list(range(2015, get_latest_round_year()+1))
             data = {
-                'institute': institute_detail[0],
-                'branch': branch_detail[0],
+                'institute': institute_detail,
+                'branch': branch_detail,
                 'quota': quota,
                 'seat_pool': seat_pool,
                 'category': category,

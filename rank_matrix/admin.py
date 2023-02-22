@@ -5,8 +5,9 @@ from rank_matrix.models.category import Category
 from rank_matrix.models.college import Institute
 
 from rank_matrix.models.college_type import College_Type
+from rank_matrix.models.quota import Quota
 from rank_matrix.models.recent_update import Update
-from rank_matrix.models.relation import College_Branch, College_Quota
+# from rank_matrix.models.relation import College_Branch, College_Quota
 from rank_matrix.models.round import Round1, Round2, Round3, Round4, Round5, Round6, Round7
 from rank_matrix.models.seat_matrix import Seat
 from rank_matrix.models.seat_pool import Seat_Pool
@@ -134,7 +135,7 @@ class CustomDataUpdateFilter(admin.ModelAdmin):
     list_filter = (DataUpdateFilter,)
     
 class CustomCollegeFilter(admin.ModelAdmin):
-    list_filter = (InstituteTypeFilter, DataUpdateFilter)
+    list_filter = (DataUpdateFilter,)
 
 
 admin.site.register(Institute, CustomCollegeFilter)
@@ -142,8 +143,6 @@ admin.site.register(Branch, CustomDataUpdateFilter)
 admin.site.register(College_Type, CustomDataUpdateFilter)
 admin.site.register(Category, CustomDataUpdateFilter)
 admin.site.register(Seat_Pool, CustomDataUpdateFilter)
-admin.site.register(College_Branch, CustomDataUpdateFilter)
-admin.site.register(College_Quota, CustomDataUpdateFilter)
 admin.site.register(Round1, CustomRoundFilter)
 admin.site.register(Round2, CustomRoundFilter)
 admin.site.register(Round3, CustomRoundFilter)
@@ -152,3 +151,4 @@ admin.site.register(Round5, CustomRoundFilter)
 admin.site.register(Round6, CustomRoundFilter)
 admin.site.register(Round7, CustomRoundFilter)
 admin.site.register(Seat, CustomSeatFilter)
+admin.site.register(Quota)

@@ -1,8 +1,10 @@
 from django.db import models
 from django.db.models.deletion import CASCADE
-from rank_matrix.constants.model import CURRENT_STATUS_CHOICES
 
+from rank_matrix.constants.model import CURRENT_STATUS_CHOICES
+from rank_matrix.models.branch import Branch
 from rank_matrix.models.college_type import College_Type
+from rank_matrix.models.quota import Quota
 
 
 class Institute(models.Model):
@@ -20,7 +22,9 @@ class Institute(models.Model):
     nirf_3 = models.BigIntegerField(default=10000)
     nirf_2 = models.BigIntegerField(default=10000)
     nirf_1 = models.BigIntegerField(default=10000)
-
+    presently_available_branches = models.ManyToManyField(Branch, related_name='Presently_Available_Branch', blank=True, default=None)
+    previously_available_branches = models.ManyToManyField(Branch, related_name='Previously_Available_Branch', blank=True, default=None)
+    available_categories = models.ManyToManyField(Quota, related_name='Available_Categories', blank=True, default=None)
     address = models.CharField(null=True, blank=True, max_length=255)
     phone = models.CharField(null=True, blank=True, max_length=255)
     fax = models.CharField(null=True, blank=True, max_length=255)
@@ -41,6 +45,10 @@ class Institute(models.Model):
         detail['id'] = self.id
 
         return detail
+    
+    # @property
+    # def get_available_branches(self):
+        
     # @property
     # def nirf_year(self):
     #     return NIRF_Year.objects.last().year

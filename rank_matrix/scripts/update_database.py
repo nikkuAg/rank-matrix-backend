@@ -1,19 +1,40 @@
 import pandas as pd
+import requests, io
+from decouple import config
 
 from rank_matrix.models.branch import Branch
 from rank_matrix.models.category import Category
 from rank_matrix.models.college import Institute
 from rank_matrix.models.college_type import College_Type
-from rank_matrix.models.relation import College_Branch, College_Quota
+from rank_matrix.models.quota import Quota
 from rank_matrix.models.round import Round1, Round2, Round3, Round4, Round5, Round6, Round7
 from rank_matrix.models.seat_matrix import Seat
 from rank_matrix.models.seat_pool import Seat_Pool
 
+def download_csv(csv_file_name:str):
+    user=str(config('GITHUB_USER'))
+    password=str(config('GITHUB_PASSWORD'))
+    repository=str(config('GITHUB_REPO'))
+    github_branch=str(config('GITHUB_BRANCH'))
+    github_session = requests.Session()
+    github_session.auth = (user, password)
+
+    # providing raw url to download csv from github
+    csv_url = f'https://raw.githubusercontent.com/{user}/{repository}/{github_branch}/{csv_file_name}.csv'
+
+    download = github_session.get(csv_url).content
+    downloaded_csv = pd.read_csv(io.StringIO(download.decode('utf-8')), sep=',', header=0, na_filter=False)
+    return downloaded_csv
+
 
 def update_branches():
     reset(Branch)
-    location = input("Enter location of Branch data")
-    data = pd.read_csv(location, sep=',', header=0, na_filter=False)
+    try:
+        data = download_csv('Branches') 
+    except Exception as e:
+        print(Exception)
+        return
+
     for row in data['Id']:
         current = []
         previous = []
@@ -64,8 +85,11 @@ def update_branches():
 
 def update_institutes():
     reset(Institute)
-    location = input("Enter location of Branch data")
-    data = pd.read_csv(location, sep=',', header=0, na_filter=False)
+    try:
+        data = download_csv('Institutes') 
+    except Exception as e:
+        print(Exception)
+        return
     for row in data['Id']:
         try:
             Institute.objects.update_or_create(
@@ -96,58 +120,59 @@ def update_institutes():
 
 
 def update_college_category():
-    reset(College_Quota)
-    location = input("Enter location of Branch data")
-    data = pd.read_csv(location, sep=',', header=0, na_filter=False)
+    reset(Institute)
+    try:
+        data = download_csv('College_Category') 
+    except Exception as e:
+        print(Exception)
+        return
     for row in data['Id']:
         try:
-            ins = Institute.objects.get(
-                code=str(data['Institute Code'][row-1]))
-            College_Quota.objects.update_or_create(
-                institute_code=ins,
-                quota=str(data['Quota'][row-1]),
-                defaults={
-                    'id': int(str(data['Id'][row-1])),
-                    'institute_code': ins,
-                    'quota': str(data['Quota'][row-1]),
-                    'data_updated': True,
-                }
-            )
+            ins = Institute.objects.get(code=str(data['Institute Code'][row-1]))
+            categories = ins.available_categories.all()
+            category_queryset = Quota.objects.filter(quota=str(data['Quota'][row-1]))            
+            categories = categories.union(category_queryset)
+            ins.available_categories.set(categories)
         except Exception as e:
             print(f"{e} in row number {row-1}")
             continue
 
 
 def update_college_branch():
-    reset(College_Branch)
-    location = input("Enter location of Branch data")
-    data = pd.read_csv(location, sep=',', header=0, na_filter=False)
+    reset(Institute)
+    try:
+        data = download_csv('College_Branch') 
+    except Exception as e:
+        print(Exception)
+        return
     for row in data['Id']:
         try:
-            ins = Institute.objects.get(
-                code=str(data['Institute Code'][row-1]))
-            branch = Branch.objects.get(code=str(data['Branch Code'][row-1]))
-            College_Branch.objects.update_or_create(
-                institute_code=ins,
-                branch_code=branch,
-                defaults={
-                    'id': int(str(data['Id'][row-1])),
-                    'institute_code': ins,
-                    'branch_code': branch,
-                    'current': str(data['Current'][row-1]),
-                    'data_updated': True,
-                }
-            )
+            ins = Institute.objects.get(code=str(data['Institute Code'][row-1]))
+            currently_present = ins.presently_available_branches.all()
+            previously_present = ins.previously_available_branches.all()
+            branch_queryset = Branch.objects.filter(code=str(data['Branch Code'][row-1]))
+            if str(data['Current'][row-1]) == 'Y':
+                currently_present = currently_present.union(branch_queryset)
+            else:
+                previously_present = previously_present.union(branch_queryset)
+            
+            ins.presently_available_branches.set(currently_present)
+            ins.previously_available_branches.set(previously_present)
+            
         except Exception as e:
             print(f"{e} in row number {row-1}")
             continue
 
 
 
-def update_seats(increase, year=None):
+def update_seats(year,increase=False):
     reset(Seat, year)
-    location = input("Enter location of Branch data")
-    data = pd.read_csv(location, sep=',', header=0, na_filter=False)
+    file_name = f'SeatMatrix_{year}'
+    try:
+        data = download_csv(file_name) 
+    except Exception as e:
+        print(Exception)
+        return
     for row in data['Id']:
         try:
             ins = Institute.objects.get(
@@ -185,12 +210,16 @@ def update_seats(increase, year=None):
 
 
 
-def update_rounds(round:int, year=None):
+def update_rounds(round:int, year:int):
     rounds = [Round1, Round2, Round3, Round4, Round5, Round6, Round7]
     db = rounds[round-1]
     reset(db, year)
-    location = input("Enter location of Branch data")
-    data = pd.read_csv(location, sep=',', header=0, na_filter=False)
+    file_name = f'Round{round}_{year}'
+    try:
+        data = download_csv(file_name) 
+    except Exception as e:
+        print(Exception)
+        return
     for row in data['Id']:
         try:
             ins = Institute.objects.get(

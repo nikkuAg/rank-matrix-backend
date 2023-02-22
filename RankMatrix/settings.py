@@ -10,8 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
-
+from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,13 +21,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)&_%)eeqeqofq-%=c%b_14ncpiae6r-_y8tmfcy%k(le)ullu&'
-
+SECRET_KEY = config('DJANGO_SECRET_KEY')
+IS_PRODUCTION = config('PRODUCTION_ENV')!='False'
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = not IS_PRODUCTION
+ALLOWED_HOSTS = ['*']
 
-ALLOWED_HOSTS = []
-
+if IS_PRODUCTION:
+    USE_X_FORWARDED_HOST = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Application definition
 
@@ -39,11 +42,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rank_matrix',
     'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -85,14 +90,11 @@ WSGI_APPLICATION = 'RankMatrix.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'localhost',
-        'PORT': '3306',
-        'NAME': 'soce_new',
-        'USER': 'soce',
-        'PASSWORD': 'soce_pass',
-        # 'NAME': os.environ.get('MYSQL_NAME'),
-        # 'USER': os.environ.get('MYSQL_USER'),
-        # 'PASSWORD': os.environ.get('MYSQL_PASSWORD'),
+        'HOST': config('MYSQL_HOST'),
+        'PORT': config('MYSQL_PORT'),
+        'NAME': config('MYSQL_NAME'),
+        'USER': config('MYSQL_USER'),
+        'PASSWORD': config('MYSQL_PASSWORD'),
     }
 }
 
@@ -134,9 +136,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static_backend/'
+# PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_backend')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:3001",
+    "http://127.0.0.1:3001",
+]
