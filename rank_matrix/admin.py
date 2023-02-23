@@ -4,14 +4,14 @@ from rank_matrix.models.branch import Branch
 from rank_matrix.models.category import Category
 from rank_matrix.models.college import Institute
 
-from rank_matrix.models.college_type import College_Type
+from rank_matrix.models.college_type import CollegeType
 from rank_matrix.models.quota import Quota
 from rank_matrix.models.recent_update import Update
 # from rank_matrix.models.relation import College_Branch, College_Quota
 from rank_matrix.models.round import Round1, Round2, Round3, Round4, Round5, Round6, Round7
 from rank_matrix.models.seat_matrix import Seat
-from rank_matrix.models.seat_pool import Seat_Pool
-# from rank_matrix.models import Round1, College_Type, Seat, Round2, Round3, Round4, Round5, Round6, Round7
+from rank_matrix.models.seat_pool import SeatPool
+# from rank_matrix.models import Round1, CollegeType, Seat, Round2, Round3, Round4, Round5, Round6, Round7
 
 
 class YearFilter(admin.SimpleListFilter):
@@ -46,7 +46,7 @@ class CollegeTypeFilter(admin.SimpleListFilter):
     parameter_name = "college_type"
     
     def lookups(self, request, model_admin):
-        year_dict = list(College_Type.objects.values('type').distinct())
+        year_dict = list(CollegeType.objects.values('type').distinct())
         type_tuple = ()
 
         for obj in year_dict:
@@ -66,7 +66,7 @@ class InstituteTypeFilter(admin.SimpleListFilter):
     parameter_name = "institute_code_college_type"
 
     def lookups(self, request, model_admin):
-        year_dict = list(College_Type.objects.values('type').distinct())
+        year_dict = list(CollegeType.objects.values('type').distinct())
         type_tuple = ()
 
         for obj in year_dict:
@@ -140,9 +140,9 @@ class CustomCollegeFilter(admin.ModelAdmin):
 
 admin.site.register(Institute, CustomCollegeFilter)
 admin.site.register(Branch, CustomDataUpdateFilter)
-admin.site.register(College_Type, CustomDataUpdateFilter)
+admin.site.register(CollegeType, CustomDataUpdateFilter)
 admin.site.register(Category, CustomDataUpdateFilter)
-admin.site.register(Seat_Pool, CustomDataUpdateFilter)
+admin.site.register(SeatPool, CustomDataUpdateFilter)
 admin.site.register(Round1, CustomRoundFilter)
 admin.site.register(Round2, CustomRoundFilter)
 admin.site.register(Round3, CustomRoundFilter)
@@ -152,3 +152,4 @@ admin.site.register(Round6, CustomRoundFilter)
 admin.site.register(Round7, CustomRoundFilter)
 admin.site.register(Seat, CustomSeatFilter)
 admin.site.register(Quota)
+admin.site.register(Update)

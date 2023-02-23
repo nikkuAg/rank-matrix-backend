@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Seat_Pool(models.Model):
+class SeatPool(models.Model):
     """
     Model for storing different seat pool available in JoSAA
     """

@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models.deletion import CASCADE
 
 
-class College_Type(models.Model):
+class CollegeType(models.Model):
     """
     Different types of colleges like IIT, NIT, IIIT, GFTI
     """

@@ -15,8 +15,8 @@ from rank_matrix.utils.get_year import get_latest_round_year
 
 def test_your_choice(request):
     if request.method == "GET":
-        institute_code = request.GET.get('institute_code', DEFAULT_NULL)
-        branch_code = request.GET.get('branch_code', DEFAULT_NULL)
+        institute_id = request.GET.get('institute_id', DEFAULT_NULL)
+        branch_id = request.GET.get('branch_id', DEFAULT_NULL)
         quota = request.GET.get('quota', DEFAULT_QUOTA)
         category = request.GET.get('category', DEFAULT_CATEGORY)
         seat_pool = request.GET.get('seat_pool', DEFAULT_SEAT_POOL)
@@ -25,21 +25,21 @@ def test_your_choice(request):
         rank = request.GET.get('rank', DEFAULT_NULL)
         rankMain = request.GET.get('mains_rank', DEFAULT_NULL)
         delta = int(request.GET.get('cutoff', DEFAULT_CUTOFF))
-        if(institute_code != DEFAULT_NULL and branch_code != DEFAULT_NULL):
+        if(institute_id != DEFAULT_NULL and branch_id != DEFAULT_NULL):
             try:
-                model = get_round_model(round_number)
-                serializer = get_round_serializer(round_number)
+                model = get_round_model(int(round_number))
+                serializer = get_round_serializer(int(round_number))
             except:
                 return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
 
             try:
-                round_data = serializer(model.objects.get(institute_code__code=institute_code, 
-                branch_code__code=branch_code, category__category=category, quota__quota=quota, 
+                round_data = serializer(model.objects.get(institute_code__id=institute_id, 
+                branch_code__id=branch_id, category__category=category, quota__quota=quota, 
                 seat_pool__seat_pool=seat_pool, year=year)).data
             except:
                 round_data = {
-                'institute_detail': Institute.objects.get(code=institute_code).institute_detail,
-                'branch_detail': Branch.objects.get(code=branch_code).branch_detail,
+                'institute_detail': Institute.objects.get(id=institute_id).institute_detail,
+                'branch_detail': Branch.objects.get(id=branch_id).branch_detail,
                 'category': category,
                 'quota': quota,
                 'seat_pool': seat_pool,
@@ -48,13 +48,13 @@ def test_your_choice(request):
                 'year': year,
                 }
             
-            id = institute_code + "_" + branch_code + "_" + \
+            id = institute_id + "_" + branch_id + "_" + \
             quota + "_" + category + "_" + seat_pool
             round_data['id'] = id
 
 
             if(rankMain != DEFAULT_NULL):
-                if(round_data['institute_detail']['category'] != "IIT"):
+                if(round_data['institute_detail']['type'] != "IIT"):
                     rank = rankMain
 
             if round_data['closing_rank'] != '-':

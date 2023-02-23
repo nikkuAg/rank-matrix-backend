@@ -7,7 +7,7 @@ from rank_matrix.constants.error import DATA_DOES_NOT_EXISTS_ERROR, DO_NOT_HAVE_
 from rank_matrix.constants.search_fields import ALL_COLLEGE_ONE_BRANCH_INSTITUTE_SEARCH
 from rank_matrix.models.branch import Branch
 from rank_matrix.models.college import Institute
-from rank_matrix.models.college_type import College_Type
+from rank_matrix.models.college_type import CollegeType
 from rank_matrix.permission import CustomApiPermission
 from rank_matrix.serializers.branch import BranchMinimalSerializer
 from rank_matrix.serializers.college import InstituteMinimalSerializer
@@ -18,7 +18,7 @@ from rank_matrix.utils.get_year import get_latest_round_year
 
 
 
-class InstituteSearchViewset(viewsets.ModelViewSet):
+class BranchSearchViewset(viewsets.ModelViewSet):
     """
     Viewset for displaying the branches for the college with a particular college id
     """
@@ -33,7 +33,7 @@ class InstituteSearchViewset(viewsets.ModelViewSet):
         institute_type = self.request.query_params.get('institute_type', DEFAULT_INSTITUTE_TYPE)    # type: ignore
         institute_type = institute_type.upper()
         if(institute_type in self.acceptable_type):
-            return Branch.objects.filter(currently_present=College_Type.objects.get(type=institute_type))
+            return Branch.objects.filter(currently_present=CollegeType.objects.get(type=institute_type))
  
         return HttpResponseNotFound(NO_SUCH_INSTITUTE_TYPE_ERROR)
     
@@ -49,10 +49,10 @@ def all_college_one_branch(request):
         delta = int(request.GET.get('cutoff', DEFAULT_CUTOFF))
         
         if(branch_id != DEFAULT_NULL):
-            branch_detail = BranchMinimalSerializer(Branch.objects.get(code=branch_id)).data
+            branch_detail = BranchMinimalSerializer(Branch.objects.get(id=branch_id)).data
             institutes_queryset = Institute.objects.filter(
-                presently_available_branches=Branch.objects.get(code=branch_id), 
-                college_type__type=institute_type.upper())
+                presently_available_branches=Branch.objects.get(id=branch_id), 
+                college_type__type=institute_type.upper()).order_by('nirf_1')
             institutes  = InstituteMinimalSerializer(institutes_queryset, many=True).data
             
             data = {
@@ -67,7 +67,7 @@ def all_college_one_branch(request):
             
               
             for ins in institutes:
-                data['round_data'][ins['display_code']] = list()
+                data['round_data'][ins['code']] = list()
                 for i in range(2015, get_latest_round_year()+1):
                     round = get_last_round(i)
                     if round == -1:
@@ -75,10 +75,10 @@ def all_college_one_branch(request):
                     key = f'JoSAA {i}: Round {round}'
                     if key not in data['rounds']:
                         data['rounds'].append(key)
-                    round_model = get_round_model(round)
+                    round_model = get_round_model(int(round))
                     try:
-                        round_data = list(round_model.objects.filter(branch_code__code=branch_id, 
-                            institute_code=ins['code'], quota__quota=quota, category__category=category, 
+                        round_data = list(round_model.objects.filter(branch_code__id=branch_id, 
+                            institute_code__id=ins['id'], quota__quota=quota, category__category=category, 
                             seat_pool__seat_pool=seat_pool, year=i)
                                 .values('institute_code', 'opening_rank', 'closing_rank'))[0]
                     except Exception as e:
@@ -87,9 +87,9 @@ def all_college_one_branch(request):
                         
                     round_data['color'] = get_rank_color_code(rank, round_data['closing_rank'], delta)
                     
-                    data['round_data'][ins['display_code']].append(round_data)
+                    data['round_data'][ins['code']].append(round_data)
                 
-                data['round_data'][ins['display_code']].reverse()
+                data['round_data'][ins['code']].reverse()
                 
             data['rounds'].reverse()
             

@@ -5,7 +5,7 @@ from rank_matrix.models.branch import Branch
 from rank_matrix.models.category import Category
 from rank_matrix.models.college import Institute
 from rank_matrix.models.quota import Quota
-from rank_matrix.models.seat_pool import Seat_Pool
+from rank_matrix.models.seat_pool import SeatPool
 
 
 class Seat(models.Model):
@@ -19,7 +19,7 @@ class Seat(models.Model):
     category = models.ForeignKey(
         to=Category, max_length=100, on_delete=CASCADE)
     seat_pool = models.ForeignKey(
-        to=Seat_Pool, max_length=100, null=True, blank=True, on_delete=CASCADE)
+        to=SeatPool, max_length=100, null=True, blank=True, on_delete=CASCADE)
     year = models.IntegerField(null=True, blank=True)
     seats = models.IntegerField(null=True, blank=True)
     seats_change = models.BooleanField(default=False)

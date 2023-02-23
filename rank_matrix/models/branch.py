@@ -1,6 +1,6 @@
 from django.db import models
 
-from rank_matrix.models.college_type import College_Type
+from rank_matrix.models.college_type import CollegeType
 
 
 class Branch(models.Model):
@@ -16,9 +16,9 @@ class Branch(models.Model):
     branch_code = models.CharField(max_length=255, null=True, blank=True)
 
     currently_present = models.ManyToManyField(
-        College_Type, related_name='Currently_Present', blank=True)
+        CollegeType, related_name='Currently_Present', blank=True)
     previously_present = models.ManyToManyField(
-        College_Type, related_name='Previously_Present', blank=True)
+        CollegeType, related_name='Previously_Present', blank=True)
     
     data_updated = models.BooleanField(default=False)
 
@@ -49,6 +49,8 @@ class Branch(models.Model):
         detail['code'] = self.code
         detail['name'] = self.branch_code
         detail['id'] = self.id
+        detail['duration'] = self.duration
+        detail['degree'] = self.degree
         detail['currently_present'] = self.get_currently_present
         detail['previously_present'] = self.get_previously_present
         return detail

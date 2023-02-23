@@ -1,14 +1,14 @@
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseForbidden, HttpResponseNotFound, JsonResponse
 from rest_framework import viewsets, filters
 
 from rank_matrix.constants.default import DEFAULT_NULL, DEFAULT_INSTITUTE_TYPE, DEFAULT_ROUND_NUMBER
-from rank_matrix.constants.error import DATA_DOES_NOT_EXISTS_ERROR, NO_SUCH_INSTITUTE_TYPE_ERROR
+from rank_matrix.constants.error import DATA_DOES_NOT_EXISTS_ERROR, DO_NOT_HAVE_PERMISSION_ERROR, NO_SUCH_INSTITUTE_TYPE_ERROR
 from rank_matrix.constants.order_fields import OPENING_CLOSING_ORDER
 from rank_matrix.constants.search_fields import OPENING_CLOSING_SEARCH
 from rank_matrix.permission import CustomApiPermission
 from rank_matrix.serializers.opening_closing_rank import Round1Serializer
 from rank_matrix.utils.get_college_type import get_college_type
-from rank_matrix.utils.get_round import get_round_model, get_round_serializer
+from rank_matrix.utils.get_round import get_round_list, get_round_model, get_round_serializer
 from rank_matrix.utils.get_year import get_latest_round_year
 
 class RankViewsets(viewsets.ModelViewSet):
@@ -31,7 +31,7 @@ class RankViewsets(viewsets.ModelViewSet):
 
         if(institute_type.upper() in self.acceptable_type):
             try:
-                model = get_round_model(round)
+                model = get_round_model(int(round))
             except:
                 return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
 
@@ -49,5 +49,13 @@ class RankViewsets(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         round = self.request.query_params.get('round', DEFAULT_ROUND_NUMBER)            # type: ignore                
-        return get_round_serializer(round)
+        return get_round_serializer(int(round))
     
+
+def get_rounds(request):
+    if request.method == "GET":
+        year = request.GET.get('year', get_latest_round_year())
+        
+        return JsonResponse({'rounds':get_round_list(int(year))})
+    
+    return HttpResponseForbidden(DO_NOT_HAVE_PERMISSION_ERROR)

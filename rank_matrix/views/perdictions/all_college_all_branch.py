@@ -28,8 +28,8 @@ def all_college_all_branch(request):
         
         if(institute_type.upper() in acceptable_type):
             try:
-                model = get_round_model(round_num)
-                serializer = get_round_serializer(round_num)
+                model = get_round_model(int(round_num))
+                serializer = get_round_serializer(int(round_num))
             except:
                 return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
             
@@ -45,8 +45,8 @@ def all_college_all_branch(request):
             
             branches = BranchMinimalSerializer(Branch.objects.filter(code__in=branch_codes), many=True).data
             institutes = InstituteMinimalSerializer(Institute.objects.filter(code__in=institute_codes), many=True).data
-            
-            round_data = []
+    
+            round_data = {}
             for item in queryset:
                 data_list = serializer(item).data
                 
@@ -61,7 +61,7 @@ def all_college_all_branch(request):
                 data_list['color'] = get_rank_color_code(rank, data_list['rank'], delta)
                 
                 
-                round_data.append(data_list)
+                round_data[f"{item.branch_code.code}-{item.institute_code.code}"] = data_list
             
             data = {
                 'institutes': institutes,

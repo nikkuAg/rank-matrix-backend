@@ -5,7 +5,7 @@ MODELS = [Round1, Round2, Round3, Round4, Round5, Round6, Round7]
 MODEL_SERIALIZERS = [Round1Serializer, Round2Serializer, Round3Serializer, Round4Serializer, 
 	Round5Serializer, Round6Serializer, Round7Serializer]
 
-def get_round_model(round):
+def get_round_model(round:int):
     """
     Args:
         round (int): Round number
@@ -59,3 +59,21 @@ def get_last_round(year:int):
             return i
     
     return -1
+
+def get_round_list(year:int):
+    """
+    This function provides the list of rounds available in given year
+
+    Args:
+        year (int): Year for rounds need to be found
+    
+    Returns:
+        list: Rounds available in a year
+    """
+    rounds = list()
+    print(year)
+    for index in range(len(MODELS)):
+        if year_exists_in_round(index+1, year):
+            rounds.append(f'Round {index+1}')
+    print(rounds)
+    return rounds

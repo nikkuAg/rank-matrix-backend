@@ -5,9 +5,10 @@ from rank_matrix.constants.default import DEFAULT_BRANCH_AND_INSTITUTE_EXISTS, D
 from rank_matrix.constants.error import NO_SUCH_INSTITUTE_TYPE_ERROR
 from rank_matrix.constants.order_fields import COLLEGE_LIST_ORDER
 from rank_matrix.constants.search_fields import COLLEGE_LIST_SEARCH, COLLEGE_LIST_MINIMAL_SEARCH
+from rank_matrix.models.college_type import CollegeType
 from rank_matrix.permission import CustomApiPermission
 from rank_matrix.models.college import Institute
-from rank_matrix.serializers.college import InstituteListSerializer, InstituteMinimalSerializer
+from rank_matrix.serializers.college import CollegeTypeSerializer, InstituteListSerializer, InstituteMinimalSerializer
 from rank_matrix.utils.get_college_type import get_college_type
 
 
@@ -71,4 +72,18 @@ class InstituteMinimalViewset(viewsets.ModelViewSet):
         else:
             return HttpResponseNotFound(NO_SUCH_INSTITUTE_TYPE_ERROR)
 
+        return queryset
+
+class CollegeTypeViewset(viewsets.ModelViewSet):
+    serializer_class = CollegeTypeSerializer
+    permission_classes = [CustomApiPermission]
+    
+    def get_queryset(self):
+        choice = self.request.query_params.get('choice', DEFAULT_NULL)    # type: ignore
+        
+        if choice == "mains":
+            queryset = CollegeType.objects.exclude(type="IIT")
+        else:
+            queryset = CollegeType.objects.all()
+        
         return queryset

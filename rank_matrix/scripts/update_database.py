@@ -5,11 +5,11 @@ from decouple import config
 from rank_matrix.models.branch import Branch
 from rank_matrix.models.category import Category
 from rank_matrix.models.college import Institute
-from rank_matrix.models.college_type import College_Type
+from rank_matrix.models.college_type import CollegeType
 from rank_matrix.models.quota import Quota
 from rank_matrix.models.round import Round1, Round2, Round3, Round4, Round5, Round6, Round7
 from rank_matrix.models.seat_matrix import Seat
-from rank_matrix.models.seat_pool import Seat_Pool
+from rank_matrix.models.seat_pool import SeatPool
 
 def download_csv(csv_file_name:str):
     user=str(config('GITHUB_USER'))
@@ -43,24 +43,24 @@ def update_branches():
         previous = []
 
         if(data['IIT'][row-1] == 'Y'):
-            current.append(College_Type.objects.get(type='IIT'))
+            current.append(CollegeType.objects.get(type='IIT'))
         elif(data['IIT'][row-1] == 'O'):
-            previous.append(College_Type.objects.get(type='IIT'))
+            previous.append(CollegeType.objects.get(type='IIT'))
 
         if(data['NIT'][row-1] == 'Y'):
-            current.append(College_Type.objects.get(type='NIT'))
+            current.append(CollegeType.objects.get(type='NIT'))
         elif(data['NIT'][row-1] == 'O'):
-            previous.append(College_Type.objects.get(type='NIT'))
+            previous.append(CollegeType.objects.get(type='NIT'))
 
         if(data['IIIT'][row-1] == 'Y'):
-            current.append(College_Type.objects.get(type='IIIT'))
+            current.append(CollegeType.objects.get(type='IIIT'))
         elif(data['IIIT'][row-1] == 'O'):
-            previous.append(College_Type.objects.get(type='IIIT'))
+            previous.append(CollegeType.objects.get(type='IIIT'))
 
         if(data['GFTI'][row-1] == 'Y'):
-            current.append(College_Type.objects.get(type='GFTI'))
+            current.append(CollegeType.objects.get(type='GFTI'))
         elif(data['GFTI'][row-1] == 'O'):
-            previous.append(College_Type.objects.get(type='GFTI'))
+            previous.append(CollegeType.objects.get(type='GFTI'))
 
         try:
             Branch.objects.update_or_create(
@@ -104,7 +104,7 @@ def update_institutes():
                     'id': int(str(data['Id'][row-1])),
                     'code': str(data['Code'][row-1]),
                     'name': str(data['Name'][row-1]),
-                    'college_type': College_Type.objects.get(type=str(data['College Type'][row-1])),
+                    'college_type': CollegeType.objects.get(type=str(data['College Type'][row-1])),
                     'display_code': str(data['Display Code'][row-1]),
                     'state': str(data['State'][row-1]),
                     'city': str(data['City'][row-1]),
@@ -198,7 +198,7 @@ def update_seats(year,increase=False):
                 code=str(data['Branch Code'][row-1]))
             category = Category.objects.get(
                 category=str(data['Category'][row-1]))
-            seat_pool = Seat_Pool.objects.get(
+            seat_pool = SeatPool.objects.get(
                 seat_pool=str(data['Seat Pool'][row-1]))
             quota=Quota.objects.get(quota=str(data['Quota'][row-1]))
             Seat.objects.update_or_create(
@@ -248,7 +248,7 @@ def update_rounds(round:int, year:int):
                 code=str(data['Branch Code'][row-1]))
             category = Category.objects.get(
                 category=str(data['Category'][row-1]))
-            seat_pool = Seat_Pool.objects.get(
+            seat_pool = SeatPool.objects.get(
                 seat_pool=str(data['Seat Pool'][row-1]))
             quota=Quota.objects.get(quota=str(data['Quota'][row-1]))
 

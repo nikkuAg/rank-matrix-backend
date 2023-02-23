@@ -1,4 +1,4 @@
-from rank_matrix.models.college_type import College_Type
+from rank_matrix.models.college_type import CollegeType
 
 def get_college_type():
     """
@@ -7,7 +7,7 @@ def get_college_type():
     """
     type = []
     try:
-        types = College_Type.objects.all()
+        types = CollegeType.objects.all()
         for x in types:
             type.append(x.type)
     except:

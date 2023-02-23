@@ -1,9 +1,10 @@
+import datetime
 from django.db import models
 from django.db.models.deletion import CASCADE
 
 from rank_matrix.constants.model import CURRENT_STATUS_CHOICES
 from rank_matrix.models.branch import Branch
-from rank_matrix.models.college_type import College_Type
+from rank_matrix.models.college_type import CollegeType
 from rank_matrix.models.quota import Quota
 
 
@@ -14,7 +15,7 @@ class Institute(models.Model):
     id = models.BigIntegerField(auto_created=False)
     code = models.CharField(max_length=10, primary_key=True)
     name = models.CharField(max_length=255)
-    college_type = models.ForeignKey(College_Type, on_delete=CASCADE)
+    college_type = models.ForeignKey(CollegeType, on_delete=CASCADE)
     display_code = models.CharField(max_length=255, null=True, blank=True)
     state = models.CharField(max_length=255, null=True, blank=True)
     city = models.CharField(max_length=255, null=True, blank=True)
@@ -22,6 +23,7 @@ class Institute(models.Model):
     nirf_3 = models.BigIntegerField(default=10000)
     nirf_2 = models.BigIntegerField(default=10000)
     nirf_1 = models.BigIntegerField(default=10000)
+    nirf_year = models.IntegerField(default=datetime.datetime.now().year, null=True)
     presently_available_branches = models.ManyToManyField(Branch, related_name='Presently_Available_Branch', blank=True, default=None)
     previously_available_branches = models.ManyToManyField(Branch, related_name='Previously_Available_Branch', blank=True, default=None)
     available_categories = models.ManyToManyField(Quota, related_name='Available_Categories', blank=True, default=None)
@@ -32,6 +34,7 @@ class Institute(models.Model):
     current = models.CharField(
         null=True, blank=True, max_length=25, choices=CURRENT_STATUS_CHOICES)
     data_updated = models.BooleanField(default=False)
+    
 
     def __str__(self) -> str:
         return f"{self.code}: {self.name}"
@@ -43,7 +46,7 @@ class Institute(models.Model):
         detail['code'] = self.code
         detail['name'] = self.display_code
         detail['id'] = self.id
-
+        detail['type'] = self.college_type.type
         return detail
     
     # @property

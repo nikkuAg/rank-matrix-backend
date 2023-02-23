@@ -16,7 +16,7 @@ from rank_matrix.utils.get_rank_color_code import get_rank_color_code
 from rank_matrix.utils.get_round import get_all_round_model
 
 
-class BranchSearchViewset(viewsets.ModelViewSet):
+class BranchInstituteSearchViewset(viewsets.ModelViewSet):
     """
     Viewset for displaying the branches for the college with a particular college id
     """
@@ -31,11 +31,10 @@ class BranchSearchViewset(viewsets.ModelViewSet):
 
         if(institute_id != DEFAULT_NULL):
             queryset = Institute.objects.get(
-                code=institute_id).presently_available_branches.all()
+                id=institute_id).presently_available_branches.all()
 
             if(queryset.count() == 0):
                 return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
-            print(queryset)
             return queryset
 
         return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
@@ -68,26 +67,28 @@ def one_college_one_branch(request):
                 'quota': quota,
                 'seat_pool': seat_pool,
                 'category': category,
-                'round_data': [],
+                'round_data': {},
                 'keys': [],
                 'years': years,
             }
             
             for model in model_arrays: 
                 year_data = {}
+                key = model.__name__
+                key = key[:-1] + " " + key[len(key)-1]
+                data['keys'].append(key)
                 for year in years:
                     try:
-                        one_one_data = list(model.objects.filter(institute_code=institute_id, branch_code=branch_id,
+                        one_one_data = list(model.objects.filter(institute_code__id=institute_id, branch_code__id=branch_id,
                                 quota__quota=quota, category__category=category, seat_pool__seat_pool=seat_pool, year=year)
                                     .values('opening_rank', 'closing_rank'))[0]
                     except:
                         one_one_data = {'opening_rank': 0, 'closing_rank': 0}
                     one_one_data['color'] = get_rank_color_code(rank, one_one_data['closing_rank'], delta)  # type: ignore
-                    year_data[year] = one_one_data
+                    data['round_data'][f'{year}-{key}'] = one_one_data
+                    
                 
-                data['round_data'].append(year_data)
 
-            data['round_data'].reverse()
             data['years'].reverse()
 
             return JsonResponse(data)
