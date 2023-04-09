@@ -177,9 +177,14 @@ def update_college_branch():
 
 
 
-def update_seats(year,increase=False):
-    reset(Seat, year)
-    file_name = f'SeatMatrix_{year}'
+def update_seats(year=-1,increase=False):
+    if year !=-1:
+        reset(Seat, year)
+        file_name = f'SeatMatrix_{year}'
+    else:
+        reset(Seat)
+        file_name = 'SeatMatrix'
+        
     if increase:
         file_name = 'SeatMatrix_Increase'
     try:
@@ -188,7 +193,7 @@ def update_seats(year,increase=False):
            print(f'data not found for seat matrix for year{year}')
            return 
     except Exception as e:
-        print(Exception)
+        print(e)
         return
     for row in data['Id']:
         try:
@@ -227,11 +232,15 @@ def update_seats(year,increase=False):
 
 
 
-def update_rounds(round:int, year:int):
+def update_rounds(round:int, year:int=-1):
     rounds = [Round1, Round2, Round3, Round4, Round5, Round6, Round7]
     db = rounds[round-1]
-    reset(db, year)
-    file_name = f'Round{round}_{year}'
+    if year !=-1:
+        reset(db, year)
+        file_name = f'Round{round}_{year}'
+    else:
+        reset(db)
+        file_name = f'Round{round}'
     try:
         data = download_csv(file_name)
         if data.empty:
@@ -285,3 +294,36 @@ def reset(database, year=None):
     for data in dataset:
         data.data_updated = False
         data.save()
+
+
+def clear_database():
+    databases = [Round7,Round6,Round5,Round4,Round3,Round2,Round1,Seat,Institute,Branch]
+    for db in databases:
+        db.objects.all().delete()
+        
+    print("Database cleared!!")
+
+
+def setup():
+    update_branches()
+    print("Branches data updated")
+    update_institutes()
+    print("Institutes data updated")
+    update_college_category()
+    print("College Category mapping data updated")
+    update_college_branch()
+    print("College Branch mapping data updated")
+    update_seats()
+    print(f"Seats data updated")
+    update_seats(True)
+    print(f"Increase in seats data updated")
+    
+    for j in range(1,8):
+        update_rounds(j)
+        print(f"Rounds data for round {j} updated")
+            
+    
+    
+    
+
+    
