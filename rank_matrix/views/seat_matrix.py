@@ -10,6 +10,7 @@ from rank_matrix.permission import CustomApiPermission
 from rank_matrix.serializers.seat_matrix import SeatMatrixSerializer
 from rank_matrix.utils.get_college_type import get_college_type
 from rank_matrix.utils.get_year import get_latest_seat_matrix_year
+from rank_matrix.filters.seat_matrix import SeatMatrixFilter
 
 
 class SeatmatrixViewset(viewsets.ModelViewSet):
@@ -18,7 +19,7 @@ class SeatmatrixViewset(viewsets.ModelViewSet):
     """
     acceptable_type = get_college_type()
     permission_classes = [CustomApiPermission]
-    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    filterset_class=SeatMatrixFilter
     search_fields = SEAT_MATRIX_SEARCH
     ordering_fields = SEAT_MATRIX_ORDER
     serializer_class= SeatMatrixSerializer

@@ -10,6 +10,7 @@ from rank_matrix.serializers.opening_closing_rank import Round1Serializer
 from rank_matrix.utils.get_college_type import get_college_type
 from rank_matrix.utils.get_round import get_round_list, get_round_model, get_round_serializer
 from rank_matrix.utils.get_year import get_latest_round_year
+from rank_matrix.filters.opening_closing_rank import RankFilter
 
 class RankViewsets(viewsets.ModelViewSet):
     """
@@ -17,8 +18,8 @@ class RankViewsets(viewsets.ModelViewSet):
     """
     acceptable_type = get_college_type()
     permission_classes = [CustomApiPermission]
-    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = OPENING_CLOSING_SEARCH
+    filterset_class=RankFilter
     ordering_fields = OPENING_CLOSING_ORDER
     serializer_class = Round1Serializer
  

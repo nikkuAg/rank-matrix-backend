@@ -1,5 +1,6 @@
 from django.http import HttpResponseNotFound
 from rest_framework import viewsets, filters
+from django_filters.rest_framework import DjangoFilterBackend
 
 from rank_matrix.constants.default import DEFAULT_BRANCH_AND_INSTITUTE_EXISTS, DEFAULT_INSTITUTE_TYPE, DEFAULT_NULL
 from rank_matrix.constants.error import NO_SUCH_INSTITUTE_TYPE_ERROR
@@ -10,6 +11,7 @@ from rank_matrix.permission import CustomApiPermission
 from rank_matrix.models.college import Institute
 from rank_matrix.serializers.college import CollegeTypeSerializer, InstituteListSerializer, InstituteMinimalSerializer
 from rank_matrix.utils.get_college_type import get_college_type
+from rank_matrix.filters.college import CollegeFilter
 
 
 class InstitutesViewset(viewsets.ModelViewSet):
@@ -19,7 +21,7 @@ class InstitutesViewset(viewsets.ModelViewSet):
     acceptable_type = get_college_type()
     serializer_class = InstituteListSerializer
     permission_classes = [CustomApiPermission]
-    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    filterset_class=CollegeFilter
     search_fields = COLLEGE_LIST_SEARCH
     ordering_fields = COLLEGE_LIST_ORDER
 
