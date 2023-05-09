@@ -19,4 +19,6 @@ class SeatMatrixFilter(filters.FilterSet):
         model=Seat
         fields={
             'seats':['lt','gt'],
+            'branch_code__branch_name':['icontains'],
+            'institute_code__name':['icontains']
         }

@@ -1,6 +1,11 @@
 import pandas as pd
 import requests, io
+import os
+import django
 from decouple import config
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'RankMatrix.settings')
+django.setup()
 
 from rank_matrix.models.branch import Branch
 from rank_matrix.models.category import Category
