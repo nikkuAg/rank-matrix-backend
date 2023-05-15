@@ -10,7 +10,6 @@ from rank_matrix.utils.get_round import get_last_round, get_round_model
 from rank_matrix.utils.get_year import get_latest_round_year
 
 
-
 def one_college_all_branch(request):
     if request.method == "GET":
         institute_id = request.GET.get('institute_id', DEFAULT_NULL)
@@ -20,7 +19,7 @@ def one_college_all_branch(request):
         rank = request.GET.get('rank', DEFAULT_NULL)
         delta = int(request.GET.get('cutoff', DEFAULT_CUTOFF))
 
-        if(institute_id != DEFAULT_NULL):
+        if (institute_id != DEFAULT_NULL):
             ins = Institute.objects.get(id=institute_id)
             institute_detail = InstituteMinimalSerializer(ins).data
             branches = BranchMinimalSerializer(ins.presently_available_branches.all()
@@ -35,7 +34,7 @@ def one_college_all_branch(request):
                 'round_data': {},
                 'rounds': [],
             }
-            
+
             for branch in branches:
                 data['round_data'][branch['code']] = list()
                 for i in range(2015, get_latest_round_year()+1):
@@ -47,20 +46,21 @@ def one_college_all_branch(request):
                         data['rounds'].append(key)
                     round_model = get_round_model(int(round))
                     try:
-                        round_data = list(round_model.objects.filter(branch_code__id=branch['id'], 
-                            institute_code__id=institute_id, quota__quota=quota, category__category=category, 
-                            seat_pool__seat_pool=seat_pool, year=i)
-                                .values('branch_code', 'opening_rank', 'closing_rank'))[0]
+                        round_data = list(round_model.objects.filter(branch_code__id=branch['id'],
+                                                                     institute_code__id=institute_id, quota__quota=quota, category__category=category,
+                                                                     seat_pool__seat_pool=seat_pool, year=i)
+                                          .values('branch_code', 'opening_rank', 'closing_rank'))[0]
                     except Exception as e:
-                        print(e)
-                        round_data = {'branch_code': branch['code'] ,'opening_rank': 0, 'closing_rank': 0}
-                        
-                    round_data['color'] = get_rank_color_code(rank, round_data['closing_rank'], delta)
-                    
+                        round_data = {
+                            'branch_code': branch['code'], 'opening_rank': 0, 'closing_rank': 0}
+
+                    round_data['color'] = get_rank_color_code(
+                        rank, round_data['closing_rank'], delta)
+
                     data['round_data'][branch['code']].append(round_data)
-                
+
                 data['round_data'][branch['code']].reverse()
-                
+
             data['rounds'].reverse()
 
             return JsonResponse(data)

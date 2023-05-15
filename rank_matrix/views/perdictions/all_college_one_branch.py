@@ -17,7 +17,6 @@ from rank_matrix.utils.get_round import get_last_round, get_round_model
 from rank_matrix.utils.get_year import get_latest_round_year
 
 
-
 class BranchSearchViewset(viewsets.ModelViewSet):
     """
     Viewset for displaying the branches for the college with a particular college id
@@ -27,34 +26,38 @@ class BranchSearchViewset(viewsets.ModelViewSet):
     serializer_class = BranchMinimalSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ALL_COLLEGE_ONE_BRANCH_INSTITUTE_SEARCH
-    pagination_class = None    
-    
+    pagination_class = None
+
     def get_queryset(self):
-        institute_type = self.request.query_params.get('institute_type', DEFAULT_INSTITUTE_TYPE)    # type: ignore
+        institute_type = self.request.query_params.get(
+            'institute_type', DEFAULT_INSTITUTE_TYPE)    # type: ignore
         institute_type = institute_type.upper()
-        if(institute_type in self.acceptable_type):
+        if (institute_type in self.acceptable_type):
             return Branch.objects.filter(currently_present=CollegeType.objects.get(type=institute_type))
- 
+
         return HttpResponseNotFound(NO_SUCH_INSTITUTE_TYPE_ERROR)
-    
+
 
 def all_college_one_branch(request):
     if request.method == "GET":
-        institute_type = request.GET.get('institute_type', DEFAULT_INSTITUTE_TYPE)
+        institute_type = request.GET.get(
+            'institute_type', DEFAULT_INSTITUTE_TYPE)
         branch_id = request.GET.get('branch_id', DEFAULT_NULL)
         quota = request.GET.get('quota', DEFAULT_QUOTA)
         category = request.GET.get('category', DEFAULT_CATEGORY)
         seat_pool = request.GET.get('seat_pool', DEFAULT_SEAT_POOL)
         rank = request.GET.get('rank', DEFAULT_NULL)
         delta = int(request.GET.get('cutoff', DEFAULT_CUTOFF))
-        
-        if(branch_id != DEFAULT_NULL):
-            branch_detail = BranchMinimalSerializer(Branch.objects.get(id=branch_id)).data
+
+        if (branch_id != DEFAULT_NULL):
+            branch_detail = BranchMinimalSerializer(
+                Branch.objects.get(id=branch_id)).data
             institutes_queryset = Institute.objects.filter(
-                presently_available_branches=Branch.objects.get(id=branch_id), 
+                presently_available_branches=Branch.objects.get(id=branch_id),
                 college_type__type=institute_type.upper()).order_by('nirf_1')
-            institutes  = InstituteMinimalSerializer(institutes_queryset, many=True).data
-            
+            institutes = InstituteMinimalSerializer(
+                institutes_queryset, many=True).data
+
             data = {
                 'institutes': institutes,
                 'branch': branch_detail,
@@ -64,8 +67,7 @@ def all_college_one_branch(request):
                 'round_data': {},
                 'rounds': [],
             }
-            
-              
+
             for ins in institutes:
                 data['round_data'][ins['code']] = list()
                 for i in range(2015, get_latest_round_year()+1):
@@ -77,24 +79,26 @@ def all_college_one_branch(request):
                         data['rounds'].append(key)
                     round_model = get_round_model(int(round))
                     try:
-                        round_data = list(round_model.objects.filter(branch_code__id=branch_id, 
-                            institute_code__id=ins['id'], quota__quota=quota, category__category=category, 
-                            seat_pool__seat_pool=seat_pool, year=i)
-                                .values('institute_code', 'opening_rank', 'closing_rank'))[0]
+                        round_data = list(round_model.objects.filter(branch_code__id=branch_id,
+                                                                     institute_code__id=ins[
+                                                                         'id'], quota__quota=quota, category__category=category,
+                                                                     seat_pool__seat_pool=seat_pool, year=i)
+                                          .values('institute_code', 'opening_rank', 'closing_rank'))[0]
                     except Exception as e:
-                        print(e)
-                        round_data = {'institute_code': ins['code'] ,'opening_rank': 0, 'closing_rank': 0}
-                        
-                    round_data['color'] = get_rank_color_code(rank, round_data['closing_rank'], delta)
-                    
+                        round_data = {
+                            'institute_code': ins['code'], 'opening_rank': 0, 'closing_rank': 0}
+
+                    round_data['color'] = get_rank_color_code(
+                        rank, round_data['closing_rank'], delta)
+
                     data['round_data'][ins['code']].append(round_data)
-                
+
                 data['round_data'][ins['code']].reverse()
-                
+
             data['rounds'].reverse()
-            
+
             return JsonResponse(data)
-        
+
         return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
-    
+
     return HttpResponseForbidden(DO_NOT_HAVE_PERMISSION_ERROR)
