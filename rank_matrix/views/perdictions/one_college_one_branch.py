@@ -5,11 +5,9 @@ from rank_matrix.constants.default import DEFAULT_CATEGORY, DEFAULT_CUTOFF, DEFA
 from rank_matrix.constants.error import DATA_DOES_NOT_EXISTS_ERROR, DO_NOT_HAVE_PERMISSION_ERROR
 from rank_matrix.models.branch import Branch
 from rank_matrix.models.college import Institute
-from rank_matrix.models.relation import College_Branch
 from rank_matrix.permission import CustomApiPermission
 from rank_matrix.serializers.branch import BranchMinimalSerializer
 from rank_matrix.serializers.college import InstituteMinimalSerializer
-from rank_matrix.serializers.predictions.one_college_one_branch import CollegeBranchSerializer
 from rank_matrix.utils.get_college_type import get_college_type
 from rank_matrix.utils.get_year import get_latest_round_year
 from rank_matrix.utils.get_rank_color_code import get_rank_color_code
@@ -27,13 +25,13 @@ class BranchInstituteSearchViewset(viewsets.ModelViewSet):
 
     def get_queryset(self):
         institute_id = self.request.query_params.get(			# type: ignore
-             'institute_id', DEFAULT_NULL)
+            'institute_id', DEFAULT_NULL)
 
-        if(institute_id != DEFAULT_NULL):
+        if (institute_id != DEFAULT_NULL):
             queryset = Institute.objects.get(
                 id=institute_id).presently_available_branches.all()
 
-            if(queryset.count() == 0):
+            if (queryset.count() == 0):
                 return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
             return queryset
 
@@ -43,7 +41,7 @@ class BranchInstituteSearchViewset(viewsets.ModelViewSet):
 def one_college_one_branch(request):
     """
     Function view for giving response of prediction of a branch from a particular college.
-    
+
     Returns:
         Json Response: Required data for prediction of a branch from a particular college
     """
@@ -56,9 +54,11 @@ def one_college_one_branch(request):
         rank = request.GET.get('rank', DEFAULT_NULL)
         delta = int(request.GET.get('cutoff', DEFAULT_CUTOFF))
 
-        if(institute_id != DEFAULT_NULL and branch_id != DEFAULT_NULL):
-            institute_detail = InstituteMinimalSerializer(Institute.objects.get(id=institute_id)).data
-            branch_detail = BranchMinimalSerializer(Branch.objects.get(id=branch_id)).data
+        if (institute_id != DEFAULT_NULL and branch_id != DEFAULT_NULL):
+            institute_detail = InstituteMinimalSerializer(
+                Institute.objects.get(id=institute_id)).data
+            branch_detail = BranchMinimalSerializer(
+                Branch.objects.get(id=branch_id)).data
             model_arrays = get_all_round_model()
             years = list(range(2015, get_latest_round_year()+1))
             data = {
@@ -71,8 +71,8 @@ def one_college_one_branch(request):
                 'keys': [],
                 'years': years,
             }
-            
-            for model in model_arrays: 
+
+            for model in model_arrays:
                 year_data = {}
                 key = model.__name__
                 key = key[:-1] + " " + key[len(key)-1]
@@ -80,14 +80,13 @@ def one_college_one_branch(request):
                 for year in years:
                     try:
                         one_one_data = list(model.objects.filter(institute_code__id=institute_id, branch_code__id=branch_id,
-                                quota__quota=quota, category__category=category, seat_pool__seat_pool=seat_pool, year=year)
-                                    .values('opening_rank', 'closing_rank'))[0]
+                                                                 quota__quota=quota, category__category=category, seat_pool__seat_pool=seat_pool, year=year)
+                                            .values('opening_rank', 'closing_rank'))[0]
                     except:
                         one_one_data = {'opening_rank': 0, 'closing_rank': 0}
-                    one_one_data['color'] = get_rank_color_code(rank, one_one_data['closing_rank'], delta)  # type: ignore
+                    one_one_data['color'] = get_rank_color_code(
+                        rank, one_one_data['closing_rank'], delta)  # type: ignore
                     data['round_data'][f'{year}-{key}'] = one_one_data
-                    
-                
 
             data['years'].reverse()
 
