@@ -3,11 +3,11 @@ from rank_matrix.models.college import Institute
 from rank_matrix.constants.filter_choices import STATE_CHOICES
 
 class CollegeFilter(filters.FilterSet):
-    state__choice=filters.MultipleChoiceFilter(choices=STATE_CHOICES)
+    state=filters.MultipleChoiceFilter(choices=STATE_CHOICES)
     class Meta:
         model=Institute
         fields={
-             'nirf_1': ['lt', 'gt'],      
+             'nirf_1': ['lte', 'gte'],      
              'name':['icontains','exact'],
              'state':['icontains'],
              'code':['icontains','exact'],

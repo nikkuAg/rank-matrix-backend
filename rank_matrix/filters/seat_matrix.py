@@ -7,6 +7,7 @@ from rank_matrix.models.college import Institute
 from rank_matrix.models.quota import Quota
 
 class SeatMatrixFilter(filters.FilterSet):
+    branch_code__degree=filters.ModelMultipleChoiceFilter(queryset=Branch.objects.all(),to_field_name='degree')
     branch_code__duration=filters.ModelMultipleChoiceFilter(queryset=Branch.objects.all(),to_field_name='duration')
     branch_code__branch_name=filters.ModelMultipleChoiceFilter(queryset=Branch.objects.all(),to_field_name='branch_name')
     seat_pool__seat_pool=filters.ModelMultipleChoiceFilter(queryset=SeatPool.objects.all(),to_field_name='seat_pool')
@@ -18,7 +19,8 @@ class SeatMatrixFilter(filters.FilterSet):
     class Meta:
         model=Seat
         fields={
-            'seats':['lt','gt'],
+            'seats':['lte','gte'],
             'branch_code__branch_name':['icontains'],
-            'institute_code__name':['icontains']
+            'institute_code__name':['icontains'],
+            'branch_code__degree':['icontains'],
         }
