@@ -1,0 +1,16 @@
+from rest_framework import viewsets
+
+from rank_matrix_stage.models.recent_update import Update
+from rank_matrix_stage.permission import CustomApiPermission
+from rank_matrix_stage.serializers.recent_update import UpdateSerializer
+# Create your views here.
+
+
+class UpdateViewSet(viewsets.ModelViewSet):
+    """
+    Viewset for displaying recent updates
+    """
+    permission_classes = [CustomApiPermission]
+    pagination_class = None
+    queryset = Update.objects.all()
+    serializer_class = UpdateSerializer

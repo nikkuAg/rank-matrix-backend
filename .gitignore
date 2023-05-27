@@ -8,8 +8,8 @@ history_dir/*
 web_server_logs/*
 
 #Files in rank_matrix folder
-rank_matrix/__pycache__
-rank_matrix/tests.py
+rank_matrix_stage/__pycache__
+rank_matrix_stage/tests.py
 
 #Files in RankMatrix folder
 RankMatrix/__pycache__
