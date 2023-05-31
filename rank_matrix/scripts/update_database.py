@@ -2,6 +2,7 @@ import pandas as pd
 import requests, io
 from decouple import config
 
+from rank_matrix.constants.model import CATEGORIES, COLLEGE_TYPE, QUOTAS, SEAT_POOLS
 from rank_matrix.models.branch import Branch
 from rank_matrix.models.category import Category
 from rank_matrix.models.college import Institute
@@ -10,6 +11,7 @@ from rank_matrix.models.quota import Quota
 from rank_matrix.models.round import Round1, Round2, Round3, Round4, Round5, Round6, Round7
 from rank_matrix.models.seat_matrix import Seat
 from rank_matrix.models.seat_pool import SeatPool
+
 
 def download_csv(csv_file_name:str):
     user=str(config('GITHUB_USER'))
@@ -35,7 +37,7 @@ def update_branches():
            print(f'data not found for branches')
            return 
     except Exception as e:
-        print(Exception)
+        print(e)
         return
 
     for row in data['Id']:
@@ -94,11 +96,11 @@ def update_institutes():
            print(f'data not found for colleges')
            return 
     except Exception as e:
-        print(Exception)
+        print(e)
         return
     for row in data['Id']:
         try:
-            Institute.objects.update_or_create(
+            Institute.objects_original.update_or_create(
                 code=str(data['Code'][row-1]),
                 defaults={
                     'id': int(str(data['Id'][row-1])),
@@ -133,11 +135,11 @@ def update_college_category():
            print(f'data not found for college and category relation')
            return 
     except Exception as e:
-        print(Exception)
+        print(e)
         return
     for row in data['Id']:
         try:
-            ins = Institute.objects.get(code=str(data['Institute Code'][row-1]))
+            ins = Institute.objects_original.get(code=str(data['Institute Code'][row-1]))
             categories = ins.available_categories.all()
             category_queryset = Quota.objects.filter(quota=str(data['Quota'][row-1]))            
             categories = categories.union(category_queryset)
@@ -155,11 +157,11 @@ def update_college_branch():
            print(f'data not found for college and branch relation')
            return 
     except Exception as e:
-        print(Exception)
+        print(e)
         return
     for row in data['Id']:
         try:
-            ins = Institute.objects.get(code=str(data['Institute Code'][row-1]))
+            ins = Institute.objects_original.get(code=str(data['Institute Code'][row-1]))
             currently_present = ins.presently_available_branches.all()
             previously_present = ins.previously_available_branches.all()
             branch_queryset = Branch.objects.filter(code=str(data['Branch Code'][row-1]))
@@ -197,7 +199,7 @@ def update_seats(year=-1,increase=False):
         return
     for row in data['Id']:
         try:
-            ins = Institute.objects.get(
+            ins = Institute.objects_original.get(
                 code=str(data['Institute Code'][row-1]))
             branch = Branch.objects.get(
                 code=str(data['Branch Code'][row-1]))
@@ -247,11 +249,11 @@ def update_rounds(round:int, year:int=-1):
            print(f'data not found for round {round}:year{year}')
            return 
     except Exception as e:
-        print(Exception)
+        print(e)
         return
     for row in data['Id']:
         try:
-            ins = Institute.objects.get(
+            ins = Institute.objects_original.get(
                 code=str(data['Institute Code'][row-1]))
             branch = Branch.objects.get(
                 code=str(data['Branch Code'][row-1]))
@@ -303,8 +305,28 @@ def clear_database():
         
     print("Database cleared!!")
 
+def category_setup():
+    for value in CATEGORIES:
+        Category.objects.update_or_create(category=value)
+    
+def quota_setup():
+    for value in QUOTAS:
+        Quota.objects.update_or_create(quota=value)
+
+def college_type_setup():
+    for value in COLLEGE_TYPE:
+        CollegeType.objects.update_or_create(type=value)
+
+def seat_pool_setup():
+    for value in SEAT_POOLS:
+        SeatPool.objects.update_or_create(seat_pool=value)
+
 
 def setup():
+    category_setup()
+    quota_setup()
+    college_type_setup()
+    seat_pool_setup()
     update_branches()
     print("Branches data updated")
     update_institutes()
@@ -315,15 +337,9 @@ def setup():
     print("College Branch mapping data updated")
     update_seats()
     print(f"Seats data updated")
-    update_seats(True)
+    update_seats(-1,True)
     print(f"Increase in seats data updated")
     
     for j in range(1,8):
         update_rounds(j)
         print(f"Rounds data for round {j} updated")
-            
-    
-    
-    
-
-    

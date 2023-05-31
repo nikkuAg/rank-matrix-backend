@@ -42,6 +42,7 @@ class Institute(models.Model):
 
     # Custom manager
     objects = InstituteManager()
+    objects_original = models.Manager()
 
     def __str__(self) -> str:
         return f"{self.code}: {self.name}"
