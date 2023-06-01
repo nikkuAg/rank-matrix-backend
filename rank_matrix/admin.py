@@ -7,11 +7,9 @@ from rank_matrix.models.college import Institute
 from rank_matrix.models.college_type import CollegeType
 from rank_matrix.models.quota import Quota
 from rank_matrix.models.recent_update import Update
-# from rank_matrix.models.relation import College_Branch, College_Quota
 from rank_matrix.models.round import Round1, Round2, Round3, Round4, Round5, Round6, Round7
 from rank_matrix.models.seat_matrix import Seat
 from rank_matrix.models.seat_pool import SeatPool
-# from rank_matrix.models import Round1, CollegeType, Seat, Round2, Round3, Round4, Round5, Round6, Round7
 
 
 class YearFilter(admin.SimpleListFilter):
@@ -21,10 +19,10 @@ class YearFilter(admin.SimpleListFilter):
     def lookups(self, request, model_admin):
         year_dict = list()
 
-        if(str(model_admin) == 'rank_matrix.CustomSeatFilter'):
+        if (str(model_admin) == 'rank_matrix.CustomSeatFilter'):
             year_dict = list(Seat.objects.order_by(
                 'year').values('year').distinct())
-        elif(str(model_admin) == 'rank_matrix.CustomRoundFilter'):
+        elif (str(model_admin) == 'rank_matrix.CustomRoundFilter'):
             qs = model_admin.get_queryset(request)
             year_dict = list(qs.order_by('year').values('year').distinct())
         year_tuple = ()
@@ -41,10 +39,11 @@ class YearFilter(admin.SimpleListFilter):
         if self.value():
             return queryset.filter(year=self.value())
 
+
 class CollegeTypeFilter(admin.SimpleListFilter):
     title = "Institute Type"
     parameter_name = "college_type"
-    
+
     def lookups(self, request, model_admin):
         year_dict = list(CollegeType.objects.values('type').distinct())
         type_tuple = ()
@@ -54,12 +53,13 @@ class CollegeTypeFilter(admin.SimpleListFilter):
             type_tuple += (temp,)
 
         return type_tuple
-    
+
     def queryset(self, request, queryset):
         if not self.value():
             return queryset
         if self.value():
             return queryset.filter(college_type__type=self.value())
+
 
 class InstituteTypeFilter(admin.SimpleListFilter):
     title = "Institute Type"
@@ -133,7 +133,8 @@ class CustomSeatFilter(admin.ModelAdmin):
 
 class CustomDataUpdateFilter(admin.ModelAdmin):
     list_filter = (DataUpdateFilter,)
-    
+
+
 class CustomCollegeFilter(admin.ModelAdmin):
     list_filter = (DataUpdateFilter,)
 

@@ -9,9 +9,6 @@ from rank_matrix.utils.get_rank_color_code import get_rank_color_code
 from rank_matrix.utils.get_round import get_round_model, get_round_serializer
 from rank_matrix.utils.get_year import get_latest_round_year
 
-# from ..constants import DATA_DOES_NOT_EXISTS_ERROR, DEFAULT_CATEGORY, DEFAULT_CUTOFF, DEFAULT_NULL, DEFAULT_QUOTA, DEFAULT_ROUND_NUMBER, DEFAULT_ROUND_TYPE, DEFAULT_SEAT_POOL, DEFAULT_YEAR, DO_NOT_HAVE_PERMISSION_ERROR
-# from ..models import Branches, College_Branch, Institutes, getLatestYear, getRoundsModel, models_list
-
 
 def test_your_choice(request):
     if request.method == "GET":
@@ -25,7 +22,7 @@ def test_your_choice(request):
         rank = request.GET.get('rank', DEFAULT_NULL)
         rankMain = request.GET.get('mains_rank', DEFAULT_NULL)
         delta = int(request.GET.get('cutoff', DEFAULT_CUTOFF))
-        if(institute_id != DEFAULT_NULL and branch_id != DEFAULT_NULL):
+        if (institute_id != DEFAULT_NULL and branch_id != DEFAULT_NULL):
             try:
                 model = get_round_model(int(round_number))
                 serializer = get_round_serializer(int(round_number))
@@ -33,32 +30,32 @@ def test_your_choice(request):
                 return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
 
             try:
-                round_data = serializer(model.objects.get(institute_code__id=institute_id, 
-                branch_code__id=branch_id, category__category=category, quota__quota=quota, 
-                seat_pool__seat_pool=seat_pool, year=year)).data
+                round_data = serializer(model.objects.get(institute_code__id=institute_id,
+                                                          branch_code__id=branch_id, category__category=category, quota__quota=quota,
+                                                          seat_pool__seat_pool=seat_pool, year=year)).data
             except:
                 round_data = {
-                'institute_detail': Institute.objects.get(id=institute_id).institute_detail,
-                'branch_detail': Branch.objects.get(id=branch_id).branch_detail,
-                'category': category,
-                'quota': quota,
-                'seat_pool': seat_pool,
-                'opening_rank': '-',
-                'closing_rank': '-',
-                'year': year,
+                    'institute_detail': Institute.objects.get(id=institute_id).institute_detail,
+                    'branch_detail': Branch.objects.get(id=branch_id).branch_detail,
+                    'category': category,
+                    'quota': quota,
+                    'seat_pool': seat_pool,
+                    'opening_rank': '-',
+                    'closing_rank': '-',
+                    'year': year,
                 }
-            
+
             id = institute_id + "_" + branch_id + "_" + \
-            quota + "_" + category + "_" + seat_pool
+                quota + "_" + category + "_" + seat_pool
             round_data['id'] = id
 
-
-            if(rankMain != DEFAULT_NULL):
-                if(round_data['institute_detail']['type'] != "IIT"):
+            if (rankMain != DEFAULT_NULL):
+                if (round_data['institute_detail']['type'] != "IIT"):
                     rank = rankMain
 
             if round_data['closing_rank'] != '-':
-                round_data['color'] = get_rank_color_code(rank, round_data['closing_rank'], delta)
+                round_data['color'] = get_rank_color_code(
+                    rank, round_data['closing_rank'], delta)
             else:
                 round_data['color'] = "null"
 
