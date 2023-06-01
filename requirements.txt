@@ -3,6 +3,7 @@ certifi==2022.12.7
 charset-normalizer==3.0.1
 Django==3.2.7
 django-cors-headers==3.9.0
+django-filter==23.1
 djangorestframework==3.12.4
 gunicorn==20.1.0
 idna==3.4

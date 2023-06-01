@@ -40,8 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rank_matrix',
     'rest_framework',
+    'django_filters',
+    'rank_matrix',
     'corsheaders',
 ]
 
@@ -77,6 +78,7 @@ TEMPLATES = [
 # Rest Framework default pagination for data
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rank_matrix.serializers.pagination.CustomPaginationSerializer',
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend','rest_framework.filters.SearchFilter','rest_framework.filters.OrderingFilter'],
     'PAGE_SIZE': 10
 }
 

@@ -4,7 +4,7 @@ services:
     image: mysql
     restart: always
     env_file:
-      - database.env
+      - .env
     ports:
       - '3306:3306'
     volumes:
@@ -48,7 +48,7 @@ services:
         read_only: false
 
     env_file:
-      - config.env
+      - .env
     
     depends_on:
       - db
