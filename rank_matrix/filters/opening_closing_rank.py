@@ -16,6 +16,13 @@ class RankFilter(filters.FilterSet):
     opening_rank__gt=filters.NumberFilter(field_name='opening_rank',lookup_expr='gte')
     closing_rank__lt=filters.NumberFilter(field_name='closing_rank',lookup_expr='lte')
     closing_rank__gt=filters.NumberFilter(field_name='closing_rank',lookup_expr='gte')
+
+    class Meta:
+        model=Round
+        fields={
+            'branch_code__branch_name':['icontains'],
+            'institute_code__name':['icontains'],
+        }
     
 
 
