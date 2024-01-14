@@ -11,6 +11,11 @@ from rank_matrix.utils.get_college_type import get_college_type
 from rank_matrix.utils.get_rank_color_code import get_rank_color_code
 from rank_matrix.utils.get_round import get_round_model, get_round_serializer
 from rank_matrix.utils.get_year import get_latest_round_year
+from django.core.cache import cache
+import time
+import redis
+
+redis_instance=redis.StrictRedis(host='127.0.0.1',port=6379,db=1)
 
 def all_college_all_branch(request):
     if request.method == "GET":
@@ -24,7 +29,14 @@ def all_college_all_branch(request):
         rank = request.GET.get('rank', DEFAULT_NULL)
         delta = int(request.GET.get('cutoff', DEFAULT_CUTOFF))
         acceptable_type = get_college_type()
-        
+
+        cache_key=f'{institute_type}_{year}_{round_num}_{category}_{seat_pool}_{quota}_{option}_{rank}_{delta}'
+        cached_data=cache.get(cache_key)
+        print(cache_key)
+        print(cached_data)
+
+        if cached_data:
+            return JsonResponse(cached_data)
         
         if(institute_type.upper() in acceptable_type):
             try:
@@ -33,15 +45,15 @@ def all_college_all_branch(request):
             except:
                 return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
             
+
             queryset = model.objects.filter(
                 institute_code__college_type__type=institute_type.upper(), 
                 category__category=category, quota__quota=quota,
                 seat_pool__seat_pool=seat_pool, year=year)
             
-            
+
             institute_codes = queryset.values_list('institute_code__code', flat=True).distinct()
             branch_codes = queryset.values_list('branch_code__code', flat=True).distinct()
-            
             
             branches = BranchMinimalSerializer(Branch.objects.filter(code__in=branch_codes), many=True).data
             institutes = InstituteMinimalSerializer(Institute.objects.filter(code__in=institute_codes), many=True).data
@@ -68,6 +80,8 @@ def all_college_all_branch(request):
                 'branches': branches,
                 'round_data': round_data,    
             }
+
+            cache.set(cache_key,data,timeout=60*30)
             
             return JsonResponse(data)
         else:
