@@ -12,6 +12,11 @@ from rank_matrix.utils.get_college_type import get_college_type
 from rank_matrix.utils.get_year import get_latest_round_year
 from rank_matrix.utils.get_rank_color_code import get_rank_color_code
 from rank_matrix.utils.get_round import get_all_round_model
+from django.core.cache import cache
+import time
+import redis
+
+redis_instance=redis.StrictRedis(host='127.0.0.1',port=6379,db=1)
 
 
 class BranchInstituteSearchViewset(viewsets.ModelViewSet):
@@ -53,6 +58,13 @@ def one_college_one_branch(request):
         seat_pool = request.GET.get('seat_pool', DEFAULT_SEAT_POOL)
         rank = request.GET.get('rank', DEFAULT_NULL)
         delta = int(request.GET.get('cutoff', DEFAULT_CUTOFF))
+        cache_key=f'{institute_id}_{branch_id}_{quota}_{category}_{seat_pool}_{rank}_{delta}'
+        cached_data=cache.get(cache_key)
+        print(cache_key)
+        print(cached_data)
+
+        if cached_data:
+            return JsonResponse(cached_data)
 
         if (institute_id != DEFAULT_NULL and branch_id != DEFAULT_NULL):
             institute_detail = InstituteMinimalSerializer(
@@ -90,6 +102,7 @@ def one_college_one_branch(request):
 
             data['years'].reverse()
 
+            cache.set(cache_key,data,timeout=60*30)
             return JsonResponse(data)
 
         return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
