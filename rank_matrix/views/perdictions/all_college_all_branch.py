@@ -17,6 +17,7 @@ import redis
 
 redis_instance=redis.StrictRedis(host='127.0.0.1',port=6379,db=1)
 
+
 def all_college_all_branch(request):
     if request.method == "GET":
         institute_type = request.GET.get('institute_type', DEFAULT_INSTITUTE_TYPE)
@@ -29,63 +30,72 @@ def all_college_all_branch(request):
         rank = request.GET.get('rank', DEFAULT_NULL)
         delta = int(request.GET.get('cutoff', DEFAULT_CUTOFF))
         acceptable_type = get_college_type()
+        current_key=f'{institute_type}_{year}_{round_num}_{category}_{seat_pool}_{quota}_{option}_{rank}_{delta}'
+        current_data=cache.get(current_key)
 
-        cache_key=f'{institute_type}_{year}_{round_num}_{category}_{seat_pool}_{quota}_{option}_{rank}_{delta}'
-        cached_data=cache.get(cache_key)
-        print(cache_key)
-        print(cached_data)
-
-        if cached_data:
-            return JsonResponse(cached_data)
+        if current_data:
+            return JsonResponse(current_data)
         
-        if(institute_type.upper() in acceptable_type):
-            try:
-                model = get_round_model(int(round_num))
-                serializer = get_round_serializer(int(round_num))
-            except:
-                return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
-            
+        cache_key=f'cache_key{int(round_num)}'
+        cached_data=cache.get(cache_key)
+        serialize_key=f'serialized_key_{institute_type}_{category}_{quota}_{seat_pool}_{year}'
+        data_list=cache.get(serialize_key)
 
-            queryset = model.objects.filter(
+        if(institute_type.upper() in acceptable_type):
+            if ((not cached_data)):
+                try:
+                    model = get_round_model(int(round_num))
+                    serializer = get_round_serializer(int(round_num))
+                except:
+                    return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
+                cached_data=model.objects.all()
+                cache.set(cache_key,cached_data,timeout=60*30)
+                
+            queryset = cached_data.filter(
                 institute_code__college_type__type=institute_type.upper(), 
                 category__category=category, quota__quota=quota,
                 seat_pool__seat_pool=seat_pool, year=year)
             
-
+            if (not data_list):
+                try:
+                    serializer = get_round_serializer(int(round_num))
+                except:
+                    return HttpResponseNotFound(DATA_DOES_NOT_EXISTS_ERROR)
+                data_list = serializer(queryset,many=True).data 
+                cache.set(serialize_key,data_list,timeout=60*30)
+                
+                
             institute_codes = queryset.values_list('institute_code__code', flat=True).distinct()
             branch_codes = queryset.values_list('branch_code__code', flat=True).distinct()
-            
+                
+                
             branches = BranchMinimalSerializer(Branch.objects.filter(code__in=branch_codes), many=True).data
             institutes = InstituteMinimalSerializer(Institute.objects.filter(code__in=institute_codes), many=True).data
-    
-            round_data = {}
-            for item in queryset:
-                data_list = serializer(item).data
-                
-                if(option == CLOSING_OPTION):
-                    data_list['rank'] = int(data_list['closing_rank'])
-                else:
-                    data_list['rank'] = int(data_list['opening_rank'])
-                
-                del data_list['closing_rank']
-                del data_list['opening_rank']
-                
-                data_list['color'] = get_rank_color_code(rank, data_list['rank'], delta)
-                
-                
-                round_data[f"{item.branch_code.code}-{item.institute_code.code}"] = data_list
+        
+            round_data = {} 
             
+            for item in data_list:
+                if(option == CLOSING_OPTION):
+                    item['rank'] = int(item['closing_rank'])
+                else:
+                    item['rank'] = int(item['opening_rank'])
+                
+                del item['closing_rank']
+                del item['opening_rank']
+                
+                item['color'] = get_rank_color_code(rank, item['rank'], delta)
+                round_data[f"{item['branch_detail']['code']}-{item['institute_detail']['code']}"] = item
+                
             data = {
                 'institutes': institutes,
                 'branches': branches,
                 'round_data': round_data,    
             }
 
-            cache.set(cache_key,data,timeout=60*30)
-            
+            cache.set(current_key,data,timeout=60*30)
+                
             return JsonResponse(data)
-        else:
-            return HttpResponseNotFound(NO_SUCH_INSTITUTE_TYPE_ERROR)
+        return HttpResponseNotFound(NO_SUCH_INSTITUTE_TYPE_ERROR)
 
     return HttpResponseForbidden(DO_NOT_HAVE_PERMISSION_ERROR)
     

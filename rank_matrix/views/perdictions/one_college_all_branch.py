@@ -25,8 +25,6 @@ def one_college_all_branch(request):
         delta = int(request.GET.get('cutoff', DEFAULT_CUTOFF))
         cache_key=f'{institute_id}_{quota}_{category}_{seat_pool}_{rank}_{delta}'
         cached_data=cache.get(cache_key)
-        print(cache_key)
-        print(cached_data)
 
         if cached_data:
             return JsonResponse(cached_data)
